@@ -1,0 +1,18 @@
+import { useInitializeModalState } from './useInitializeModalState';
+import { useMemo } from 'react';
+import { ModalState } from '../../../types/redux/states/modalState.type';
+import { useAppSelector } from '../../redux/hooks';
+import { selectModal } from '../../redux/slices/modalSlice';
+
+export const useCloseModal = () => {
+  const modal = useAppSelector(selectModal);
+
+  const closedModalState: ModalState = useMemo(
+    () => ({ ...modal, open: false }),
+    [modal]
+  );
+
+  const closeModal = useInitializeModalState(closedModalState);
+
+  return closeModal;
+};
