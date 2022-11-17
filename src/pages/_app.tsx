@@ -24,6 +24,7 @@ import { store } from '../redux/store';
 import { useAppSelector } from '../redux/hooks';
 import { selectAppConfig } from '../redux/slices/appConfigSlice';
 import { SkeletonTheme } from 'react-loading-skeleton';
+import { NavBar } from '../components/NavBar';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -59,7 +60,7 @@ const PageComponent = ({ Component, pageProps }: AppProps): ReactElement => {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={{ viewportState }}>
-        {/* <NavBar /> */}
+        <NavBar />
         <StyledPageContainer>
           <Component {...pageProps} />
         </StyledPageContainer>

@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         --scrollbar-width: calc(100vw - 100%);
         ${colors}
-        font-family: 'Ubuntu-Regular', sans-serif;
+        font-family: 'RedHatMono-Regular', sans-serif;
         line-height: normal;
         background-color: var(--new-primary-color);
         color: black;
@@ -115,27 +115,20 @@ const GlobalStyle = createGlobalStyle`
         font: inherit;
     }
     @font-face {
-        font-family: Ubuntu-Regular; 
-        src: url('/fonts/Ubuntu-Regular.ttf'); 
+        font-family: RedHatMono-Regular; 
+        src: url('/fonts/RedHatMono-Regular.ttf');
         font-display: optional;
     }
     @font-face {
-        font-family: Ubuntu-Bold; 
-        src: url('/fonts/Ubuntu-Bold.ttf');
-        font-weight: bold;
-        font-display: optional;
-    }
-    @font-face {
-        font-family: Ubuntu-Italic; 
-        src: url('/fonts/Ubuntu-Italic.ttf');
+        font-family: RedHatMono-Italic; 
+        src: url('/fonts/RedHatMono-Italic.ttf');
         font-style: italic;
         font-display: optional;
     }
     @font-face {
-        font-family: Ubuntu-BoldItalic; 
-        src: url('/fonts/Ubuntu-BoldItalic.ttf');
+        font-family: RedHatMono-Bold; 
+        src: url('/fonts/RedHatMono-Bold.ttf');
         font-weight: bold;
-        font-style: italic;
         font-display: optional;
     }
 `;

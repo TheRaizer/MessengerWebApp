@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 export const colors = css`
-  --primary-color: rgb(86, 103, 103);
+  --primary-color: #f8ede0;
   --primary-color-dark: rgb(39, 45, 45);
 
   --secondary-color: rgb(76, 85, 97);

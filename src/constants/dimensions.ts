@@ -1,1 +1,1 @@
-export const NAV_BAR_HEIGHT = '70px';
+export const NAV_BAR_HEIGHT = '26px';

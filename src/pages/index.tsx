@@ -28,11 +28,7 @@ const Home = (): ReactElement => {
           content="Morpt, AI generates a sentence, you guess the topic."
         />
       </Head>
-      <Styled.BackgroundContainer>
-        <Styled.HeaderContainer gap={20}>
-          <Styled.Header>Boiler plate</Styled.Header>
-        </Styled.HeaderContainer>
-      </Styled.BackgroundContainer>
+      <Styled.BackgroundContainer></Styled.BackgroundContainer>
     </>
   );
 };
