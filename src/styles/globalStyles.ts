@@ -117,19 +117,19 @@ const GlobalStyle = createGlobalStyle`
     @font-face {
         font-family: RedHatMono-Regular; 
         src: url('/fonts/RedHatMono-Regular.ttf');
-        font-display: optional;
+        /* font-display: optional; */
     }
     @font-face {
         font-family: RedHatMono-Italic; 
         src: url('/fonts/RedHatMono-Italic.ttf');
         font-style: italic;
-        font-display: optional;
+        /* font-display: optional; */
     }
     @font-face {
         font-family: RedHatMono-Bold; 
         src: url('/fonts/RedHatMono-Bold.ttf');
         font-weight: bold;
-        font-display: optional;
+        /* font-display: optional; */
     }
 `;
 

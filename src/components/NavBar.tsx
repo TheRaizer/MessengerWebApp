@@ -1,8 +1,12 @@
 import dynamic from 'next/dynamic';
-import { ReactElement, useState } from 'react';
-import { IconBaseProps, IconType } from 'react-icons';
+import { ReactElement, useEffect, useState } from 'react';
+import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { NAV_BAR_HEIGHT } from '../constants/dimensions';
+import {
+  getFormattedLocalDateString,
+  getFormattedLocalTimeString,
+} from '../helpers/datetime';
 
 const Styled = {
   NavBarContainer: styled.nav`
@@ -19,6 +23,11 @@ const Styled = {
     gap: 20px;
     align-items: center;
   `,
+  DateContainer: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  `,
 };
 
 const SunIcon = dynamic<IconBaseProps>(() =>
@@ -26,24 +35,29 @@ const SunIcon = dynamic<IconBaseProps>(() =>
 );
 
 export const NavBar = (): ReactElement => {
-  // TODO: get current timezone from user computer
-  const [dateString, setDateString] = useState(
-    new Date().toLocaleString('en-US', {
-      month: 'short',
-      weekday: 'short',
-      day: 'numeric',
-    })
-  );
+  const [dateString, setDateString] = useState(getFormattedLocalDateString());
 
-  const [timeString, setTimeString] = useState(
-    new Date().toLocaleTimeString('en-US', { timeStyle: 'short' })
-  );
+  const [timeString, setTimeString] = useState(getFormattedLocalTimeString());
+
+  useEffect(() => {
+    const datetimeUpdateInterval = setInterval(() => {
+      setDateString(getFormattedLocalDateString());
+      setTimeString(getFormattedLocalTimeString());
+    }, 5000);
+
+    () => {
+      return clearInterval(datetimeUpdateInterval);
+    };
+  }, []);
+
   return (
     <Styled.NavBarContainer>
       <p>R-OS</p>
       <Styled.TimeContainer>
-        <SunIcon />
-        <p>{dateString}</p>
+        <Styled.DateContainer>
+          <SunIcon />
+          <p>{dateString}</p>
+        </Styled.DateContainer>
         <p>{timeString}</p>
       </Styled.TimeContainer>
     </Styled.NavBarContainer>
