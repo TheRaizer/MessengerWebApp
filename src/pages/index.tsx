@@ -1,7 +1,12 @@
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { CenteredCol } from '../components/common/Col';
+import { Windows } from '../components/Windows/WindowHandler';
+import { useOpenWindow } from '../hooks/actions/useOpenWindow';
+import { WindowType } from '../../types/redux/states/windows.type';
+import { MessageWindowProps } from '../../types/components/Windows/MessageWindowProps.type';
+import { FriendWindowProps } from '../../types/components/Windows/FriendWindowProps.type';
 
 const Styled = {
   HeaderContainer: styled(CenteredCol)`
@@ -19,6 +24,21 @@ const Styled = {
 };
 
 const Home = (): ReactElement => {
+  const messageWindowProps: MessageWindowProps = useMemo(
+    () => ({ usernameToMessage: 'some_username', groupChatId: undefined }),
+    []
+  );
+  const friendWindowProps: FriendWindowProps = useMemo(
+    () => ({ friendUsername: 'some_friend' }),
+    []
+  );
+  const openMessageWindow = useOpenWindow(WindowType.MESSAGE, {
+    [WindowType.MESSAGE]: messageWindowProps,
+  });
+  const openFriendWindow = useOpenWindow(WindowType.FRIEND, {
+    [WindowType.FRIEND]: friendWindowProps,
+  });
+
   return (
     <>
       <Head>
@@ -28,7 +48,11 @@ const Home = (): ReactElement => {
           content="Morpt, AI generates a sentence, you guess the topic."
         />
       </Head>
-      <Styled.BackgroundContainer></Styled.BackgroundContainer>
+      <Styled.BackgroundContainer>
+        <Windows />
+        <button onClick={openMessageWindow}>Open Message Window</button>
+        <button onClick={openFriendWindow}>Open Friend Window</button>
+      </Styled.BackgroundContainer>
     </>
   );
 };

@@ -36,7 +36,6 @@ const SunIcon = dynamic<IconBaseProps>(() =>
 
 export const NavBar = (): ReactElement => {
   const [dateString, setDateString] = useState(getFormattedLocalDateString());
-
   const [timeString, setTimeString] = useState(getFormattedLocalTimeString());
 
   useEffect(() => {
