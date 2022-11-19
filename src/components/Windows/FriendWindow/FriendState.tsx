@@ -1,9 +1,10 @@
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import {
   FriendsStateProps,
   FriendWindowStates,
 } from '../../../../types/components/Windows/FriendWindowProps.type';
 
 export const FriendState = (props: FriendsStateProps): ReactElement => {
-  return <p>{props[FriendWindowStates.FRIEND]?.friendUsername}</p>;
+  const friendProps = useMemo(() => props[FriendWindowStates.FRIEND], [props]);
+  return <p>{friendProps?.friendUsername}</p>;
 };
