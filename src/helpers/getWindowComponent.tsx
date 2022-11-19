@@ -19,7 +19,7 @@ export const getWindowComponent = (
       break;
     case WindowType.FRIEND:
       Component = dynamic(() =>
-        import('../components/Windows/FriendWindow').then(
+        import('../components/Windows/FriendWindow/FriendWindow').then(
           (mod) => mod.FriendWindow
         )
       );
