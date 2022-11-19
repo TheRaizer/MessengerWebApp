@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { NextApiResponse } from 'next';
+import { FetchReturn } from '../../../types/helpers/api/fetchAPI.type';
 import { Method } from '../../../types/helpers/api/request.type';
 
 /**
@@ -15,8 +16,7 @@ export const fetchAPI = async <T>(
   method: Method,
   body?: unknown,
   options?: RequestInit
-): Promise<{ data: T; res: Response }> => {
-
+): FetchReturn<T> => {
   const headers = {
     ...options?.headers,
     Accept: 'application/json',
@@ -24,7 +24,7 @@ export const fetchAPI = async <T>(
   };
 
   try {
-    const res = await fetch(`/api/${url}`, {
+    const res = await fetch(`${url}`, {
       ...options,
       body: JSON.stringify(body),
       method: method,
@@ -37,6 +37,29 @@ export const fetchAPI = async <T>(
     console.error(err);
     throw new Error('request failed: ' + (err as { message: string }).message);
   }
+};
+
+export const fetchNextAPI = async <T>(
+  url: string,
+  method: Method,
+  body?: unknown,
+  options?: RequestInit
+): FetchReturn<T> => {
+  return await fetchAPI(`/api/${url}`, method, body, options);
+};
+
+export const fetchServerAPI = async <T>(
+  url: string,
+  method: Method,
+  body?: unknown,
+  options?: RequestInit
+): FetchReturn<T> => {
+  return await fetchAPI(
+    `${process.env.SERVER_API_URL as string}/${url}`,
+    method,
+    body,
+    options
+  );
 };
 
 export const setRes = <T>(
