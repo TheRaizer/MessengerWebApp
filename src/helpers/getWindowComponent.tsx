@@ -7,6 +7,7 @@ export const getWindowComponent = (
   windowType: WindowType,
   windowProps?: WindowProps
 ): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let Component: ComponentType<any>;
 
   switch (windowType) {
@@ -25,7 +26,7 @@ export const getWindowComponent = (
       );
       break;
     default:
-      throw new Error('No such window of type ' + windowType);
+      throw new Error('No such window of type ' + (windowType as string));
   }
 
   // here we pass the id of the window

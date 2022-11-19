@@ -47,7 +47,7 @@ export const FriendWindow = ({
     };
   }, [friendUsername]);
 
-  const { CurrentComponent, changeState } = useStateMachine(
+  const { CurrentComponent } = useStateMachine(
     friendWindowStates,
     initialState,
     stateProps

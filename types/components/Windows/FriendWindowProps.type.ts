@@ -12,7 +12,7 @@ export enum FriendWindowStates {
 
 export interface FriendsStateProps
   extends ChangeStateProp<FriendWindowStates, FriendsStateProps> {
-  [FriendWindowStates.FRIENDS_LIST]?: {};
+  [FriendWindowStates.FRIENDS_LIST]?: Record<string, never>;
   [FriendWindowStates.FRIEND]?: {
     friendUsername: string;
   };

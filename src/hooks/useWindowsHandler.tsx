@@ -1,4 +1,4 @@
-import { memo, ReactElement, ReactNode } from 'react';
+import { memo, ReactElement } from 'react';
 import { WindowStateValue } from '../../types/redux/states/windows.type';
 import { getWindowComponent } from '../helpers/getWindowComponent';
 import { useAppSelector } from '../redux/hooks';
