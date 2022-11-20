@@ -42,10 +42,10 @@ const Home = (): ReactElement => {
   return (
     <>
       <Head>
-        <title>Morpt</title>
+        <title>R-OS Messenger</title>
         <meta
           name="description"
-          content="Morpt, AI generates a sentence, you guess the topic."
+          content="A retro messenger formatted like an OS"
         />
       </Head>
       <Styled.BackgroundContainer>

@@ -34,6 +34,10 @@ const nextConfig = {
   // https://stackoverflow.com/questions/48846289/why-is-my-react-component-is-rendering-twice
   reactStrictMode: true,
   headers: headers,
+  compiler: {
+    // Enables the styled-components SWC transform
+    styledComponents: true,
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

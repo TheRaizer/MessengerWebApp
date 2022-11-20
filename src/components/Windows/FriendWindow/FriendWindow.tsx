@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { ReactElement, useMemo } from 'react';
 import {
   FriendsStateProps,
@@ -7,8 +8,13 @@ import {
 import { State } from '../../../../types/hooks/useStateMachine.type';
 import { WithRequired } from '../../../../types/WithRequired.type';
 import { useStateMachine } from '../../../hooks/useStateMachine';
-import { FriendListState } from './FriendListState';
-import { FriendState } from './FriendState';
+
+const FriendListState = dynamic<FriendsStateProps>(() =>
+  import('./FriendListState').then((mod) => mod.FriendListState)
+);
+const FriendState = dynamic<FriendsStateProps>(() =>
+  import('./FriendState').then((mod) => mod.FriendState)
+);
 
 const friendWindowStates: Record<
   FriendWindowStates,
@@ -21,7 +27,6 @@ const friendWindowStates: Record<
 export const FriendWindow = ({
   friendUsername,
 }: WithRequired<FriendWindowProps, 'id'>): ReactElement => {
-  console.log(friendUsername);
   // if a username is given when a friend window is created, then we make the state the friend state
   const {
     initialState,
