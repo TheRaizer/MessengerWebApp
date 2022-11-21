@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next';
-import { AuthProps } from './auth.type';
+import { AuthRequirements } from './auth.type';
 
-type Body = AuthProps & {
+type Body = AuthRequirements & {
   username: string;
 };
 

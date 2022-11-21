@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
-import { AuthProps } from './auth.type';
+import { AuthRequirements } from './auth.type';
 
 export interface LoginRequest extends NextApiRequest {
-  body: AuthProps;
+  body: AuthRequirements;
 }

@@ -1,12 +1,15 @@
-import { ReactElement } from 'react';
+import { ReactElement, useCallback } from 'react';
 import styled from 'styled-components';
 import {
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
+import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
+import { AccessTokenData } from '../../../types/responseData/AccessTokenData.type';
+import { fetchNextAPI } from '../../helpers/api/api';
+import { useInputWithState } from '../../hooks/useInputWithState';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
-import { Input } from '../common/Input';
 
 const Styled = {
   LoginButton: styled(Button)`
@@ -15,23 +18,38 @@ const Styled = {
 };
 
 export const LoginState = ({ changeState }: AuthStateProps): ReactElement => {
+  const { inputValue: email, InputComponent: EmailInput } = useInputWithState({
+    dimensions: { width: '250px', height: '35px' },
+    labelText: 'email',
+  });
+  const { inputValue: password, InputComponent: PasswordInput } =
+    useInputWithState({
+      dimensions: { width: '250px', height: '35px' },
+      labelText: 'password',
+    });
+
+  const login = useCallback(() => {
+    const body: AuthRequirements = {
+      email,
+      password,
+    };
+
+    fetchNextAPI<AccessTokenData>('auth/login', 'POST', body)
+      .then(({ data }) => {
+        console.log(data.access_token);
+      })
+      .catch((err) => console.error(err));
+  }, [email, password]);
+
   return (
     <CenteredCol gap={50}>
       <CenteredCol gap={20}>
-        <Input
-          dimensions={{ width: '250px', height: '35px' }}
-          labelText="email"
-        />
-        <Input
-          dimensions={{ width: '250px', height: '35px' }}
-          labelText="password"
-        />
+        {EmailInput}
+        {PasswordInput}
       </CenteredCol>
       <CenteredCol gap={20}>
         <Styled.LoginButton
-          onClick={() => {
-            console.log('RUN');
-          }}
+          onClick={login}
           dimensions={{ width: '165px', height: '35px' }}
         >
           login

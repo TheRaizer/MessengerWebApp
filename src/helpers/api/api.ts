@@ -62,6 +62,34 @@ export const fetchServerAPI = async <T>(
   );
 };
 
+export const fetchAuthAPI = async <T>(
+  url: string,
+  method: Method,
+  body?: BodyInit,
+  options?: RequestInit
+): FetchReturn<T> => {
+  const headers = {
+    ...options?.headers,
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  try {
+    const res = await fetch(`${process.env.SERVER_API_URL as string}/${url}`, {
+      ...options,
+      body: body,
+      method: method,
+      headers,
+    });
+
+    const data: T = (await res.json()) as T;
+    return { data, res };
+  } catch (err: unknown) {
+    console.error(err);
+    throw new Error('request failed: ' + (err as { message: string }).message);
+  }
+};
+
 export const setRes = <T>(
   res: NextApiResponse,
   statusCode: StatusCodes,

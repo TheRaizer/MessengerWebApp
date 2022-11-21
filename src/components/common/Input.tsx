@@ -18,6 +18,16 @@ const Styled = {
   `,
 };
 
-export const Input = ({ dimensions, labelText }: InputProps): ReactElement => {
-  return <Styled.InputContainer {...dimensions} placeholder={labelText} />;
+export const Input = ({
+  dimensions,
+  labelText,
+  onChange,
+}: InputProps): ReactElement => {
+  return (
+    <Styled.InputContainer
+      {...dimensions}
+      placeholder={labelText}
+      onChange={onChange}
+    />
+  );
 };

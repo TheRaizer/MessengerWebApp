@@ -10,7 +10,7 @@ import {
 
 declare module 'iron-session' {
   interface IronSessionData {
-    authToken?: string;
+    accessToken?: string;
   }
 }
 

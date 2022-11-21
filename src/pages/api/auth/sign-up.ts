@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { NextApiResponse } from 'next';
 import { SignUpRequest } from '../../../../types/pages/api/auth/sign-up.type';
-import { AuthTokenData } from '../../../../types/responseData/authTokenData.type';
+import { AccessTokenData } from '../../../../types/responseData/AccessTokenData.type';
 import { fetchServerAPI, setRes } from '../../../helpers/api/api';
 import { withSessionRoute } from '../../../helpers/api/session';
 
@@ -18,8 +18,8 @@ const signUpRoute = async (req: SignUpRequest, res: NextApiResponse) => {
 
   const {
     data: { access_token, token_type },
-  } = await fetchServerAPI<AuthTokenData>(
-    `/auth/sign-in?username=${req.body.username}`,
+  } = await fetchServerAPI<AccessTokenData>(
+    `auth/sign-up?username=${req.body.username}`,
     'POST',
     signUpBody,
     {
@@ -29,10 +29,10 @@ const signUpRoute = async (req: SignUpRequest, res: NextApiResponse) => {
 
   console.log('AUTH TOKEN', access_token);
 
-  req.session.authToken = access_token;
+  req.session.accessToken = access_token;
   await req.session.save();
 
-  return setRes<AuthTokenData>(res, StatusCodes.CREATED, {
+  return setRes<AccessTokenData>(res, StatusCodes.CREATED, {
     access_token,
     token_type,
   });

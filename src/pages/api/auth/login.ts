@@ -1,33 +1,37 @@
 import { StatusCodes } from 'http-status-codes';
 import { NextApiResponse } from 'next';
 import { LoginRequest } from '../../../../types/pages/api/auth/login.type';
-import { AuthTokenData } from '../../../../types/responseData/authTokenData.type';
-import { fetchServerAPI, setRes } from '../../../helpers/api/api';
+import { AccessTokenData } from '../../../../types/responseData/AccessTokenData.type';
+import { fetchAuthAPI, setRes } from '../../../helpers/api/api';
 import { withSessionRoute } from '../../../helpers/api/session';
 
 const loginRoute = async (req: LoginRequest, res: NextApiResponse) => {
-  const signInBody = {
+  const signInBody = new URLSearchParams({
     grant_type: 'password',
     username: req.body.email,
     password: req.body.password,
-  };
-
-  const headers: HeadersInit = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  };
+  });
 
   const {
-    data: { access_token, token_type },
-  } = await fetchServerAPI<AuthTokenData>('/auth/sign-in', 'POST', signInBody, {
-    headers,
-  });
+    data: { access_token, token_type, detail },
+    res: authRes,
+  } = await fetchAuthAPI<AccessTokenData>('auth/sign-in', 'POST', signInBody);
+
+  if (authRes.status !== StatusCodes.CREATED) {
+    console.error(detail);
+    return setRes<AccessTokenData>(res, authRes.status, {
+      access_token: '',
+      token_type: '',
+      detail: detail,
+    });
+  }
 
   console.log('AUTH TOKEN', access_token);
 
-  req.session.authToken = access_token;
+  req.session.accessToken = access_token;
   await req.session.save();
 
-  return setRes<AuthTokenData>(res, StatusCodes.CREATED, {
+  return setRes<AccessTokenData>(res, StatusCodes.CREATED, {
     access_token,
     token_type,
   });
