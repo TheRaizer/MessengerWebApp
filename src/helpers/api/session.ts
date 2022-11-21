@@ -8,9 +8,15 @@ import {
   SsrWithProps,
 } from '../../../types/helpers/api/session.type';
 
+declare module 'iron-session' {
+  interface IronSessionData {
+    authToken?: string;
+  }
+}
+
 const sessionOptions: IronSessionOptions = {
   password: process.env.IRON_SESSION_ENCRYPT_KEY as string,
-  cookieName: 'LCel-server',
+  cookieName: 'messenger',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production',
   },
