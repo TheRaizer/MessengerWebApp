@@ -5,9 +5,11 @@ import {
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
-import { AccessTokenData } from '../../../types/responseData/AccessTokenData.type';
+import { UserData } from '../../../types/redux/states/user.type';
 import { fetchNextAPI } from '../../helpers/api/api';
 import { useInputWithState } from '../../hooks/useInputWithState';
+import { useAppDispatch } from '../../redux/hooks';
+import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
 
@@ -18,6 +20,7 @@ const Styled = {
 };
 
 export const LoginState = ({ changeState }: AuthStateProps): ReactElement => {
+  const dispatch = useAppDispatch();
   const { inputValue: email, InputComponent: EmailInput } = useInputWithState({
     dimensions: { width: '250px', height: '35px' },
     labelText: 'email',
@@ -34,12 +37,17 @@ export const LoginState = ({ changeState }: AuthStateProps): ReactElement => {
       password,
     };
 
-    fetchNextAPI<AccessTokenData>('auth/login', 'POST', body)
+    fetchNextAPI<UserData>('auth/login', 'POST', body)
       .then(({ data }) => {
-        console.log(data.access_token);
+        console.log(data.user);
+        if (data.detail || !data.user) {
+          throw new Error(data.detail);
+        }
+
+        dispatch(setUserState(data.user));
       })
       .catch((err) => console.error(err));
-  }, [email, password]);
+  }, [dispatch, email, password]);
 
   return (
     <CenteredCol gap={50}>

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { appConfigReducer } from './slices/appConfigSlice';
 import { appLoadingReducer } from './slices/appLoadingSlice';
 import { modalReducer } from './slices/modalSlice';
+import { userReducer } from './slices/userSlice';
 import { windowsReducer } from './slices/windowsSlice';
 
 export const store = configureStore({
@@ -10,5 +11,6 @@ export const store = configureStore({
     appLoading: appLoadingReducer,
     modal: modalReducer,
     windows: windowsReducer,
+    user: userReducer,
   },
 });
