@@ -1,6 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
 import { AuthRequest } from '../../../types/pages/api/auth/auth.type';
-import { UserData, UserState } from '../../../types/redux/states/user.type';
+import {
+  UserData,
+  UserStateProps,
+} from '../../../types/redux/states/user.type';
 import { AccessTokenData } from '../../../types/responseData/AccessTokenData.type';
 import { fetchAuthAPI, setRes } from './api';
 import jwt_decode from 'jwt-decode';
@@ -32,7 +35,7 @@ export const authenticate = async (
   req.session.accessToken = access_token;
   await req.session.save();
 
-  const userData = jwt_decode<UserState>(access_token);
+  const userData = jwt_decode<UserStateProps>(access_token);
 
   return setRes<UserData>(res, StatusCodes.CREATED, {
     user: {

@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NextApiResponse } from 'next';
 import { FetchReturn } from '../../../types/helpers/api/fetchAPI.type';
 import { Method } from '../../../types/helpers/api/request.type';
+import { DefaultData } from '../../../types/responseData/DefaultData.type';
 
 /**
  * Fetch function for the front end to access the api correctly.
@@ -48,7 +49,7 @@ export const fetchNextAPI = async <T>(
   return await fetchAPI(`/api/${url}`, method, body, options);
 };
 
-export const fetchServerAPI = async <T>(
+export const fetchServerAPI = async <T extends DefaultData>(
   url: string,
   method: Method,
   body?: unknown,
@@ -62,7 +63,7 @@ export const fetchServerAPI = async <T>(
   );
 };
 
-export const fetchAuthAPI = async <T>(
+export const fetchAuthAPI = async <T extends DefaultData>(
   url: string,
   method: Method,
   body?: BodyInit,
@@ -90,10 +91,24 @@ export const fetchAuthAPI = async <T>(
   }
 };
 
-export const setRes = <T>(
+export const setRes = <T extends DefaultData>(
   res: NextApiResponse,
   statusCode: StatusCodes,
   data: T
 ) => {
   return res.status(statusCode).json(data);
+};
+
+export const enforceMethod = <T extends DefaultData>(
+  res: NextApiResponse,
+  method: Method,
+  expectedMethod: Method,
+  data: T
+) => {
+  if (method !== expectedMethod) {
+    setRes<T>(res, StatusCodes.BAD_REQUEST, {
+      ...data,
+      detail: 'invalid method',
+    });
+  }
 };

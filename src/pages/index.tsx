@@ -1,8 +1,12 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { CenteredCol } from '../components/common/Col';
 import { Auth } from '../components/Auth/Auth';
+import { useAppSelector } from '../redux/hooks';
+import { selectUser } from '../redux/slices/userSlice';
+import { usePageRouting } from '../hooks/actions/usePageRouting';
+import { PageRoutes } from '../constants/pageRoutes';
 
 const Styled = {
   HeaderContainer: styled(CenteredCol)`
@@ -19,6 +23,15 @@ const Styled = {
 };
 
 const Home = (): ReactElement => {
+  const userState = useAppSelector(selectUser);
+  const routeToMessengerPage = usePageRouting(PageRoutes.MESSENGER);
+
+  useEffect(() => {
+    if (userState.user) {
+      routeToMessengerPage();
+    }
+  }, [userState.user, routeToMessengerPage]);
+
   return (
     <>
       <Head>
