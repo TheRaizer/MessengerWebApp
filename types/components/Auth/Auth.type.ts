@@ -1,4 +1,5 @@
 import { ChangeStateProp } from '../../hooks/useStateMachine.type';
+import { InputProps } from '../common/InputProps.type';
 
 export enum AuthStates {
   LOGIN = 'login',
@@ -9,4 +10,12 @@ export type AuthProps = {
   initialState?: AuthStates;
 };
 
-export type AuthStateProps = ChangeStateProp<AuthStates, AuthStateProps>;
+type AuthInputProps = {
+  getInputProps: (labelText: string) => InputProps;
+};
+
+export interface AuthStateProps
+  extends ChangeStateProp<AuthStates, AuthStateProps> {
+  [AuthStates.LOGIN]: AuthInputProps;
+  [AuthStates.SIGN_UP]: AuthInputProps;
+}

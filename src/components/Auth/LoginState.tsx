@@ -4,6 +4,7 @@ import {
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
+import { ChangeStateProp } from '../../../types/hooks/useStateMachine.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
 import { fetchNextAPI } from '../../helpers/api/api';
@@ -19,17 +20,17 @@ const Styled = {
   `,
 };
 
-export const LoginState = ({ changeState }: AuthStateProps): ReactElement => {
+export const LoginState = ({
+  changeState,
+  getInputProps,
+}: AuthStateProps[AuthStates.LOGIN] &
+  ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
   const dispatch = useAppDispatch();
-  const { inputValue: email, InputComponent: EmailInput } = useInputWithState({
-    dimensions: { width: '250px', height: '35px' },
-    labelText: 'email',
-  });
+  const { inputValue: email, InputComponent: EmailInput } = useInputWithState(
+    getInputProps('email')
+  );
   const { inputValue: password, InputComponent: PasswordInput } =
-    useInputWithState({
-      dimensions: { width: '250px', height: '35px' },
-      labelText: 'password',
-    });
+    useInputWithState(getInputProps('password'));
 
   const login = useCallback(() => {
     const body: AuthRequirements = {
@@ -39,7 +40,6 @@ export const LoginState = ({ changeState }: AuthStateProps): ReactElement => {
 
     fetchNextAPI<UserData>('auth/login', 'POST', body)
       .then(({ data }) => {
-        console.log(data.user);
         if (data.detail || !data.user) {
           throw new Error(data.detail);
         }
@@ -63,7 +63,9 @@ export const LoginState = ({ changeState }: AuthStateProps): ReactElement => {
           login
         </Styled.LoginButton>
         <button
-          onClick={() => changeState(AuthStates.SIGN_UP, { changeState })}
+          onClick={() =>
+            changeState(AuthStates.SIGN_UP, { changeState, getInputProps })
+          }
         >
           sign up
         </button>

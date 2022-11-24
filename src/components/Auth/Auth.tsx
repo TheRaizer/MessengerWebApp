@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ReactElement } from 'react';
+import { ReactElement, useCallback, useMemo } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import {
@@ -7,8 +7,11 @@ import {
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
-import { State } from '../../../types/hooks/useStateMachine.type';
-import { useStateMachine } from '../../hooks/useStateMachine';
+import {
+  ChangeStateProp,
+  StatesDictionary,
+} from '../../../types/hooks/useStateMachine.type';
+import { useStateMachine } from '../../hooks/statemachine/useStateMachine';
 import { CenteredCol } from '../common/Col';
 
 const Styled = {
@@ -27,23 +30,36 @@ const Styled = {
 const CgProfile = dynamic<IconBaseProps>(() =>
   import('react-icons/cg').then((mod) => mod.CgProfile)
 );
-const LoginState = dynamic<AuthStateProps>(() =>
-  import('./LoginState').then((mod) => mod.LoginState)
-);
-const SignUpState = dynamic<AuthStateProps>(() =>
-  import('./SignUpState').then((mod) => mod.SignUpState)
-);
+const LoginState = dynamic<
+  AuthStateProps[AuthStates.LOGIN] & ChangeStateProp<AuthStates, AuthStateProps>
+>(() => import('./LoginState').then((mod) => mod.LoginState));
+const SignUpState = dynamic<
+  AuthStateProps[AuthStates.SIGN_UP] &
+    ChangeStateProp<AuthStates, AuthStateProps>
+>(() => import('./SignUpState').then((mod) => mod.SignUpState));
 
-const authStates: Record<AuthStates, State<AuthStates, AuthStateProps>> = {
+const authStates: StatesDictionary<AuthStates, AuthStateProps> = {
   [AuthStates.LOGIN]: (props) => <LoginState {...props} />,
   [AuthStates.SIGN_UP]: (props) => <SignUpState {...props} />,
 };
 
 export const Auth = ({ initialState }: AuthProps): ReactElement => {
+  const inputDimensions = useMemo(
+    () => ({ width: '250px', height: '35px' }),
+    []
+  );
+  const getInputProps = useCallback(
+    (labelText: string) => ({
+      dimensions: inputDimensions,
+      labelText: labelText,
+    }),
+    [inputDimensions]
+  );
+
   const { CurrentComponent } = useStateMachine(
     authStates,
     initialState || AuthStates.LOGIN,
-    {}
+    { getInputProps }
   );
 
   return (

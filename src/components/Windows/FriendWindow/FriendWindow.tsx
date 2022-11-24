@@ -5,20 +5,24 @@ import {
   FriendWindowProps,
   FriendWindowStates,
 } from '../../../../types/components/Windows/FriendWindowProps.type';
-import { State } from '../../../../types/hooks/useStateMachine.type';
+import {
+  ChangeStateProp,
+  StatesDictionary,
+} from '../../../../types/hooks/useStateMachine.type';
 import { WithRequired } from '../../../../types/WithRequired.type';
-import { useStateMachine } from '../../../hooks/useStateMachine';
+import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 
-const FriendListState = dynamic<FriendsStateProps>(() =>
+const FriendListState = dynamic(() =>
   import('./FriendListState').then((mod) => mod.FriendListState)
 );
-const FriendState = dynamic<FriendsStateProps>(() =>
-  import('./FriendState').then((mod) => mod.FriendState)
-);
+const FriendState = dynamic<
+  FriendsStateProps[FriendWindowStates.FRIEND] &
+    ChangeStateProp<FriendWindowStates, FriendsStateProps>
+>(() => import('./FriendState').then((mod) => mod.FriendState));
 
-const friendWindowStates: Record<
+const friendWindowStates: StatesDictionary<
   FriendWindowStates,
-  State<FriendWindowStates, FriendsStateProps>
+  FriendsStateProps
 > = {
   [FriendWindowStates.FRIENDS_LIST]: (props) => <FriendListState {...props} />,
   [FriendWindowStates.FRIEND]: (props) => <FriendState {...props} />,
@@ -27,35 +31,29 @@ const friendWindowStates: Record<
 export const FriendWindow = ({
   friendUsername,
 }: WithRequired<FriendWindowProps, 'id'>): ReactElement => {
-  // if a username is given when a friend window is created, then we make the state the friend state
   const {
-    initialState,
-    stateProps,
+    state,
+    props,
   }: {
-    initialState: FriendWindowStates;
-    stateProps: Omit<FriendsStateProps, 'changeState'>;
-  } = useMemo(() => {
-    if (friendUsername) {
-      return {
-        initialState: FriendWindowStates.FRIEND,
-        stateProps: {
-          [FriendWindowStates.FRIEND]: {
-            friendUsername: friendUsername,
+    state: FriendWindowStates;
+    props:
+      | FriendsStateProps[FriendWindowStates.FRIEND]
+      | FriendsStateProps[FriendWindowStates.FRIENDS_LIST];
+  } = useMemo(
+    () =>
+      friendUsername
+        ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
+        : {
+            state: FriendWindowStates.FRIENDS_LIST,
+            props: {} as Record<string, never>,
           },
-        },
-      };
-    }
-
-    return {
-      initialState: FriendWindowStates.FRIENDS_LIST,
-      stateProps: { [FriendWindowStates.FRIENDS_LIST]: {} },
-    };
-  }, [friendUsername]);
-
+    [friendUsername]
+  );
+  // if a username is given when a friend window is created, then we make the state the friend state
   const { CurrentComponent } = useStateMachine(
     friendWindowStates,
-    initialState,
-    stateProps
+    state,
+    props
   );
   return <div>{CurrentComponent}</div>;
 };

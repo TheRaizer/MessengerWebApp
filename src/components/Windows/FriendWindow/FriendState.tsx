@@ -1,10 +1,13 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import {
   FriendsStateProps,
   FriendWindowStates,
 } from '../../../../types/components/Windows/FriendWindowProps.type';
+import { ChangeStateProp } from '../../../../types/hooks/useStateMachine.type';
 
-export const FriendState = (props: FriendsStateProps): ReactElement => {
-  const friendProps = useMemo(() => props[FriendWindowStates.FRIEND], [props]);
-  return <p>{friendProps?.friendUsername}</p>;
+export const FriendState = (
+  props: FriendsStateProps[FriendWindowStates.FRIEND] &
+    ChangeStateProp<FriendWindowStates, FriendsStateProps>
+): ReactElement => {
+  return <p>{props.friendUsername}</p>;
 };

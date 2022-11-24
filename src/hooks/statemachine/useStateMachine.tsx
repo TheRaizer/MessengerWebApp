@@ -1,5 +1,8 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { ChangeStateProp, State } from '../../types/hooks/useStateMachine.type';
+import {
+  ChangeStateProp,
+  StatesDictionary,
+} from '../../../types/hooks/useStateMachine.type';
 
 /**
  * Used to manage components that can traverse to and from one another.
@@ -9,12 +12,12 @@ import { ChangeStateProp, State } from '../../types/hooks/useStateMachine.type';
  * @returns The current component/state, as well as a function to change the current state.
  */
 export const useStateMachine = <
-  S extends string | number | symbol,
+  S extends keyof T,
   T extends ChangeStateProp<S, T>
 >(
-  states: Record<S, State<S, T>>,
+  states: StatesDictionary<S, T>,
   initialState: S,
-  initialStateProps: Omit<T, 'changeState'>
+  initialStateProps: T[S]
 ) => {
   const [initialized, setInitialized] = useState(false);
   const [CurrentComponent, setCurrentComponent] = useState<ReactElement | null>(
@@ -28,14 +31,16 @@ export const useStateMachine = <
    * @param props the props that will be passed to this state's corrosponding component
    */
   const changeState = useCallback(
-    (newState: S, props: T) => setCurrentComponent(states[newState](props)),
+    (newState: S, props: T[S] & ChangeStateProp<S, T>) =>
+      setCurrentComponent(states[newState](props)),
     [states]
   );
 
   useEffect(() => {
     if (initialized) return;
 
-    const props = { ...initialStateProps, changeState } as T;
+    const props = { ...initialStateProps, changeState } as T[S] &
+      ChangeStateProp<S, T>;
     changeState(initialState, props);
 
     setInitialized(true);

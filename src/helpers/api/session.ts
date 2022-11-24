@@ -7,6 +7,7 @@ import {
   ContextHandler,
   SsrWithProps,
 } from '../../../types/helpers/api/session.type';
+import { isValidAccessToken } from './aws';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -64,13 +65,16 @@ const withSessionSsr = <T extends UnknownObject>(
 export function withAuthentication<T extends UnknownObject = UnknownObject>(
   handler: ContextHandler<T>
 ): SsrWithProps<T> {
-  return withSessionSsr((context) => {
-    // if (
-    //   context.req.session.user?.userData &&
-    //   context.req.session.user.emailVerified
-    // ) {
-    //   return handler(context);
-    // }
+  return withSessionSsr(async (context) => {
+    if (context.req.session.accessToken) {
+      const hasAuthentication = await isValidAccessToken(
+        context.req.session.accessToken
+      );
+
+      if (hasAuthentication) {
+        return handler(context);
+      }
+    }
 
     const redirectHome = {
       redirect: {
@@ -81,10 +85,3 @@ export function withAuthentication<T extends UnknownObject = UnknownObject>(
     return redirectHome;
   });
 }
-
-// This is where we specify the typings of req.session.*
-// declare module 'iron-session' {
-//   interface IronSessionData {
-//     user?: User;
-//   }
-// }
