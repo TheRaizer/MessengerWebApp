@@ -24,7 +24,7 @@ import { store } from '../redux/store';
 import { useAppSelector } from '../redux/hooks';
 import { selectAppConfig } from '../redux/slices/appConfigSlice';
 import { SkeletonTheme } from 'react-loading-skeleton';
-import { NavBar } from '../components/NavBar';
+import { NavBar } from '../components/NavBar/NavBar';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
