@@ -23,6 +23,7 @@ export const useStateMachine = <
   const [CurrentComponent, setCurrentComponent] = useState<ReactElement | null>(
     null
   );
+  const [currentState, setCurrentState] = useState<S>(initialState);
 
   /**
    * Changes to a given state that existed in the given states mapping.
@@ -31,8 +32,10 @@ export const useStateMachine = <
    * @param props the props that will be passed to this state's corrosponding component
    */
   const changeState = useCallback(
-    (newState: S, props: T[S] & ChangeStateProp<S, T>) =>
-      setCurrentComponent(states[newState](props)),
+    (newState: S, props: T[S] & ChangeStateProp<S, T>) => {
+      setCurrentState(newState);
+      setCurrentComponent(states[newState](props));
+    },
     [states]
   );
 
@@ -46,5 +49,5 @@ export const useStateMachine = <
     setInitialized(true);
   }, [changeState, initialState, initialStateProps, initialized]);
 
-  return { CurrentComponent, changeState };
+  return { CurrentComponent, currentState, changeState };
 };

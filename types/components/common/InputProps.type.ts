@@ -5,4 +5,5 @@ export type InputProps = {
   dimensions: Dimensions;
   labelText: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  className?: string;
 };

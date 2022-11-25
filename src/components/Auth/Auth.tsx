@@ -56,17 +56,22 @@ export const Auth = ({ initialState }: AuthProps): ReactElement => {
     [inputDimensions]
   );
 
-  const { CurrentComponent } = useStateMachine(
+  const { CurrentComponent, currentState } = useStateMachine(
     authStates,
     initialState || AuthStates.LOGIN,
     { getInputProps }
+  );
+
+  const header = useMemo(
+    () => (currentState === AuthStates.LOGIN ? 'Login' : 'Sign Up'),
+    [currentState]
   );
 
   return (
     <Styled.AuthContainer>
       <CenteredCol gap={36}>
         <CgProfile size={180} />
-        <Styled.Header>Login</Styled.Header>
+        <Styled.Header>{header}</Styled.Header>
         {CurrentComponent}
       </CenteredCol>
     </Styled.AuthContainer>

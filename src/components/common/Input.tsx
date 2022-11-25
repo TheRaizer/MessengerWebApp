@@ -22,12 +22,14 @@ export const Input = ({
   dimensions,
   labelText,
   onChange,
+  className,
 }: InputProps): ReactElement => {
   return (
     <Styled.InputContainer
       {...dimensions}
       placeholder={labelText}
       onChange={onChange}
+      className={className}
     />
   );
 };

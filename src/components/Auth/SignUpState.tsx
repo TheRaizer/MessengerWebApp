@@ -8,7 +8,10 @@ import { ChangeStateProp } from '../../../types/hooks/useStateMachine.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
 import { fetchNextAPI } from '../../helpers/api/api';
-import { useInputWithState } from '../../hooks/useInputWithState';
+import { isEmailValid } from '../../helpers/auth/isEmailValid';
+import { isPasswordValid } from '../../helpers/auth/isPasswordValid';
+import { isUsernameValid } from '../../helpers/auth/isUsernameValid';
+import { useSignUpInput } from '../../hooks/useSignUpInput';
 import { useAppDispatch } from '../../redux/hooks';
 import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
@@ -26,21 +29,48 @@ export const SignUpState = ({
 }: AuthStateProps[AuthStates.SIGN_UP] &
   ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
   const dispatch = useAppDispatch();
-
-  const { inputValue: username, InputComponent: UsernameInput } =
-    useInputWithState(getInputProps('username'));
-  const { inputValue: email, InputComponent: EmailInput } = useInputWithState(
-    getInputProps('email')
+  const {
+    Component: EmailInput,
+    text: email,
+    checkValidity: checkEmailValidity,
+  } = useSignUpInput(getInputProps('email'), 'email invalid', isEmailValid);
+  const {
+    Component: UsernameInput,
+    text: username,
+    checkValidity: checkUsernameValidity,
+  } = useSignUpInput(
+    getInputProps('username'),
+    'username invalid',
+    isUsernameValid
   );
-  const { inputValue: password, InputComponent: PasswordInput } =
-    useInputWithState(getInputProps('password'));
-  const { inputValue: confirmPassword, InputComponent: ConfirmPasswordInput } =
-    useInputWithState(getInputProps('confirm password'));
+  const {
+    Component: PasswordInput,
+    text: password,
+    checkValidity: checkPasswordValidity,
+  } = useSignUpInput(
+    getInputProps('password'),
+    'password invalid',
+    isPasswordValid
+  );
+  const {
+    Component: ConfirmPasswordInput,
+    checkValidity: checkConfirmPasswordValidity,
+  } = useSignUpInput(
+    getInputProps('confirm password'),
+    'passwords do not match',
+    (confirmPasswordInput) => ({
+      isValid: password === confirmPasswordInput,
+      errors: [],
+    })
+  );
 
   const signUp = useCallback(() => {
-    if (password !== confirmPassword) {
-      throw new Error('passwords do not match');
-    }
+    let validInputs = true;
+    if (!checkEmailValidity()) validInputs = false;
+    if (!checkPasswordValidity()) validInputs = false;
+    if (!checkUsernameValidity()) validInputs = false;
+    if (!checkConfirmPasswordValidity()) validInputs = false;
+    if (!validInputs) return;
 
     const body: AuthRequirements = {
       email,
@@ -49,14 +79,21 @@ export const SignUpState = ({
 
     fetchNextAPI<UserData>(`auth/sign-up?username=${username}`, 'POST', body)
       .then(({ data }) => {
-        if (data.detail || !data.user) {
-          throw new Error(data.detail);
-        }
+        if (data.detail || !data.user) throw new Error(data.detail);
 
         dispatch(setUserState(data.user));
       })
       .catch((err) => console.error(err));
-  }, [confirmPassword, dispatch, email, password, username]);
+  }, [
+    checkConfirmPasswordValidity,
+    checkEmailValidity,
+    checkPasswordValidity,
+    checkUsernameValidity,
+    dispatch,
+    email,
+    password,
+    username,
+  ]);
 
   return (
     <CenteredCol gap={50}>

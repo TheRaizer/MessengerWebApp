@@ -1,4 +1,4 @@
-import { ReactElement, useCallback } from 'react';
+import { ReactElement, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import {
   AuthStateProps,
@@ -8,11 +8,11 @@ import { ChangeStateProp } from '../../../types/hooks/useStateMachine.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
 import { fetchNextAPI } from '../../helpers/api/api';
-import { useInputWithState } from '../../hooks/useInputWithState';
 import { useAppDispatch } from '../../redux/hooks';
 import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
+import { Input } from '../common/Input';
 
 const Styled = {
   LoginButton: styled(Button)`
@@ -26,11 +26,8 @@ export const LoginState = ({
 }: AuthStateProps[AuthStates.LOGIN] &
   ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
   const dispatch = useAppDispatch();
-  const { inputValue: email, InputComponent: EmailInput } = useInputWithState(
-    getInputProps('email')
-  );
-  const { inputValue: password, InputComponent: PasswordInput } =
-    useInputWithState(getInputProps('password'));
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const login = useCallback(() => {
     const body: AuthRequirements = {
@@ -52,8 +49,14 @@ export const LoginState = ({
   return (
     <CenteredCol gap={50}>
       <CenteredCol gap={20}>
-        {EmailInput}
-        {PasswordInput}
+        <Input
+          {...getInputProps('email')}
+          onChange={(evt) => setEmail(evt.target.value)}
+        />
+        <Input
+          {...getInputProps('password')}
+          onChange={(evt) => setPassword(evt.target.value)}
+        />
       </CenteredCol>
       <CenteredCol gap={20}>
         <Styled.LoginButton
