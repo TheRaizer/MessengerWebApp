@@ -8,10 +8,9 @@ import { FailableInput } from '../components/common/FailableInput';
 
 export const useSignUpInput = <T extends AuthErrors>(
   inputProps: InputProps,
-  failedText: string,
-  validityChecker: (input: string) => ValidityCheckerReturn<T>
 ) => {
   const [text, setText] = useState('');
+  const [failedText, setFailedText] = useState('');
   const [failed, setFailed] = useState(false);
 
   const Component = (
@@ -23,12 +22,13 @@ export const useSignUpInput = <T extends AuthErrors>(
     />
   );
 
-  const checkValidity = useCallback(() => {
+  const checkValidity = useCallback((failedText: string, validityChecker: (input: string) => ValidityCheckerReturn<T>) => {
     const { isValid } = validityChecker(text);
     setFailed(!isValid);
+    if(!isValid) setFailedText(failedText)
 
     return isValid;
-  }, [text, validityChecker]);
+  }, [text]);
 
-  return { Component, text, checkValidity };
+  return { Component, text, checkValidity, setFailed };
 };

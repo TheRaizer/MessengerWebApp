@@ -4,6 +4,7 @@ import {
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
+import { EmailError, UsernameError } from '../../../types/helpers/auth/Errors.type';
 import { ChangeStateProp } from '../../../types/hooks/useStateMachine.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
@@ -33,15 +34,13 @@ export const SignUpState = ({
     Component: EmailInput,
     text: email,
     checkValidity: checkEmailValidity,
-  } = useSignUpInput(getInputProps('email'), 'email invalid', isEmailValid);
+  } = useSignUpInput(getInputProps('email'));
   const {
     Component: UsernameInput,
     text: username,
     checkValidity: checkUsernameValidity,
   } = useSignUpInput(
     getInputProps('username'),
-    'username invalid',
-    isUsernameValid
   );
   const {
     Component: PasswordInput,
@@ -49,27 +48,23 @@ export const SignUpState = ({
     checkValidity: checkPasswordValidity,
   } = useSignUpInput(
     getInputProps('password'),
-    'password invalid',
-    isPasswordValid
   );
   const {
     Component: ConfirmPasswordInput,
     checkValidity: checkConfirmPasswordValidity,
   } = useSignUpInput(
-    getInputProps('confirm password'),
-    'passwords do not match',
-    (confirmPasswordInput) => ({
-      isValid: password === confirmPasswordInput,
-      errors: [],
-    })
+    getInputProps('confirm password')
   );
 
   const signUp = useCallback(() => {
     let validInputs = true;
-    if (!checkEmailValidity()) validInputs = false;
-    if (!checkPasswordValidity()) validInputs = false;
-    if (!checkUsernameValidity()) validInputs = false;
-    if (!checkConfirmPasswordValidity()) validInputs = false;
+    if (!checkEmailValidity('invalid email', isEmailValid)) validInputs = false;
+    if (!checkPasswordValidity('invalid password', isPasswordValid)) validInputs = false;
+    if (!checkUsernameValidity('invalid username', isUsernameValid)) validInputs = false;
+    if (!checkConfirmPasswordValidity('passwords do not match', (confirmPasswordInput) => ({
+      isValid: password === confirmPasswordInput,
+      errors: [],
+    }))) validInputs = false;
     if (!validInputs) return;
 
     const body: AuthRequirements = {
@@ -79,7 +74,18 @@ export const SignUpState = ({
 
     fetchNextAPI<UserData>(`auth/sign-up?username=${username}`, 'POST', body)
       .then(({ data }) => {
-        if (data.detail || !data.user) throw new Error(data.detail);
+        if (data.detail || !data.user) {
+          switch(data.detail) {
+            case EmailError.ACCOUNT_EXISTS:
+              checkEmailValidity('account already exists with this email', () => ({
+                isValid: false,
+                errors: [EmailError.ACCOUNT_EXISTS]
+              }));
+              break;
+            case UsernameError.USERNAME_TAKEN:
+              checkUsernameValidity('username taken', () => ({isValid: false, errors: [UsernameError.USERNAME_TAKEN]}))
+          }
+        }
 
         dispatch(setUserState(data.user));
       })
@@ -97,7 +103,7 @@ export const SignUpState = ({
 
   return (
     <CenteredCol gap={50}>
-      <CenteredCol gap={20}>
+      <CenteredCol gap={10}>
         {EmailInput}
         {UsernameInput}
         {PasswordInput}

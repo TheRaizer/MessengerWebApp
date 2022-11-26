@@ -13,6 +13,7 @@ export enum UsernameError {
 
 export enum EmailError {
   INVALID_EMAIL = 'invalid email',
+  ACCOUNT_EXISTS= 'account already exists'
 }
 
 export type AuthErrors = PasswordError | UsernameError | EmailError;

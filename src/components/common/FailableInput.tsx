@@ -6,6 +6,7 @@ import { Input } from './Input';
 
 const Styled = {
   FailedText: styled.p`
+    height: 1em;
     color: red;
     font-size: 12px;
   `,

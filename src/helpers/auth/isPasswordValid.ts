@@ -2,6 +2,7 @@ import {
   PasswordError,
   ValidityCheckerReturn,
 } from '../../../types/helpers/auth/Errors.type';
+import { isNumeric } from '../isNumeric';
 
 /**
  * Rules:
@@ -26,19 +27,19 @@ export const isPasswordValid = (
   for (let i = 0; i < password.length; i++) {
     const char = password[i];
 
-    if (char === char.toLowerCase())
+    if (!isNumeric(char) && char === char.toLowerCase())
       errors.splice(
         errors.indexOf(PasswordError.LOWER_CASE_NOT_FOUND_ERROR),
         1
       );
 
-    if (char === char.toUpperCase())
+    if (!isNumeric(char) && char === char.toUpperCase())
       errors.splice(
         errors.indexOf(PasswordError.UPPER_CASE_NOT_FOUND_ERROR),
         1
       );
 
-    if (/^\d+$/.test(char))
+    if (isNumeric(char))
       errors.splice(errors.indexOf(PasswordError.NUMBER_NOT_FOUND_ERROR), 1);
   }
 
