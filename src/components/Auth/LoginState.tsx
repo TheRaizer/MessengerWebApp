@@ -1,5 +1,6 @@
 import { ReactElement, useCallback, useState } from 'react';
 import styled from 'styled-components';
+import { Key } from 'ts-key-enum';
 import {
   AuthStateProps,
   AuthStates,
@@ -8,6 +9,7 @@ import { ChangeStateProp } from '../../../types/hooks/useStateMachine.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
 import { fetchNextAPI } from '../../helpers/api/api';
+import { useKeyListener } from '../../hooks/effects/useKeyListener';
 import { useAppDispatch } from '../../redux/hooks';
 import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
@@ -45,6 +47,9 @@ export const LoginState = ({
       })
       .catch((err) => console.error(err));
   }, [dispatch, email, password]);
+
+
+  useKeyListener(login, Key.Enter)
 
   return (
     <CenteredCol gap={50}>
