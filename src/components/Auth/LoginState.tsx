@@ -15,6 +15,7 @@ import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
 import { Input } from '../common/Input';
+import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
 
 const Styled = {
   LoginButton: styled(Button)`
@@ -48,8 +49,7 @@ export const LoginState = ({
       .catch((err) => console.error(err));
   }, [dispatch, email, password]);
 
-
-  useKeyListener(login, Key.Enter)
+  useKeyListener(login, Key.Enter);
 
   return (
     <CenteredCol gap={50}>
@@ -70,13 +70,17 @@ export const LoginState = ({
         >
           login
         </Styled.LoginButton>
-        <button
-          onClick={() =>
-            changeState(AuthStates.SIGN_UP, { changeState, getInputProps })
-          }
-        >
-          sign up
-        </button>
+        <ChangeAuthStateText>
+          No account?{' '}
+          <ChangeAuthStateButton
+            onClick={() =>
+              changeState(AuthStates.SIGN_UP, { changeState, getInputProps })
+            }
+          >
+            Create one
+          </ChangeAuthStateButton>
+          .
+        </ChangeAuthStateText>
       </CenteredCol>
     </CenteredCol>
   );

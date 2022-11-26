@@ -5,7 +5,10 @@ import {
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
-import { EmailError, UsernameError } from '../../../types/helpers/auth/Errors.type';
+import {
+  EmailError,
+  UsernameError,
+} from '../../../types/helpers/auth/Errors.type';
 import { ChangeStateProp } from '../../../types/hooks/useStateMachine.type';
 import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
@@ -16,6 +19,7 @@ import { isUsernameValid } from '../../helpers/auth/isUsernameValid';
 import { useKeyListener } from '../../hooks/effects/useKeyListener';
 import { useSignUpInput } from '../../hooks/useSignUpInput';
 import { useAppDispatch } from '../../redux/hooks';
+import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
 import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
@@ -41,32 +45,34 @@ export const SignUpState = ({
     Component: UsernameInput,
     text: username,
     checkValidity: checkUsernameValidity,
-  } = useSignUpInput(
-    getInputProps('username'),
-  );
+  } = useSignUpInput(getInputProps('username'));
   const {
     Component: PasswordInput,
     text: password,
     checkValidity: checkPasswordValidity,
-  } = useSignUpInput(
-    getInputProps('password'),
-  );
+  } = useSignUpInput(getInputProps('password'));
   const {
     Component: ConfirmPasswordInput,
     checkValidity: checkConfirmPasswordValidity,
-  } = useSignUpInput(
-    getInputProps('confirm password')
-  );
+  } = useSignUpInput(getInputProps('confirm password'));
 
   const signUp = useCallback(() => {
     let validInputs = true;
     if (!checkEmailValidity('invalid email', isEmailValid)) validInputs = false;
-    if (!checkPasswordValidity('invalid password', isPasswordValid)) validInputs = false;
-    if (!checkUsernameValidity('invalid username', isUsernameValid)) validInputs = false;
-    if (!checkConfirmPasswordValidity('passwords do not match', (confirmPasswordInput) => ({
-      isValid: password === confirmPasswordInput,
-      errors: [],
-    }))) validInputs = false;
+    if (!checkPasswordValidity('invalid password', isPasswordValid))
+      validInputs = false;
+    if (!checkUsernameValidity('invalid username', isUsernameValid))
+      validInputs = false;
+    if (
+      !checkConfirmPasswordValidity(
+        'passwords do not match',
+        (confirmPasswordInput) => ({
+          isValid: password === confirmPasswordInput,
+          errors: [],
+        })
+      )
+    )
+      validInputs = false;
     if (!validInputs) return;
 
     const body: AuthRequirements = {
@@ -77,15 +83,21 @@ export const SignUpState = ({
     fetchNextAPI<UserData>(`auth/sign-up?username=${username}`, 'POST', body)
       .then(({ data }) => {
         if (data.detail || !data.user) {
-          switch(data.detail) {
+          switch (data.detail) {
             case EmailError.ACCOUNT_EXISTS:
-              checkEmailValidity('account already exists with this email', () => ({
-                isValid: false,
-                errors: [EmailError.ACCOUNT_EXISTS]
-              }));
+              checkEmailValidity(
+                'account already exists with this email',
+                () => ({
+                  isValid: false,
+                  errors: [EmailError.ACCOUNT_EXISTS],
+                })
+              );
               break;
             case UsernameError.USERNAME_TAKEN:
-              checkUsernameValidity('username taken', () => ({isValid: false, errors: [UsernameError.USERNAME_TAKEN]}))
+              checkUsernameValidity('username taken', () => ({
+                isValid: false,
+                errors: [UsernameError.USERNAME_TAKEN],
+              }));
           }
         }
 
@@ -103,7 +115,7 @@ export const SignUpState = ({
     username,
   ]);
 
-  useKeyListener(signUp, Key.Enter)
+  useKeyListener(signUp, Key.Enter);
 
   return (
     <CenteredCol gap={50}>
@@ -120,13 +132,17 @@ export const SignUpState = ({
         >
           sign up
         </Styled.LoginButton>
-        <button
-          onClick={() =>
-            changeState(AuthStates.LOGIN, { changeState, getInputProps })
-          }
-        >
-          login
-        </button>
+        <ChangeAuthStateText>
+          Have an account already?{' '}
+          <ChangeAuthStateButton
+            onClick={() =>
+              changeState(AuthStates.LOGIN, { changeState, getInputProps })
+            }
+          >
+            Login
+          </ChangeAuthStateButton>
+          .
+        </ChangeAuthStateText>
       </CenteredCol>
     </CenteredCol>
   );
