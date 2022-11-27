@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { noScroll } from '../constants/classNames';
+import { NAV_BAR_HEIGHT } from '../constants/dimensions';
 import { colors } from './globalColors';
 
 const GlobalStyle = createGlobalStyle`
@@ -35,6 +36,7 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         --scrollbar-width: calc(100vw - 100%);
+        --page-height: calc(100vh - ${NAV_BAR_HEIGHT}px);
         ${colors}
         font-family: 'RedHatMono-Regular', sans-serif;
         line-height: normal;

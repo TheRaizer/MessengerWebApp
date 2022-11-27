@@ -11,6 +11,7 @@ import {
 } from '../../../../types/hooks/useStateMachine.type';
 import { WithRequired } from '../../../../types/WithRequired.type';
 import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
+import { WindowContainer } from '../WindowContainer';
 
 const FriendListState = dynamic(() =>
   import('./FriendListState').then((mod) => mod.FriendListState)
@@ -55,5 +56,7 @@ export const FriendWindow = ({
     state,
     props
   );
-  return <div>{CurrentComponent}</div>;
+  return (
+    <WindowContainer title={friendUsername}>{CurrentComponent}</WindowContainer>
+  );
 };
