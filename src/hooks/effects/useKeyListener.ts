@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Key } from 'ts-key-enum';
 
 /**
@@ -7,20 +7,16 @@ import { Key } from 'ts-key-enum';
  * @param key the key to listen for.
  */
 export const useKeyListener = (eventOnKeyUp: () => void, key: Key) => {
-  const handleKeyPress = useCallback(
-    (ev: KeyboardEvent) => {
+  useEffect(() => {
+    const handleKeyPress = (ev: KeyboardEvent) => {
       if (ev.key === key) {
         eventOnKeyUp();
       }
-    },
-    [eventOnKeyUp, key]
-  );
-
-  useEffect(() => {
+    };
     document.addEventListener('keyup', handleKeyPress);
 
     return () => {
       document.removeEventListener('keyup', handleKeyPress);
     };
-  }, [handleKeyPress]);
+  }, [eventOnKeyUp, key]);
 };

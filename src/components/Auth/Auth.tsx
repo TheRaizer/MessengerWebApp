@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ReactElement, useCallback, useMemo } from 'react';
+import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import {
@@ -44,17 +44,17 @@ const authStates: StatesDictionary<AuthStates, AuthStateProps> = {
 };
 
 export const Auth = ({ initialState }: AuthProps): ReactElement => {
-  const inputDimensions = useMemo(
-    () => ({ width: '250px', height: '35px' }),
-    []
-  );
-  const getInputProps = useCallback(
-    (labelText: string) => ({
-      dimensions: inputDimensions,
-      labelText: labelText,
-    }),
-    [inputDimensions]
-  );
+  const inputDimensions = { width: '250px', height: '35px' };
+
+  /**
+   * We do not need to use useCallback since this component will not rerender often.
+   * Thus this function's referential equality will not often change and cause rerenders of the
+   * auth state components.
+   */
+  const getInputProps = (labelText: string) => ({
+    dimensions: inputDimensions,
+    labelText: labelText,
+  });
 
   const { CurrentComponent, currentState } = useStateMachine(
     authStates,
@@ -62,10 +62,7 @@ export const Auth = ({ initialState }: AuthProps): ReactElement => {
     { getInputProps }
   );
 
-  const header = useMemo(
-    () => (currentState === AuthStates.LOGIN ? 'Login' : 'Sign Up'),
-    [currentState]
-  );
+  const header = currentState === AuthStates.LOGIN ? 'Login' : 'Sign Up';
 
   return (
     <Styled.AuthContainer>

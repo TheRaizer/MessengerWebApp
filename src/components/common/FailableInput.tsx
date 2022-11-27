@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { FailableInputProps } from '../../../types/components/common/FailableInputProps.type';
 import { Col } from './Col';
@@ -20,7 +20,7 @@ export const FailableInput = ({
   failedText,
   ...props
 }: FailableInputProps): ReactElement => {
-  const text = useMemo(() => (failed ? failedText : ''), [failed, failedText]);
+  const text = failed ? failedText : '';
 
   return (
     <Col>

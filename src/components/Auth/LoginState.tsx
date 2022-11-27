@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { Key } from 'ts-key-enum';
 import {
@@ -32,7 +32,7 @@ export const LoginState = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const login = useCallback(() => {
+  const login = () => {
     const body: AuthRequirements = {
       email,
       password,
@@ -47,7 +47,7 @@ export const LoginState = ({
         dispatch(setUserState(data.user));
       })
       .catch((err) => console.error(err));
-  }, [dispatch, email, password]);
+  };
 
   useKeyListener(login, Key.Enter);
 

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ReactElement, useCallback } from 'react';
+import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { PageRoutes } from '../../constants/pageRoutes';
@@ -22,14 +22,14 @@ export const SignOutButton = (): ReactElement => {
   const dispatch = useAppDispatch();
   const routeToHome = usePageRouting(PageRoutes.HOME);
 
-  const signout = useCallback(() => {
+  const signout = () => {
     fetchNextAPI('auth/sign-out', 'PUT')
       .then(() => {
         dispatch(setUserState(undefined));
         routeToHome();
       })
       .catch((err) => console.error(err));
-  }, [dispatch, routeToHome]);
+  };
 
   return (
     <Styled.Button onClick={signout}>

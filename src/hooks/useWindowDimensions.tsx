@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { ResizeObserver } from '@juggle/resize-observer';
 
 /**
@@ -16,20 +16,17 @@ export const useWindowDimensions = (
     height: 0,
   });
 
-  const onResize = useCallback(
-    (dimensions: { width: number; height: number }) => {
-      setWindowDimensions(dimensions);
-      handleResize?.(dimensions);
-    },
-    [handleResize]
-  );
-
   /**
    * Listens for resize events using a ResizeObserver attached to the document body.
    * Executes the onResize function with the new document.body dimensions.
    */
 
   useEffect(() => {
+    const onResize = (dimensions: { width: number; height: number }) => {
+      setWindowDimensions(dimensions);
+      handleResize?.(dimensions);
+    };
+
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { inlineSize: width, blockSize: height } =
@@ -42,7 +39,7 @@ export const useWindowDimensions = (
     resizeObserver.observe(document.body);
 
     return () => resizeObserver.unobserve(document.body);
-  }, [onResize]);
+  }, [handleResize]);
 
   return windowDimensions;
 };
