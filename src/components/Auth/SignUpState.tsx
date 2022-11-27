@@ -1,4 +1,4 @@
-import { ReactElement, useCallback } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import { Key } from 'ts-key-enum';
 import {
@@ -56,7 +56,7 @@ export const SignUpState = ({
     checkValidity: checkConfirmPasswordValidity,
   } = useSignUpInput(getInputProps('confirm password'));
 
-  const signUp = useCallback(() => {
+  const signUp = () => {
     let validInputs = true;
     if (!checkEmailValidity('invalid email', isEmailValid)) validInputs = false;
     if (!checkPasswordValidity('invalid password', isPasswordValid))
@@ -104,16 +104,7 @@ export const SignUpState = ({
         dispatch(setUserState(data.user));
       })
       .catch((err) => console.error(err));
-  }, [
-    checkConfirmPasswordValidity,
-    checkEmailValidity,
-    checkPasswordValidity,
-    checkUsernameValidity,
-    dispatch,
-    email,
-    password,
-    username,
-  ]);
+  };
 
   useKeyListener(signUp, Key.Enter);
 

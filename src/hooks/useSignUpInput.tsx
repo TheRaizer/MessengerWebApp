@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { InputProps } from '../../types/components/common/InputProps.type';
 import {
   AuthErrors,
@@ -7,7 +7,7 @@ import {
 import { FailableInput } from '../components/common/FailableInput';
 
 export const useSignUpInput = <T extends AuthErrors>(
-  inputProps: InputProps,
+  inputProps: InputProps
 ) => {
   const [text, setText] = useState('');
   const [failedText, setFailedText] = useState('');
@@ -22,13 +22,16 @@ export const useSignUpInput = <T extends AuthErrors>(
     />
   );
 
-  const checkValidity = useCallback((failedText: string, validityChecker: (input: string) => ValidityCheckerReturn<T>) => {
+  const checkValidity = (
+    failedText: string,
+    validityChecker: (input: string) => ValidityCheckerReturn<T>
+  ) => {
     const { isValid } = validityChecker(text);
     setFailed(!isValid);
-    if(!isValid) setFailedText(failedText)
+    if (!isValid) setFailedText(failedText);
 
     return isValid;
-  }, [text]);
+  };
 
   return { Component, text, checkValidity, setFailed };
 };

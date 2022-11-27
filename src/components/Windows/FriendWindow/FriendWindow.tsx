@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import {
   FriendsStateProps,
   FriendWindowProps,
@@ -32,24 +32,12 @@ const friendWindowStates: StatesDictionary<
 export const FriendWindow = ({
   friendUsername,
 }: WithRequired<FriendWindowProps, 'id'>): ReactElement => {
-  const {
-    state,
-    props,
-  }: {
-    state: FriendWindowStates;
-    props:
-      | FriendsStateProps[FriendWindowStates.FRIEND]
-      | FriendsStateProps[FriendWindowStates.FRIENDS_LIST];
-  } = useMemo(
-    () =>
-      friendUsername
-        ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
-        : {
-            state: FriendWindowStates.FRIENDS_LIST,
-            props: {} as Record<string, never>,
-          },
-    [friendUsername]
-  );
+  const { state, props } = friendUsername
+    ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
+    : {
+        state: FriendWindowStates.FRIENDS_LIST,
+        props: {} as Record<string, never>,
+      };
   // if a username is given when a friend window is created, then we make the state the friend state
   const { CurrentComponent } = useStateMachine(
     friendWindowStates,

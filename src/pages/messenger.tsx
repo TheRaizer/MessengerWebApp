@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { CenteredCol } from '../components/common/Col';
@@ -31,14 +31,13 @@ const Styled = {
 };
 
 const Home = (): ReactElement => {
-  const messageWindowProps: MessageWindowProps = useMemo(
-    () => ({ usernameToMessage: 'some_username', groupChatId: undefined }),
-    []
-  );
-  const friendWindowProps: FriendWindowProps = useMemo(
-    () => ({ friendUsername: 'some_friend' }),
-    []
-  );
+  const messageWindowProps: MessageWindowProps = {
+    usernameToMessage: 'some_username',
+    groupChatId: undefined,
+  };
+  const friendWindowProps: FriendWindowProps = {
+    friendUsername: 'some_friend',
+  };
   const openMessageWindow = useOpenWindow(WindowType.MESSAGE, {
     [WindowType.MESSAGE]: messageWindowProps,
   });

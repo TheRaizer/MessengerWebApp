@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { ModalState } from '../../../types/redux/states/modalState.type';
 import { useAppDispatch } from '../../redux/hooks';
 import { changeModal } from '../../redux/slices/modalSlice';
@@ -15,10 +14,10 @@ export const useInitializeModalState = (newModalState: ModalState) => {
    * A function to initialize a new modal state. This effectively changes the modal state
    * if the change is permitted. The props given to the hook will be passed to the modal.
    */
-  const initializeModalState = useCallback(() => {
+  const initializeModalState = () => {
     const newState: ModalState = { ...newModalState };
     dispatch(changeModal(newState));
-  }, [dispatch, newModalState]);
+  };
 
   return initializeModalState;
 };
