@@ -13,26 +13,15 @@ import { INITIAL_WINDOW_DIMENSIONS } from '../../constants/dimensions';
 import { CenteredCol } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
+import { WindowHeader } from './WindowHeader';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string | number>>`
+    position: absolute;
     ${DimensionStyles}
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
     resize: both;
-  `,
-  Header: styled.header`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    border-bottom: 1px solid black;
-
-    &:hover {
-      cursor: grab;
-    }
-    &:active {
-      cursor: grabbing;
-    }
   `,
 };
 
@@ -77,7 +66,7 @@ export const WindowContainer = ({
       as={m.article}
       ref={windowContainerRef}
     >
-      <Styled.Header onPointerDown={startDrag}>{title}</Styled.Header>
+      <WindowHeader title={title} onPointerDown={startDrag} />
       {children}
     </Styled.WindowContainer>
   );
