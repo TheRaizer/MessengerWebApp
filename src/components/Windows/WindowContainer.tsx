@@ -15,7 +15,7 @@ import { DimensionStyles } from '../common/StyledDimensions';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 
 const Styled = {
-  WindowContainer: styled(CenteredCol)<Dimensions<string>>`
+  WindowContainer: styled(CenteredCol)<Dimensions<string | number>>`
     ${DimensionStyles}
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
