@@ -5,3 +5,7 @@
  * makes properties x and y on the type Foo required.
  */
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
+export type AllRequired<T> = {
+  [P in keyof T]-?: T[P];
+};

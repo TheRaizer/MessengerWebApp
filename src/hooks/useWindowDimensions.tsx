@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ResizeObserver } from '@juggle/resize-observer';
+import { RequiredDimensions } from '../../types/dimensions.type';
 
 /**
  * Executes a given function whenever the ResizeObserver detects change in
@@ -9,9 +10,11 @@ import { ResizeObserver } from '@juggle/resize-observer';
  * @see windowDimensions: the current window dimensions.
  */
 export const useWindowDimensions = (
-  handleResize?: ({ width, height }: { width: number; height: number }) => void
-): { width: number; height: number } => {
-  const [windowDimensions, setWindowDimensions] = useState({
+  handleResize?: ({ width, height }: RequiredDimensions<number>) => void
+): RequiredDimensions<number> => {
+  const [windowDimensions, setWindowDimensions] = useState<
+    RequiredDimensions<number>
+  >({
     width: 0,
     height: 0,
   });
@@ -22,7 +25,7 @@ export const useWindowDimensions = (
    */
 
   useEffect(() => {
-    const onResize = (dimensions: { width: number; height: number }) => {
+    const onResize = (dimensions: RequiredDimensions<number>) => {
       setWindowDimensions(dimensions);
       handleResize?.(dimensions);
     };

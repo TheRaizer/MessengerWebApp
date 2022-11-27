@@ -5,7 +5,7 @@ import { Dimensions } from '../../../types/dimensions.type';
 import { DimensionStyles } from './StyledDimensions';
 
 const Styled = {
-  Button: styled.button<Dimensions>`
+  Button: styled.button<Dimensions<string | number>>`
     ${DimensionStyles}
     border: 1px solid black;
     border-radius: 10px;
