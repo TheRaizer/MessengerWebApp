@@ -7,6 +7,7 @@ import { ChangeStateProp } from '../../../../types/hooks/useStateMachine.type';
 
 export const FriendListState = ({
   changeState,
-}: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
+}: FriendsStateProps[FriendWindowStates.FRIENDS_LIST] &
+  ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
   return <div></div>;
 };

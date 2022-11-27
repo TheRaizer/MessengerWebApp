@@ -13,9 +13,10 @@ import { WithRequired } from '../../../../types/Required.type';
 import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 import { WindowContainer } from '../WindowContainer';
 
-const FriendListState = dynamic(() =>
-  import('./FriendListState').then((mod) => mod.FriendListState)
-);
+const FriendListState = dynamic<
+  FriendsStateProps[FriendWindowStates.FRIENDS_LIST] &
+    ChangeStateProp<FriendWindowStates, FriendsStateProps>
+>(() => import('./FriendListState').then((mod) => mod.FriendListState));
 const FriendState = dynamic<
   FriendsStateProps[FriendWindowStates.FRIEND] &
     ChangeStateProp<FriendWindowStates, FriendsStateProps>
