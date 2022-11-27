@@ -12,8 +12,7 @@ export enum FriendWindowStates {
 
 export interface FriendsStateProps
   extends ChangeStateProp<FriendWindowStates, FriendsStateProps> {
-  // TODO: implement better way to show empty props instead of unknown, without typescript errors
-  [FriendWindowStates.FRIENDS_LIST]: unknown;
+  [FriendWindowStates.FRIENDS_LIST]: Record<string, never>;
   [FriendWindowStates.FRIEND]: {
     friendUsername: string;
   };

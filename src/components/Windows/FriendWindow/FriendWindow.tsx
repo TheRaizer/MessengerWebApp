@@ -14,8 +14,7 @@ import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 import { WindowContainer } from '../WindowContainer';
 
 const FriendListState = dynamic<
-  FriendsStateProps[FriendWindowStates.FRIENDS_LIST] &
-    ChangeStateProp<FriendWindowStates, FriendsStateProps>
+  ChangeStateProp<FriendWindowStates, FriendsStateProps>
 >(() => import('./FriendListState').then((mod) => mod.FriendListState));
 const FriendState = dynamic<
   FriendsStateProps[FriendWindowStates.FRIEND] &
@@ -26,7 +25,9 @@ const friendWindowStates: StatesDictionary<
   FriendWindowStates,
   FriendsStateProps
 > = {
-  [FriendWindowStates.FRIENDS_LIST]: (props) => <FriendListState {...props} />,
+  [FriendWindowStates.FRIENDS_LIST]: (props) => (
+    <FriendListState changeState={props.changeState} />
+  ),
   [FriendWindowStates.FRIEND]: (props) => <FriendState {...props} />,
 };
 
@@ -37,7 +38,7 @@ export const FriendWindow = ({
     ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
     : {
         state: FriendWindowStates.FRIENDS_LIST,
-        props: {} as Record<string, never>,
+        props: {},
       };
   // if a username is given when a friend window is created, then we make the state the friend state
   const { CurrentComponent } = useStateMachine(
