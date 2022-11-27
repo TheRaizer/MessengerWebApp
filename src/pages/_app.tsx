@@ -13,7 +13,6 @@ import Modal from '../components/Modals/Modal';
 import { ToastContainer } from 'react-toastify';
 import { AppLoading } from '../components/common/AppLoading';
 import { AppLifecycle } from '../components/Containers/AppLifecycles';
-import { NAV_BAR_HEIGHT } from '../constants/dimensions';
 import 'styled-components';
 import Head from 'next/head';
 import { ViewportStates } from '../../types/redux/states/appConfig.type';
@@ -33,7 +32,7 @@ declare module 'styled-components' {
 }
 
 const StyledPageContainer = styled.div`
-  height: var(--page-height)
+  height: var(--page-height);
 `;
 
 const PageComponent = ({ Component, pageProps }: AppProps): ReactElement => {
