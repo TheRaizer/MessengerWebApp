@@ -13,7 +13,7 @@ import { SignOutButton } from './SignOutButton';
 
 const Styled = {
   NavBarContainer: styled.nav`
-    height: ${NAV_BAR_HEIGHT};
+    height: ${NAV_BAR_HEIGHT}px;
     border-bottom: 1px solid black;
     width: 100%;
     display: flex;

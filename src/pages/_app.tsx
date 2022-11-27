@@ -33,7 +33,7 @@ declare module 'styled-components' {
 }
 
 const StyledPageContainer = styled.div`
-  height: calc(100vh - ${NAV_BAR_HEIGHT});
+  height: var(--page-height)
 `;
 
 const PageComponent = ({ Component, pageProps }: AppProps): ReactElement => {

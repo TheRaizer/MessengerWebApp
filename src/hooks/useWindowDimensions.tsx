@@ -9,7 +9,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
  * @see windowDimensions: the current window dimensions.
  */
 export const useWindowDimensions = (
-  handleResize: ({ width, height }: { width: number; height: number }) => void
+  handleResize?: ({ width, height }: { width: number; height: number }) => void
 ): { width: number; height: number } => {
   const [windowDimensions, setWindowDimensions] = useState({
     width: 0,
@@ -19,7 +19,7 @@ export const useWindowDimensions = (
   const onResize = useCallback(
     (dimensions: { width: number; height: number }) => {
       setWindowDimensions(dimensions);
-      handleResize(dimensions);
+      handleResize?.(dimensions);
     },
     [handleResize]
   );
