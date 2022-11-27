@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { RequiredDimensions } from '../../../types/dimensions.type';
 import { ViewportStates } from '../../../types/redux/states/appConfig.type';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
@@ -19,7 +20,7 @@ const useMobileTheme = () => {
     }
   };
 
-  const handleResize = ({ width }: { width: number; height: number }) => {
+  const handleResize = ({ width }: RequiredDimensions<number>) => {
     if (width > 900) {
       changeViewportState(ViewportStates.DESKTOP);
     } else if (width <= 900 && width >= 650) {

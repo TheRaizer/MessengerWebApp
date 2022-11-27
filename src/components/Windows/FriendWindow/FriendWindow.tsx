@@ -9,7 +9,7 @@ import {
   ChangeStateProp,
   StatesDictionary,
 } from '../../../../types/hooks/useStateMachine.type';
-import { WithRequired } from '../../../../types/WithRequired.type';
+import { WithRequired } from '../../../../types/Required.type';
 import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 import { WindowContainer } from '../WindowContainer';
 

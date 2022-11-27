@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { MessageWindowProps } from '../../../types/components/Windows/MessageWindowProps.type';
-import { WithRequired } from '../../../types/WithRequired.type';
+import { WithRequired } from '../../../types/Required.type';
 import { WindowContainer } from './WindowContainer';
 
 export const MessageWindow = (
