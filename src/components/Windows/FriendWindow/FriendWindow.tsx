@@ -25,9 +25,7 @@ const friendWindowStates: StatesDictionary<
   FriendWindowStates,
   FriendsStateProps
 > = {
-  [FriendWindowStates.FRIENDS_LIST]: (props) => (
-    <FriendListState changeState={props.changeState} />
-  ),
+  [FriendWindowStates.FRIENDS_LIST]: (props) => <FriendListState {...props} />,
   [FriendWindowStates.FRIEND]: (props) => <FriendState {...props} />,
 };
 
