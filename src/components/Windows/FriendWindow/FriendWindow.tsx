@@ -4,7 +4,7 @@ import {
   FriendsStateProps,
   FriendWindowProps,
   FriendWindowStates,
-} from '../../../../types/components/Windows/FriendWindowProps.type';
+} from '../../../../types/components/Windows/FriendWindow.type';
 import {
   ChangeStateProp,
   StatesDictionary,

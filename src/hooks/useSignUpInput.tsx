@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputProps } from '../../types/components/common/InputProps.type';
+import { InputProps } from '../../types/components/common/Input.type';
 import {
   AuthErrors,
   ValidityCheckerReturn,

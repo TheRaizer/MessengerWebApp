@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
-import { InputProps } from '../../../types/components/common/InputProps.type';
+import { InputProps } from '../../../types/components/common/Input.type';
 import { Dimensions } from '../../../types/dimensions.type';
 import { DimensionStyles } from './StyledDimensions';
 

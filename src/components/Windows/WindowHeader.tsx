@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
-import { WindowHeaderProps } from '../../../types/components/Windows/WindowProps.type';
+import { WindowHeaderProps } from '../../../types/components/Windows/Window.type';
 import { Dimensions } from '../../../types/dimensions.type';
 import { Col } from '../common/Col';
 

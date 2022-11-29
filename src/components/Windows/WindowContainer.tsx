@@ -1,4 +1,4 @@
-import { m, useDragControls } from 'framer-motion';
+import { useDragControls } from 'framer-motion';
 import {
   PointerEvent,
   ReactElement,
@@ -7,17 +7,17 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { WindowProps } from '../../../types/components/Windows/WindowProps.type';
+import { WindowProps } from '../../../types/components/Windows/Window.type';
 import { Dimensions } from '../../../types/dimensions.type';
 import { INITIAL_WINDOW_DIMENSIONS } from '../../constants/dimensions';
 import { CenteredCol } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
-import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 import { WindowHeader } from './WindowHeader';
+import { Draggable } from '../common/Draggable';
+import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string | number>>`
-    position: absolute;
     ${DimensionStyles}
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
@@ -30,22 +30,24 @@ export const WindowContainer = ({
   children,
 }: WindowProps): ReactElement => {
   const { width, height } = useWindowDimensions();
-
   const windowContainerRef = useRef<HTMLDivElement>(null);
-
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0);
-
-  useLayoutEffect(() => {
-    setWindowWidth(windowContainerRef.current?.offsetWidth || 0);
-    setWindowHeight(windowContainerRef.current?.offsetHeight || 0);
-  }, []);
-
   const dragControls = useDragControls();
 
   const startDrag = (event: PointerEvent) => {
     dragControls.start(event);
   };
+
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    if (!windowContainerRef.current) return;
+
+    const { offsetWidth, offsetHeight } = windowContainerRef.current;
+
+    setWindowWidth(offsetWidth);
+    setWindowHeight(offsetHeight);
+  }, []);
 
   const dragConstraints = {
     top: 0,
@@ -55,19 +57,20 @@ export const WindowContainer = ({
   };
 
   return (
-    <Styled.WindowContainer
-      drag
-      dragConstraints={dragConstraints}
+    <Draggable
+      dragControls={dragControls}
       dragElastic={0}
       dragListener={false}
-      dragControls={dragControls}
       dragMomentum={false}
-      {...INITIAL_WINDOW_DIMENSIONS}
-      as={m.article}
-      ref={windowContainerRef}
+      dragConstraints={dragConstraints}
     >
-      <WindowHeader title={title} onPointerDown={startDrag} />
-      {children}
-    </Styled.WindowContainer>
+      <Styled.WindowContainer
+        {...INITIAL_WINDOW_DIMENSIONS}
+        ref={windowContainerRef}
+      >
+        <WindowHeader title={title} onPointerDown={startDrag} />
+        {children}
+      </Styled.WindowContainer>
+    </Draggable>
   );
 };

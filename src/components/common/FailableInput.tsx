@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
-import { FailableInputProps } from '../../../types/components/common/FailableInputProps.type';
+import { FailableInputProps } from '../../../types/components/common/FailableInput.type';
 import { Col } from './Col';
 import { Input } from './Input';
 
