@@ -77,7 +77,7 @@ export const WindowHeader = ({
       <Styled.IdentifierContainer onPointerDown={onPointerDown}>
         <HeaderLines dimensions={{ width: '100%' }} />
         {title}
-        <HeaderLines dimensions={{ width: 'calc(100% - 103px)' }} />
+        <HeaderLines dimensions={{ width: '82%' }} />
       </Styled.IdentifierContainer>
       <Styled.IconsContainer>
         <Expand size={17} />
