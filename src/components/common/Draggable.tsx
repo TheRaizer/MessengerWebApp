@@ -12,9 +12,8 @@ const Styled = {
 
 /**
  * A wrapper for any draggable component, that keeps the draggable component,
- * within the viewport on window resize.
+ * within the given dragConstraints on window resize.
  *
- * Framer motion drag does not account for window resize.
  * There is a bug in framer that disables the drag constraints whenever window resize happens.
  *
  * This component is a fix for that.
