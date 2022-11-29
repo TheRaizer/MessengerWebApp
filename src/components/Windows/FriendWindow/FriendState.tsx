@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import {
   FriendsStateProps,
   FriendWindowStates,
-} from '../../../../types/components/Windows/FriendWindowProps.type';
+} from '../../../../types/components/Windows/FriendWindow.type';
 import { ChangeStateProp } from '../../../../types/hooks/useStateMachine.type';
 
 export const FriendState = (

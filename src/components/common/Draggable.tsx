@@ -1,37 +1,15 @@
-import { m, useDragControls } from 'framer-motion';
-import {
-  PointerEvent,
-  ReactElement,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
-import styled from 'styled-components';
-import { WindowProps } from '../../../types/components/Windows/Window.type';
-import { Dimensions } from '../../../types/dimensions.type';
-import { INITIAL_WINDOW_DIMENSIONS } from '../../constants/dimensions';
-import { CenteredCol } from '../common/Col';
-import { DimensionStyles } from '../common/StyledDimensions';
+import { m } from 'framer-motion';
+import { ReactElement, useLayoutEffect, useRef, useState } from 'react';
+import { DraggableProps } from '../../../types/components/common/Draggable.type';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
-import { WindowHeader } from './WindowHeader';
 
-const Styled = {
-  WindowContainer: styled(CenteredCol)<Dimensions<string | number>>`
-    position: absolute;
-    ${DimensionStyles}
-    border: 1px solid black;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
-    resize: both;
-  `,
-};
-
-export const WindowContainer = ({
-  title,
+export const Draggable = ({
   children,
-}: WindowProps): ReactElement => {
+  dragControls,
+}: DraggableProps): ReactElement => {
   const { width, height } = useWindowDimensions();
 
-  const windowContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // stores some getBoundingClientRect() values of the windowContainerRef from the latest drag event
   const latestDragPositionRef = useRef<{
@@ -41,35 +19,29 @@ export const WindowContainer = ({
     right: number;
   }>({ top: 0, left: 0, bottom: 0, right: 0 });
 
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
 
   useLayoutEffect(() => {
-    if (!windowContainerRef.current) return;
+    if (!containerRef.current) return;
 
-    const { offsetWidth, offsetHeight } = windowContainerRef.current;
+    const { offsetWidth, offsetHeight } = containerRef.current;
 
-    setWindowWidth(offsetWidth);
-    setWindowHeight(offsetHeight);
+    setContainerWidth(offsetWidth);
+    setContainerHeight(offsetHeight);
 
     const { top, left, bottom, right } =
-      windowContainerRef.current.getBoundingClientRect();
+      containerRef.current.getBoundingClientRect();
 
     if (!latestDragPositionRef.current) return;
     latestDragPositionRef.current = { top, left, bottom, right };
   }, []);
 
-  const dragControls = useDragControls();
-
-  const startDrag = (event: PointerEvent) => {
-    dragControls.start(event);
-  };
-
   const dragConstraints = {
     top: 0,
     left: 0,
-    right: width - windowWidth,
-    bottom: height - windowHeight,
+    right: width - containerWidth,
+    bottom: height - containerHeight,
   };
 
   /**
@@ -85,16 +57,16 @@ export const WindowContainer = ({
    */
   const positionX =
     latestDragPositionRef.current.right > width
-      ? width - windowWidth
+      ? width - containerWidth
       : latestDragPositionRef.current.left;
 
   const positionY =
     latestDragPositionRef.current.bottom > height
-      ? height - windowHeight
+      ? height - containerHeight
       : latestDragPositionRef.current.top;
 
   return (
-    <Styled.WindowContainer
+    <m.div
       initial={{ x: positionX, y: positionY }}
       drag
       dragConstraints={dragConstraints}
@@ -103,20 +75,17 @@ export const WindowContainer = ({
       dragControls={dragControls}
       dragMomentum={false}
       onDragEnd={() => {
-        if (!windowContainerRef.current) return;
+        if (!containerRef.current) return;
 
         const { right, bottom, top, left } =
-          windowContainerRef.current.getBoundingClientRect();
+          containerRef.current.getBoundingClientRect();
         latestDragPositionRef.current = { right, bottom, top, left };
       }}
-      {...INITIAL_WINDOW_DIMENSIONS}
-      as={m.article}
-      ref={windowContainerRef}
+      ref={containerRef}
       // use key made up of window width and height so this element rerenders whenever window is resized.
       key={JSON.stringify({ width, height })}
     >
-      <WindowHeader title={title} onPointerDown={startDrag} />
       {children}
-    </Styled.WindowContainer>
+    </m.div>
   );
 };

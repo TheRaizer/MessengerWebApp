@@ -1,5 +1,5 @@
 import { ChangeStateProp } from '../../hooks/useStateMachine.type';
-import { InputProps } from '../common/InputProps.type';
+import { InputProps } from '../common/Input.type';
 
 export enum AuthStates {
   LOGIN = 'login',

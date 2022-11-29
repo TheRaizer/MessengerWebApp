@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
-import { ButtonProps } from '../../../types/components/common/ButtonProps.type';
+import { ButtonProps } from '../../../types/components/common/Button.type';
 import { Dimensions } from '../../../types/dimensions.type';
 import { DimensionStyles } from './StyledDimensions';
 

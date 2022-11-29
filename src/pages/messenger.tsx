@@ -5,8 +5,8 @@ import { CenteredCol } from '../components/common/Col';
 import { Windows } from '../components/Windows/WindowHandler';
 import { useOpenWindow } from '../hooks/actions/useOpenWindow';
 import { WindowType } from '../../types/redux/states/windows.type';
-import { MessageWindowProps } from '../../types/components/Windows/MessageWindowProps.type';
-import { FriendWindowProps } from '../../types/components/Windows/FriendWindowProps.type';
+import { MessageWindowProps } from '../../types/components/Windows/MessageWindow.type';
+import { FriendWindowProps } from '../../types/components/Windows/FriendWindow.type';
 import { withAuthentication } from '../helpers/api/session';
 
 export const getServerSideProps = withAuthentication(() => {
