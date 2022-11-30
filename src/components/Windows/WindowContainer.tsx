@@ -17,7 +17,7 @@ import { Draggable } from '../common/Draggable';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 
 const Styled = {
-  WindowContainer: styled(CenteredCol)<Dimensions<string | number>>`
+  WindowContainer: styled(CenteredCol)<Dimensions<string>>`
     ${DimensionStyles}
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
@@ -28,6 +28,7 @@ const Styled = {
 export const WindowContainer = ({
   title,
   children,
+  windowId,
 }: WindowProps): ReactElement => {
   const { width, height } = useWindowDimensions();
   const windowContainerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +69,11 @@ export const WindowContainer = ({
         {...INITIAL_WINDOW_DIMENSIONS}
         ref={windowContainerRef}
       >
-        <WindowHeader title={title} onPointerDown={startDrag} />
+        <WindowHeader
+          title={title}
+          onPointerDown={startDrag}
+          windowId={windowId}
+        />
         {children}
       </Styled.WindowContainer>
     </Draggable>

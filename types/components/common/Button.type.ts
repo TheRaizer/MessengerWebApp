@@ -4,6 +4,6 @@ import { Dimensions } from '../../dimensions.type';
 export type ButtonProps = {
   children: ReactNode;
   onClick: MouseEventHandler<HTMLButtonElement>;
-  dimensions: Dimensions<string | number>;
+  dimensions: Dimensions<string>;
   className?: string;
 };

@@ -4,7 +4,9 @@ import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { WindowHeaderProps } from '../../../types/components/Windows/Window.type';
 import { Dimensions } from '../../../types/dimensions.type';
+import { useCloseWindow } from '../../hooks/actions/useCloseWindow';
 import { Col } from '../common/Col';
+import { DimensionStyles } from '../common/StyledDimensions';
 
 const Styled = {
   HeaderContainer: styled.header`
@@ -27,7 +29,7 @@ const Styled = {
   IconsContainer: styled.div`
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 2px;
     padding-right: 5px;
     width: 43px;
   `,
@@ -42,6 +44,11 @@ const Styled = {
     &:active {
       cursor: grabbing;
     }
+  `,
+  IconButton: styled.button<Dimensions<string>>`
+    ${DimensionStyles}
+    display: flex;
+    align-items: center;
   `,
 };
 
@@ -71,7 +78,10 @@ const Expand = dynamic<IconBaseProps>(() =>
 export const WindowHeader = ({
   title,
   onPointerDown,
+  windowId,
 }: WindowHeaderProps): ReactElement => {
+  const closeWindow = useCloseWindow(windowId);
+
   return (
     <Styled.HeaderContainer>
       <Styled.IdentifierContainer onPointerDown={onPointerDown}>
@@ -80,8 +90,12 @@ export const WindowHeader = ({
         <HeaderLines dimensions={{ width: '82%' }} />
       </Styled.IdentifierContainer>
       <Styled.IconsContainer>
-        <Expand size={17} />
-        <Close size={20} />
+        <Styled.IconButton width="20px" height="20px">
+          <Expand size={17} />
+        </Styled.IconButton>
+        <Styled.IconButton width="20px" height="20px" onClick={closeWindow}>
+          <Close size={20} />
+        </Styled.IconButton>
       </Styled.IconsContainer>
     </Styled.HeaderContainer>
   );

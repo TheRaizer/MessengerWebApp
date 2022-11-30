@@ -6,12 +6,14 @@ export enum WindowType {
   MESSAGE = 'message',
 }
 
+export type WindowIdentifier = string | number;
+
 /**
  * This type must be used by all window components.
  * It allows us to handle deletion correctly. And is used during the map function.
  */
-export type WindowId = {
-  id?: string | number;
+export type WindowIdMap = {
+  id?: WindowIdentifier;
 };
 
 export type WindowProps = {
@@ -22,4 +24,4 @@ export type WindowProps = {
 export type WindowStateValue = {
   windowType: WindowType;
   windowProps: WindowProps[WindowType];
-} & Required<WindowId>;
+} & Required<WindowIdMap>;
