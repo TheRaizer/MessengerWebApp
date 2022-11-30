@@ -5,7 +5,7 @@ import { Dimensions } from '../../../types/dimensions.type';
 import { DimensionStyles } from './StyledDimensions';
 
 const Styled = {
-  InputContainer: styled.input<Dimensions<string | number>>`
+  InputContainer: styled.input<Dimensions<string>>`
     border: 1px solid black;
     background-color: var(--primary-color);
     ${DimensionStyles};
