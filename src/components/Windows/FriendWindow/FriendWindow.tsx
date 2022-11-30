@@ -2,13 +2,16 @@ import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
 import {
   FriendsStateProps,
-  FriendWindowProps,
   FriendWindowStates,
 } from '../../../../types/components/Windows/FriendWindow.type';
 import {
   ChangeStateProp,
   StatesDictionary,
 } from '../../../../types/hooks/useStateMachine.type';
+import {
+  WindowProps,
+  WindowType,
+} from '../../../../types/redux/states/windows.type';
 import { WithRequired } from '../../../../types/Required.type';
 import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 import { WindowContainer } from '../WindowContainer';
@@ -31,7 +34,7 @@ const friendWindowStates: StatesDictionary<
 
 export const FriendWindow = ({
   friendUsername,
-}: WithRequired<FriendWindowProps, 'id'>): ReactElement => {
+}: WithRequired<WindowProps[WindowType.FRIEND], 'id'>): ReactElement => {
   const { state, props } = friendUsername
     ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
     : {

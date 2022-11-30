@@ -1,10 +1,13 @@
 import { ReactElement } from 'react';
-import { MessageWindowProps } from '../../../types/components/Windows/MessageWindow.type';
+import {
+  WindowProps,
+  WindowType,
+} from '../../../types/redux/states/windows.type';
 import { WithRequired } from '../../../types/Required.type';
 import { WindowContainer } from './WindowContainer';
 
 export const MessageWindow = (
-  props: WithRequired<MessageWindowProps, 'id'>
+  props: WithRequired<WindowProps[WindowType.MESSAGE], 'id'>
 ): ReactElement => {
   return (
     <WindowContainer title={props.usernameToMessage || ''}>
