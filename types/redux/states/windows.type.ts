@@ -15,11 +15,11 @@ export type WindowId = {
 };
 
 export type WindowProps = {
-  [WindowType.MESSAGE]?: MessageWindowProps;
-  [WindowType.FRIEND]?: FriendWindowProps;
+  [WindowType.MESSAGE]: MessageWindowProps;
+  [WindowType.FRIEND]: FriendWindowProps;
 };
 
 export type WindowStateValue = {
   windowType: WindowType;
-  windowProps?: WindowProps;
+  windowProps: WindowProps[WindowType];
 } & Required<WindowId>;

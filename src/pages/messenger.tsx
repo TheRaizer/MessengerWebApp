@@ -38,12 +38,12 @@ const Home = (): ReactElement => {
   const friendWindowProps: FriendWindowProps = {
     friendUsername: 'some_friend',
   };
-  const openMessageWindow = useOpenWindow(WindowType.MESSAGE, {
-    [WindowType.MESSAGE]: messageWindowProps,
-  });
-  const openFriendWindow = useOpenWindow(WindowType.FRIEND, {
-    [WindowType.FRIEND]: friendWindowProps,
-  });
+
+  const openMessageWindow = useOpenWindow(
+    WindowType.MESSAGE,
+    messageWindowProps
+  );
+  const openFriendWindow = useOpenWindow(WindowType.FRIEND, friendWindowProps);
 
   return (
     <>
