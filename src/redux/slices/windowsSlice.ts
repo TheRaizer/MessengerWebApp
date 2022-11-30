@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { WindowStateValue } from '../../../types/redux/states/windows.type';
+import {
+  WindowIdentifier,
+  WindowStateValue,
+} from '../../../types/redux/states/windows.type';
 import { RootState } from '../../../types/redux/store.type';
 
 const windowsSlice = createSlice({
@@ -8,13 +11,16 @@ const windowsSlice = createSlice({
   reducers: {
     setWindows: (state, action: PayloadAction<WindowStateValue>) => {
       state.push(action.payload);
+    },
+    removeWindow: (state, action: PayloadAction<WindowIdentifier>) => {
+      const idx = state.findIndex((window) => window.id === action.payload);
 
-      return state;
+      state.splice(idx, 1);
     },
   },
 });
 
-export const { setWindows } = windowsSlice.actions;
+export const { setWindows, removeWindow } = windowsSlice.actions;
 
 export const selectWindows = (state: RootState) => state.windows;
 

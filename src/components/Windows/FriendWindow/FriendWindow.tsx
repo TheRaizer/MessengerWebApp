@@ -34,6 +34,7 @@ const friendWindowStates: StatesDictionary<
 
 export const FriendWindow = ({
   friendUsername,
+  id,
 }: WithRequired<WindowProps[WindowType.FRIEND], 'id'>): ReactElement => {
   const { state, props } = friendUsername
     ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
@@ -48,6 +49,8 @@ export const FriendWindow = ({
     props
   );
   return (
-    <WindowContainer title={friendUsername}>{CurrentComponent}</WindowContainer>
+    <WindowContainer title={friendUsername} windowId={id}>
+      {CurrentComponent}
+    </WindowContainer>
   );
 };
