@@ -12,7 +12,7 @@ export type WindowIdentifier = string | number;
  * This type must be used by all window components.
  * It allows us to handle deletion correctly. And is used during the map function.
  */
-export type WindowIdMap = {
+export type WindowIdProp = {
   id?: WindowIdentifier;
 };
 
@@ -21,7 +21,11 @@ export type WindowProps = {
   [WindowType.FRIEND]: FriendWindowProps;
 };
 
-export type WindowStateValue = {
+export type WindowStateValues = {
   windowType: WindowType;
   windowProps: WindowProps[WindowType];
-} & Required<WindowIdMap>;
+};
+
+export type WindowState = {
+  [key: string]: WindowStateValues;
+};

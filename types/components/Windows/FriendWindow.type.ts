@@ -1,9 +1,9 @@
 import { ChangeStateProp } from '../../hooks/useStateMachine.type';
-import { WindowIdMap } from '../../redux/states/windows.type';
+import { WindowIdProp } from '../../redux/states/windows.type';
 
 export type FriendWindowProps = {
   friendUsername: string;
-} & WindowIdMap;
+} & WindowIdProp;
 
 export enum FriendWindowStates {
   FRIENDS_LIST = 'friends_list',
