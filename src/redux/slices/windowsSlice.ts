@@ -14,12 +14,15 @@ const windowsSlice = createSlice({
   reducers: {
     addWindow: (
       state,
-      action: PayloadAction<AllRequired<WindowIdProp> & WindowStateValues>
+      action: PayloadAction<
+        AllRequired<WindowIdProp> & Omit<WindowStateValues, 'zIndex'>
+      >
     ) => {
       const { id, windowType, windowProps } = action.payload;
       state[id] = {
         windowType: windowType,
         windowProps: windowProps,
+        zIndex: Object.keys(state).length,
       };
     },
     removeWindow: (
@@ -27,6 +30,23 @@ const windowsSlice = createSlice({
       action: PayloadAction<AllRequired<WindowIdentifier>>
     ) => {
       delete state[action.payload];
+    },
+    changeActiveWindow: (state, action: PayloadAction<string>) => {
+      const windowsArr = Object.entries(state);
+
+      for (let i = 0; i < windowsArr.length; i++) {
+        const window = windowsArr[i];
+
+        if (window[0] === action.payload) {
+          windowsArr.splice(i, 1);
+          windowsArr.push(window);
+
+          windowsArr.forEach((window, idx) => (window[1].zIndex = idx));
+          return;
+        }
+      }
+
+      console.error('window with id ' + action.payload + ' does not exist');
     },
   },
 });

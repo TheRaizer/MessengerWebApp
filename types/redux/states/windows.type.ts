@@ -24,6 +24,7 @@ export type WindowProps = {
 export type WindowStateValues = {
   windowType: WindowType;
   windowProps: WindowProps[WindowType];
+  zIndex: number;
 };
 
 export type WindowState = {

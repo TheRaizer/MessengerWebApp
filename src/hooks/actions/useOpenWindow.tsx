@@ -23,7 +23,7 @@ export const useOpenWindow = <K extends keyof WindowProps>(
   const dispatch = useAppDispatch();
 
   const openWindow = () => {
-    const newWindowValues: WindowStateValues = {
+    const newWindowValues: Omit<WindowStateValues, 'zIndex'> = {
       windowType: windowType,
       windowProps: props,
     };
