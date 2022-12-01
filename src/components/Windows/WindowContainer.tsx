@@ -22,6 +22,7 @@ const Styled = {
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
     resize: both;
+    background-color: var(--new-primary-color);
   `,
 };
 

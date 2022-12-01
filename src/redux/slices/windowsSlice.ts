@@ -1,26 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   WindowIdentifier,
-  WindowStateValue,
+  WindowIdProp,
+  WindowState,
+  WindowStateValues,
 } from '../../../types/redux/states/windows.type';
 import { RootState } from '../../../types/redux/store.type';
+import { AllRequired } from '../../../types/Required.type';
 
 const windowsSlice = createSlice({
   name: 'windowsSlice',
-  initialState: [] as WindowStateValue[],
+  initialState: {} as WindowState,
   reducers: {
-    setWindows: (state, action: PayloadAction<WindowStateValue>) => {
-      state.push(action.payload);
+    addWindow: (
+      state,
+      action: PayloadAction<AllRequired<WindowIdProp> & WindowStateValues>
+    ) => {
+      const { id, windowType, windowProps } = action.payload;
+      state[id] = {
+        windowType: windowType,
+        windowProps: windowProps,
+      };
     },
-    removeWindow: (state, action: PayloadAction<WindowIdentifier>) => {
-      const idx = state.findIndex((window) => window.id === action.payload);
-
-      state.splice(idx, 1);
+    removeWindow: (
+      state,
+      action: PayloadAction<AllRequired<WindowIdentifier>>
+    ) => {
+      delete state[action.payload];
     },
   },
 });
 
-export const { setWindows, removeWindow } = windowsSlice.actions;
+export const { addWindow, removeWindow } = windowsSlice.actions;
 
 export const selectWindows = (state: RootState) => state.windows;
 
