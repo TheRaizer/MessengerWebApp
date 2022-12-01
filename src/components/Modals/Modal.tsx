@@ -1,6 +1,6 @@
 import { ReactElement, useRef } from 'react';
 import styled from 'styled-components';
-import { modalBGBlurIndex, modalIndex } from '../../constants/zIndices';
+import { MODAL_BG_BLUR_INDEX, MODAL_INDEX } from '../../constants/zIndices';
 import { getModalComponent } from '../../helpers/getModalComponent';
 import { useCloseModal } from '../../hooks/actions/useCloseModal';
 import { useAppSelector } from '../../redux/hooks';
@@ -9,7 +9,7 @@ import { BackgroundBlur } from '../common/BackgroundBlur';
 
 const Styled = {
   ModalContainer: styled.div`
-    z-index: ${modalIndex};
+    z-index: ${MODAL_INDEX};
     position: relative;
   `,
 };
@@ -25,7 +25,10 @@ const Modal = (): ReactElement | null => {
 
   return (
     <>
-      <BackgroundBlur onClick={() => closeModal()} zIndex={modalBGBlurIndex} />
+      <BackgroundBlur
+        onClick={() => closeModal()}
+        zIndex={MODAL_BG_BLUR_INDEX}
+      />
       <Styled.ModalContainer ref={modalRef}>
         <ModalComponent />
       </Styled.ModalContainer>

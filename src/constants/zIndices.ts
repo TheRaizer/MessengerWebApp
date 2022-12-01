@@ -1,6 +1,6 @@
-export const modalIndex = 100;
+export const MODAL_INDEX = 100;
 
-export const modalBGBlurIndex = modalIndex - 1;
+export const MODAL_BG_BLUR_INDEX = MODAL_INDEX - 1;
 
-export const appLoadingBGBlurIndex = modalIndex + 1;
-export const loadingSpinnerIndex = modalIndex + 2;
+export const APP_LOADING_BG_BLUR_INDEX = MODAL_INDEX + 1;
+export const LOADING_SPINNER_INDEX = MODAL_INDEX + 2;
