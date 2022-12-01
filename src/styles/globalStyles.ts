@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { noScroll } from '../constants/classNames';
+import { NO_SCROLL } from '../constants/classNames';
 import { NAV_BAR_HEIGHT } from '../constants/dimensions';
 import { colors } from './globalColors';
 
@@ -43,7 +43,7 @@ const GlobalStyle = createGlobalStyle`
         background-color: var(--new-primary-color);
         color: black;
     }
-    body.${noScroll} {
+    body.${NO_SCROLL} {
         margin: 0;
         height: 100%;
         overflow: hidden;

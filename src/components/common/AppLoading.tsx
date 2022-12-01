@@ -1,8 +1,8 @@
 import { ReactElement, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-  appLoadingBGBlurIndex,
-  loadingSpinnerIndex,
+  APP_LOADING_BG_BLUR_INDEX,
+  LOADING_SPINNER_INDEX,
 } from '../../constants/zIndices';
 import { addNoScroll, removeNoScroll } from '../../helpers/manageNoScroll';
 import { useAppSelector } from '../../redux/hooks';
@@ -13,7 +13,7 @@ import { Spinner } from './Spinner';
 const Styled = {
   AppLoadingContainer: styled.div`
     position: fixed;
-    z-index: ${loadingSpinnerIndex};
+    z-index: ${LOADING_SPINNER_INDEX};
   `,
   AppSpinner: styled(Spinner)`
     position: fixed;
@@ -38,7 +38,7 @@ export const AppLoading = (): ReactElement | null => {
 
   return (
     <>
-      <BackgroundBlur zIndex={appLoadingBGBlurIndex} />
+      <BackgroundBlur zIndex={APP_LOADING_BG_BLUR_INDEX} />
       <Styled.AppLoadingContainer>
         <Styled.AppSpinner size={40} />
       </Styled.AppLoadingContainer>
