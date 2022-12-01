@@ -8,23 +8,18 @@ export enum WindowType {
 
 export type WindowIdentifier = string | number;
 
-/**
- * This type must be used by all window components.
- * It allows us to handle deletion correctly. And is used during the map function.
- */
-export type WindowIdProp = {
-  id?: WindowIdentifier;
-};
-
 export type WindowProps = {
   [WindowType.MESSAGE]: MessageWindowProps;
   [WindowType.FRIEND]: FriendWindowProps;
 };
 
+export type GeneralWindowProps = {
+  id?: WindowIdentifier;
+};
+
 export type WindowStateValues = {
   windowType: WindowType;
-  windowProps: WindowProps[WindowType];
-  zIndex: number;
+  windowProps: WindowProps[WindowType] & GeneralWindowProps;
 };
 
 export type WindowState = {

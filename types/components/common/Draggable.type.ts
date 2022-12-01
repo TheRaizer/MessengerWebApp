@@ -1,10 +1,8 @@
-import { DragControls, HTMLMotionProps } from 'framer-motion';
+import { MouseEventHandler } from 'react';
+import { Position } from '../../Position.type';
 
 export type DraggableProps = {
   children: React.ReactNode;
-  dragControls: DragControls;
-  dragConstraints: { top: number; bottom: number; left: number; right: number };
-} & Pick<
-  HTMLMotionProps<'div'>,
-  'dragElastic' | 'dragListener' | 'dragControls' | 'dragMomentum'
->;
+  dragConstraints: Position;
+  onMouseDown?: MouseEventHandler<HTMLDivElement>;
+};

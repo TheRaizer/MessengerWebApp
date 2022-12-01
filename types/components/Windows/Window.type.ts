@@ -1,4 +1,4 @@
-import { PointerEventHandler, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { WindowIdentifier } from '../../redux/states/windows.type';
 
 export type WindowProps = {
@@ -10,5 +10,4 @@ export type WindowProps = {
 export type WindowHeaderProps = {
   title: string;
   windowId: WindowIdentifier;
-  onPointerDown: PointerEventHandler<HTMLElement>;
 };

@@ -17,7 +17,6 @@ import 'styled-components';
 import Head from 'next/head';
 import { ViewportStates } from '../../types/redux/states/appConfig.type';
 import { generateCSP } from '../helpers/generateCSP';
-import { LazyMotion } from 'framer-motion';
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
 import { useAppSelector } from '../redux/hooks';
@@ -81,22 +80,17 @@ const PageComponent = ({ Component, pageProps }: AppProps): ReactElement => {
   );
 };
 
-const loadFeatures = () =>
-  import('../helpers/framer-features').then((res) => res.default);
-
 const App = ({ Component, pageProps, router }: AppProps) => {
   return (
     <Provider store={store}>
-      <LazyMotion features={loadFeatures} strict>
-        <SkeletonTheme baseColor="#b7c4cf" highlightColor="#a1aeb9">
-          <PageComponent
-            Component={Component}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            pageProps={pageProps}
-            router={router}
-          />
-        </SkeletonTheme>
-      </LazyMotion>
+      <SkeletonTheme baseColor="#b7c4cf" highlightColor="#a1aeb9">
+        <PageComponent
+          Component={Component}
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          pageProps={pageProps}
+          router={router}
+        />
+      </SkeletonTheme>
     </Provider>
   );
 };

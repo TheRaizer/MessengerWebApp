@@ -77,14 +77,13 @@ const Expand = dynamic<IconBaseProps>(() =>
 
 export const WindowHeader = ({
   title,
-  onPointerDown,
   windowId,
 }: WindowHeaderProps): ReactElement => {
   const closeWindow = useCloseWindow(windowId);
 
   return (
     <Styled.HeaderContainer>
-      <Styled.IdentifierContainer onPointerDown={onPointerDown}>
+      <Styled.IdentifierContainer>
         <HeaderLines dimensions={{ width: '100%' }} />
         {title}
         <HeaderLines dimensions={{ width: '82%' }} />
