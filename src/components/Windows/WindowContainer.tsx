@@ -9,6 +9,7 @@ import { WindowHeader } from './WindowHeader';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 import { animated } from 'react-spring';
 import { useDragWindowConstrained } from '../../hooks/useDragWindowConstrained';
+import { changeActiveIndex } from '../../helpers/windowIndices';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string>>`
@@ -19,10 +20,9 @@ const Styled = {
   `,
   DraggableContainer: styled(animated.div)`
     position: absolute;
+    z-index: inherit;
   `,
 };
-
-let activeWindowZIndex = 0;
 
 export const WindowContainer = ({
   title,
@@ -56,18 +56,7 @@ export const WindowContainer = ({
   const { bind, position } = useDragWindowConstrained(dragConstraints);
 
   const assignActiveWindowZIndex = () => {
-    if (
-      draggableContainerRef.current?.style.getPropertyValue('z-index') ===
-      activeWindowZIndex.toString()
-    )
-      return;
-
-    activeWindowZIndex++;
-
-    draggableContainerRef.current?.style.setProperty(
-      'z-index',
-      activeWindowZIndex.toString()
-    );
+    changeActiveIndex(windowId);
   };
 
   return (

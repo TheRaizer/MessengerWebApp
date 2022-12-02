@@ -1,6 +1,6 @@
 import { useDrag } from '@use-gesture/react';
 import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSpring } from 'react-spring';
 import { Coordinate } from '../../types/Coordinate.type';
 import { Position } from '../../types/Position.type';
@@ -35,13 +35,24 @@ export const useDragWindowConstrained = (
 
   const { width, height } = useWindowDimensions();
 
-  if (width > 0 && lastX > dragConstraints.right) {
-    x.set(dragConstraints.right);
-  }
+  useEffect(() => {
+    if (width > 0 && lastX > dragConstraints.right) {
+      x.set(dragConstraints.right);
+    }
 
-  if (height > 0 && lastY > dragConstraints.bottom) {
-    y.set(dragConstraints.bottom);
-  }
+    if (height > 0 && lastY > dragConstraints.bottom) {
+      y.set(dragConstraints.bottom);
+    }
+  }, [
+    dragConstraints.bottom,
+    dragConstraints.right,
+    height,
+    lastX,
+    lastY,
+    width,
+    x,
+    y,
+  ]);
 
   return { bind, position: { x: x.get(), y: y.get() } };
 };

@@ -23,5 +23,5 @@ export type WindowStateValues = {
 };
 
 export type WindowState = {
-  [key: string]: WindowStateValues;
+  [key: WindowIdentifier]: WindowStateValues;
 };
