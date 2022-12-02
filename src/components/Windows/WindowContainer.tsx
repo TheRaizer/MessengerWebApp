@@ -6,8 +6,9 @@ import { INITIAL_WINDOW_DIMENSIONS } from '../../constants/dimensions';
 import { CenteredCol } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
 import { WindowHeader } from './WindowHeader';
-import { Draggable } from '../common/Draggable';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
+import { animated } from 'react-spring';
+import { useDragWindowConstrained } from '../../hooks/useDragWindowConstrained';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string>>`
@@ -15,6 +16,9 @@ const Styled = {
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
     background-color: var(--new-primary-color);
+  `,
+  DraggableContainer: styled(animated.div)`
+    position: absolute;
   `,
 };
 
@@ -49,6 +53,8 @@ export const WindowContainer = ({
     bottom: height - windowHeight,
   };
 
+  const { bind, position } = useDragWindowConstrained(dragConstraints);
+
   const assignActiveWindowZIndex = () => {
     if (
       draggableContainerRef.current?.style.getPropertyValue('z-index') ===
@@ -65,8 +71,8 @@ export const WindowContainer = ({
   };
 
   return (
-    <Draggable
-      dragConstraints={dragConstraints}
+    <Styled.DraggableContainer
+      style={{ x: position.x, y: position.y }}
       onMouseDown={assignActiveWindowZIndex}
       ref={draggableContainerRef}
     >
@@ -74,9 +80,9 @@ export const WindowContainer = ({
         {...INITIAL_WINDOW_DIMENSIONS}
         ref={windowContainerRef}
       >
-        <WindowHeader title={title} windowId={windowId} />
+        <WindowHeader title={title} windowId={windowId} dragBind={bind} />
         {children}
       </Styled.WindowContainer>
-    </Draggable>
+    </Styled.DraggableContainer>
   );
 };

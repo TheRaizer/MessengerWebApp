@@ -14,6 +14,7 @@ const Styled = {
     display: flex;
     justify-content: center;
     border-bottom: 1px solid black;
+    touch-action: none;
   `,
   HeaderLine: styled.div`
     border-top: 1px solid black;
@@ -78,11 +79,12 @@ const Expand = dynamic<IconBaseProps>(() =>
 export const WindowHeader = ({
   title,
   windowId,
+  dragBind,
 }: WindowHeaderProps): ReactElement => {
   const closeWindow = useCloseWindow(windowId);
 
   return (
-    <Styled.HeaderContainer>
+    <Styled.HeaderContainer {...dragBind()}>
       <Styled.IdentifierContainer>
         <HeaderLines dimensions={{ width: '100%' }} />
         {title}
