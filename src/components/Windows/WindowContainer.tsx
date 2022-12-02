@@ -9,7 +9,7 @@ import { WindowHeader } from './WindowHeader';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 import { animated } from 'react-spring';
 import { useDragWindowConstrained } from '../../hooks/useDragWindowConstrained';
-import { changeActiveIndex } from '../../helpers/windowIndices';
+import { changeActiveIndex } from '../../helpers/windowIndexManager';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string>>`
