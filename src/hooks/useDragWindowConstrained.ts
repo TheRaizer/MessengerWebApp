@@ -30,12 +30,14 @@ export const useDragWindowConstrained = (
       bounds: () => {
         return dragConstraints;
       },
+      from: () => [x.get(), y.get()],
     }
   );
 
   const { width, height } = useWindowDimensions();
 
   useEffect(() => {
+    // width and height of window are 0 on initial render, so we need to ignore that.
     if (width > 0 && lastX > dragConstraints.right) {
       x.set(dragConstraints.right);
     }
