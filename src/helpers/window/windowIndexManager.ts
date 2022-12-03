@@ -1,5 +1,9 @@
-import { WindowIdentifier } from '../../types/redux/states/windows.type';
-import { BASE_WINDOW_Z_INDEX, MAX_OPEN_WINDOWS } from '../constants/windows';
+import {
+  Subscription,
+  WindowIndexProps,
+} from '../../../types/helpers/window/windowIndexManager.type';
+import { WindowIdentifier } from '../../../types/redux/states/windows.type';
+import { BASE_WINDOW_Z_INDEX, MAX_OPEN_WINDOWS } from '../../constants/windows';
 
 /**
  * This file contains the functions required to manipulate the zIndices of windows without requiring rerenders.
@@ -9,12 +13,6 @@ import { BASE_WINDOW_Z_INDEX, MAX_OPEN_WINDOWS } from '../constants/windows';
  * The reason for this, is a rerender can be both expensive when it occurs on a window,
  * and it causes a flicker every time a click on the window occurs.
  */
-
-type Subscription = (zIndex: number) => void;
-type WindowIndexProps = {
-  id: WindowIdentifier;
-  subscription: Subscription;
-};
 
 /**
  * The array of window indices. The index of a window in this array plus the base window index corrosponds to their z-index.

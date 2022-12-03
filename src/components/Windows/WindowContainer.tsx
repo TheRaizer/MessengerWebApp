@@ -8,8 +8,8 @@ import { DimensionStyles } from '../common/StyledDimensions';
 import { WindowHeader } from './WindowHeader';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 import { animated } from 'react-spring';
-import { useDragWindowConstrained } from '../../hooks/useDragWindowConstrained';
-import { changeActiveIndex } from '../../helpers/windowIndexManager';
+import { useDragViewportConstrained } from '../../hooks/useDragViewportConstrained';
+import { changeActiveIndex } from '../../helpers/window/windowIndexManager';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string>>`
@@ -53,7 +53,7 @@ export const WindowContainer = ({
     bottom: height - windowHeight,
   };
 
-  const { bind, position } = useDragWindowConstrained(dragConstraints);
+  const { bind, position } = useDragViewportConstrained(dragConstraints);
 
   const assignActiveWindowZIndex = () => {
     changeActiveIndex(windowId);

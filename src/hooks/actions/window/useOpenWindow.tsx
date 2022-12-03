@@ -1,9 +1,9 @@
 import {
   WindowProps,
   WindowStateValues,
-} from '../../../types/redux/states/windows.type';
-import { useAppDispatch } from '../../redux/hooks';
-import { addWindow } from '../../redux/slices/windowsSlice';
+} from '../../../../types/redux/states/windows.type';
+import { useAppDispatch } from '../../../redux/hooks';
+import { addWindow } from '../../../redux/slices/windowsSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -23,7 +23,7 @@ export const useOpenWindow = <K extends keyof WindowProps>(
   const dispatch = useAppDispatch();
 
   const openWindow = () => {
-    const newWindowValues: Omit<WindowStateValues, 'zIndex'> = {
+    const newWindowValues: WindowStateValues = {
       windowType: windowType,
       windowProps: props,
     };

@@ -4,8 +4,8 @@ import {
   WindowStateValues,
 } from '../../types/redux/states/windows.type';
 import { BASE_WINDOW_Z_INDEX } from '../constants/windows';
-import { getWindowComponent } from '../helpers/getWindowComponent';
-import { addWindowIndex } from '../helpers/windowIndexManager';
+import { getWindowComponent } from '../helpers/window/getWindowComponent';
+import { addWindowIndex } from '../helpers/window/windowIndexManager';
 import { useAppSelector } from '../redux/hooks';
 import { selectWindows } from '../redux/slices/windowsSlice';
 

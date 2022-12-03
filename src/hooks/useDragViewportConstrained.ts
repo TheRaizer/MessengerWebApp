@@ -1,17 +1,13 @@
 import { useDrag } from '@use-gesture/react';
-import { ReactDOMAttributes } from '@use-gesture/react/dist/declarations/src/types';
 import { useEffect, useState } from 'react';
 import { useSpring } from 'react-spring';
-import { Coordinate } from '../../types/Coordinate.type';
+import { ConstrainedDragReturn } from '../../types/hooks/useDragViewportConstrained.type';
 import { Position } from '../../types/Position.type';
 import { useWindowDimensions } from './useWindowDimensions';
 
-export const useDragWindowConstrained = (
+export const useDragViewportConstrained = (
   dragConstraints: Position
-): {
-  bind: (...args: unknown[]) => ReactDOMAttributes;
-  position: Coordinate;
-} => {
+): ConstrainedDragReturn => {
   const [lastX, setLastX] = useState(0);
   const [lastY, setLastY] = useState(0);
 

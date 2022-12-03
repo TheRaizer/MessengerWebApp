@@ -6,7 +6,7 @@ import {
 } from '../../../types/redux/states/windows.type';
 import { RootState } from '../../../types/redux/store.type';
 import { MAX_OPEN_WINDOWS } from '../../constants/windows';
-import { removeWindowIndex } from '../../helpers/windowIndexManager';
+import { removeWindowIndex } from '../../helpers/window/windowIndexManager';
 
 const windowsSlice = createSlice({
   name: 'windowsSlice',

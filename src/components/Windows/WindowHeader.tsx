@@ -4,7 +4,7 @@ import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { WindowHeaderProps } from '../../../types/components/Windows/Window.type';
 import { Dimensions } from '../../../types/dimensions.type';
-import { useCloseWindow } from '../../hooks/actions/useCloseWindow';
+import { useCloseWindow } from '../../hooks/actions/window/useCloseWindow';
 import { Col } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
 
