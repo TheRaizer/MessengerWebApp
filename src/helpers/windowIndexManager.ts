@@ -28,7 +28,7 @@ const windowIndices: WindowIndexProps[] = [];
  */
 export const addWindowIndex = (
   id: WindowIdentifier,
-  subscription: Subscription
+  getElement: () => HTMLElement
 ) => {
   if (
     windowIndices.length === MAX_OPEN_WINDOWS ||
@@ -36,6 +36,14 @@ export const addWindowIndex = (
   ) {
     return;
   }
+
+  /**
+   * A subscription function that is published whenever the new active window changes.
+   * @param zIndex the new z-index to assign to the window.
+   */
+  const subscription: Subscription = (zIndex: number) => {
+    getElement().style.setProperty('z-index', zIndex.toString());
+  };
 
   windowIndices.push({ id, subscription });
 };
