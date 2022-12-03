@@ -1,7 +1,10 @@
 import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
-import { WindowProps, WindowType } from '../../types/redux/states/windows.type';
-import { WithRequired } from '../../types/Required.type';
+import {
+  WindowProps,
+  WindowType,
+} from '../../../types/redux/states/windows.type';
+import { WithRequired } from '../../../types/Required.type';
 
 /**
  * Produces a window component with the given type and props.
@@ -24,7 +27,7 @@ export const getWindowComponent = <K extends WindowType>(
     case WindowType.MESSAGE:
       Component = dynamic<WithRequired<WindowProps[WindowType.MESSAGE], 'id'>>(
         () =>
-          import('../components/Windows/MessageWindow').then(
+          import('../../components/Windows/MessageWindow').then(
             (mod) => mod.MessageWindow
           )
       );
@@ -38,7 +41,7 @@ export const getWindowComponent = <K extends WindowType>(
     case WindowType.FRIEND:
       Component = dynamic<WithRequired<WindowProps[WindowType.FRIEND], 'id'>>(
         () =>
-          import('../components/Windows/FriendWindow/FriendWindow').then(
+          import('../../components/Windows/FriendWindow/FriendWindow').then(
             (mod) => mod.FriendWindow
           )
       );

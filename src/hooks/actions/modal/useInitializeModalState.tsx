@@ -1,6 +1,6 @@
-import { ModalState } from '../../../types/redux/states/modalState.type';
-import { useAppDispatch } from '../../redux/hooks';
-import { changeModal } from '../../redux/slices/modalSlice';
+import { ModalState } from '../../../../types/redux/states/modalState.type';
+import { useAppDispatch } from '../../../redux/hooks';
+import { changeModal } from '../../../redux/slices/modalSlice';
 
 /**
  *

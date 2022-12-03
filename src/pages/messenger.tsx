@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Head from 'next/head';
 import { CenteredCol } from '../components/common/Col';
 import { Windows } from '../components/Windows/WindowHandler';
-import { useOpenWindow } from '../hooks/actions/useOpenWindow';
+import { useOpenWindow } from '../hooks/actions/window/useOpenWindow';
 import { WindowType } from '../../types/redux/states/windows.type';
 import { MessageWindowProps } from '../../types/components/Windows/MessageWindow.type';
 import { FriendWindowProps } from '../../types/components/Windows/FriendWindow.type';

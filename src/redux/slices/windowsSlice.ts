@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   WindowIdentifier,
-  WindowIdProp,
   WindowState,
   WindowStateValues,
 } from '../../../types/redux/states/windows.type';
 import { RootState } from '../../../types/redux/store.type';
-import { AllRequired } from '../../../types/Required.type';
+import { MAX_OPEN_WINDOWS } from '../../constants/windows';
+import { removeWindowIndex } from '../../helpers/window/windowIndexManager';
 
 const windowsSlice = createSlice({
   name: 'windowsSlice',
@@ -14,19 +14,19 @@ const windowsSlice = createSlice({
   reducers: {
     addWindow: (
       state,
-      action: PayloadAction<AllRequired<WindowIdProp> & WindowStateValues>
+      action: PayloadAction<{ id: WindowIdentifier } & WindowStateValues>
     ) => {
+      if (Object.keys(state).length === MAX_OPEN_WINDOWS) return;
+
       const { id, windowType, windowProps } = action.payload;
       state[id] = {
         windowType: windowType,
         windowProps: windowProps,
       };
     },
-    removeWindow: (
-      state,
-      action: PayloadAction<AllRequired<WindowIdentifier>>
-    ) => {
+    removeWindow: (state, action: PayloadAction<WindowIdentifier>) => {
       delete state[action.payload];
+      removeWindowIndex(action.payload);
     },
   },
 });
@@ -34,5 +34,7 @@ const windowsSlice = createSlice({
 export const { addWindow, removeWindow } = windowsSlice.actions;
 
 export const selectWindows = (state: RootState) => state.windows;
+export const selectWindow = (id: WindowIdentifier) => (state: RootState) =>
+  state.windows[id];
 
 export const windowsReducer = windowsSlice.reducer;

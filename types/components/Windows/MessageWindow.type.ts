@@ -1,6 +1,6 @@
-import { WindowIdProp } from '../../redux/states/windows.type';
+import { GeneralWindowProps } from '../../redux/states/windows.type';
 
 export type MessageWindowProps = {
   usernameToMessage?: string;
   groupChatId?: number;
-} & WindowIdProp;
+} & GeneralWindowProps;

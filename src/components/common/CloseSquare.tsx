@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { AiOutlineCloseSquare } from 'react-icons/ai';
 import styled from 'styled-components';
-import { useCloseModal } from '../../hooks/actions/useCloseModal';
+import { useCloseModal } from '../../hooks/actions/modal/useCloseModal';
 
 const StyledCloseSquare = styled(AiOutlineCloseSquare)`
   position: absolute;

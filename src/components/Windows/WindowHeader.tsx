@@ -4,7 +4,7 @@ import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { WindowHeaderProps } from '../../../types/components/Windows/Window.type';
 import { Dimensions } from '../../../types/dimensions.type';
-import { useCloseWindow } from '../../hooks/actions/useCloseWindow';
+import { useCloseWindow } from '../../hooks/actions/window/useCloseWindow';
 import { Col } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
 
@@ -14,6 +14,7 @@ const Styled = {
     display: flex;
     justify-content: center;
     border-bottom: 1px solid black;
+    touch-action: none;
   `,
   HeaderLine: styled.div`
     border-top: 1px solid black;
@@ -77,14 +78,14 @@ const Expand = dynamic<IconBaseProps>(() =>
 
 export const WindowHeader = ({
   title,
-  onPointerDown,
   windowId,
+  dragBind,
 }: WindowHeaderProps): ReactElement => {
   const closeWindow = useCloseWindow(windowId);
 
   return (
-    <Styled.HeaderContainer>
-      <Styled.IdentifierContainer onPointerDown={onPointerDown}>
+    <Styled.HeaderContainer {...dragBind()}>
+      <Styled.IdentifierContainer>
         <HeaderLines dimensions={{ width: '100%' }} />
         {title}
         <HeaderLines dimensions={{ width: '82%' }} />

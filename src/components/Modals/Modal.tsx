@@ -2,7 +2,7 @@ import { ReactElement, useRef } from 'react';
 import styled from 'styled-components';
 import { MODAL_BG_BLUR_INDEX, MODAL_INDEX } from '../../constants/zIndices';
 import { getModalComponent } from '../../helpers/getModalComponent';
-import { useCloseModal } from '../../hooks/actions/useCloseModal';
+import { useCloseModal } from '../../hooks/actions/modal/useCloseModal';
 import { useAppSelector } from '../../redux/hooks';
 import { selectModal } from '../../redux/slices/modalSlice';
 import { BackgroundBlur } from '../common/BackgroundBlur';

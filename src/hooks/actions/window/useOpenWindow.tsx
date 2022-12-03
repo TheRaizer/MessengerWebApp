@@ -1,9 +1,9 @@
 import {
   WindowProps,
   WindowStateValues,
-} from '../../../types/redux/states/windows.type';
-import { useAppDispatch } from '../../redux/hooks';
-import { addWindow } from '../../redux/slices/windowsSlice';
+} from '../../../../types/redux/states/windows.type';
+import { useAppDispatch } from '../../../redux/hooks';
+import { addWindow } from '../../../redux/slices/windowsSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 /**

@@ -6,13 +6,14 @@ import {
 import { WithRequired } from '../../../types/Required.type';
 import { WindowContainer } from './WindowContainer';
 
-export const MessageWindow = (
-  props: WithRequired<WindowProps[WindowType.MESSAGE], 'id'>
-): ReactElement => {
+export const MessageWindow = ({
+  usernameToMessage,
+  id,
+}: WithRequired<WindowProps[WindowType.MESSAGE], 'id'>): ReactElement => {
   return (
-    <WindowContainer title={props.usernameToMessage || ''} windowId={props.id}>
+    <WindowContainer title={usernameToMessage || ''} windowId={id}>
       <p>
-        I am a message window {props.usernameToMessage} with id {props.id}
+        I am a message window {usernameToMessage} with id {id}
       </p>
     </WindowContainer>
   );

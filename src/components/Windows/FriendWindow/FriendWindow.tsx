@@ -48,6 +48,7 @@ export const FriendWindow = ({
     state,
     props
   );
+
   return (
     <WindowContainer title={friendUsername} windowId={id}>
       {CurrentComponent}
