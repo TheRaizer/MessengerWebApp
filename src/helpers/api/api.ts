@@ -53,13 +53,26 @@ export const fetchServerAPI = async <T extends DefaultData>(
   url: string,
   method: Method,
   body?: unknown,
-  options?: RequestInit
+  options?: RequestInit,
+  token?: string
 ): FetchReturn<T> => {
+  const headers = token
+    ? {
+        Authorization: 'Bearer ' + token?.toString(),
+      }
+    : undefined;
+
   return await fetchAPI(
     `${process.env.SERVER_API_URL as string}/${url}`,
     method,
     body,
-    options
+    {
+      ...options,
+      headers: {
+        ...options?.headers,
+        ...headers,
+      },
+    }
   );
 };
 
