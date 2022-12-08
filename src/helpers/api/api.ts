@@ -56,11 +56,12 @@ export const fetchServerAPI = async <T extends DefaultData>(
   options?: RequestInit,
   token?: string
 ): FetchReturn<T> => {
-  const headers = token
-    ? {
-        Authorization: 'Bearer ' + token?.toString(),
-      }
-    : undefined;
+  const tokenString = token?.toString() || '';
+
+  const headers = {
+    ...options?.headers,
+    Authorization: 'Bearer ' + tokenString,
+  };
 
   return await fetchAPI(
     `${process.env.SERVER_API_URL as string}/${url}`,
@@ -68,10 +69,7 @@ export const fetchServerAPI = async <T extends DefaultData>(
     body,
     {
       ...options,
-      headers: {
-        ...options?.headers,
-        ...headers,
-      },
+      headers: headers,
     }
   );
 };
