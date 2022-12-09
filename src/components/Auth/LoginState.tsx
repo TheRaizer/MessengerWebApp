@@ -15,6 +15,7 @@ import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
 import { Input } from '../common/Input';
+import { HourGlass } from '../HourGlass';
 import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
 
 const Styled = {
@@ -31,8 +32,10 @@ export const LoginState = ({
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const login = () => {
+    setLoading(true);
     const body: AuthRequirements = {
       email,
       password,
@@ -46,42 +49,58 @@ export const LoginState = ({
 
         dispatch(setUserState(data.user));
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   useKeyListener(login, Key.Enter);
 
   return (
     <CenteredCol gap={50}>
-      <CenteredCol gap={20}>
-        <Input
-          {...getInputProps('email')}
-          onChange={(evt) => setEmail(evt.target.value)}
+      {loading ? (
+        <HourGlass
+          size={1}
+          backgroundColor="var(--new-primary-color)"
+          fillColor="black"
         />
-        <Input
-          {...getInputProps('password')}
-          onChange={(evt) => setPassword(evt.target.value)}
-        />
-      </CenteredCol>
-      <CenteredCol gap={20}>
-        <Styled.LoginButton
-          onClick={login}
-          dimensions={{ width: '165px', height: '35px' }}
-        >
-          login
-        </Styled.LoginButton>
-        <ChangeAuthStateText>
-          No account?{' '}
-          <ChangeAuthStateButton
-            onClick={() =>
-              changeState(AuthStates.SIGN_UP, { changeState, getInputProps })
-            }
-          >
-            Create one
-          </ChangeAuthStateButton>
-          .
-        </ChangeAuthStateText>
-      </CenteredCol>
+      ) : (
+        <>
+          <CenteredCol gap={20}>
+            <Input
+              {...getInputProps('email')}
+              onChange={(evt) => setEmail(evt.target.value)}
+            />
+            <Input
+              {...getInputProps('password')}
+              onChange={(evt) => setPassword(evt.target.value)}
+            />
+          </CenteredCol>
+          <CenteredCol gap={20}>
+            <Styled.LoginButton
+              onClick={login}
+              dimensions={{ width: '165px', height: '35px' }}
+            >
+              login
+            </Styled.LoginButton>
+            <ChangeAuthStateText>
+              No account?{' '}
+              <ChangeAuthStateButton
+                onClick={() =>
+                  changeState(AuthStates.SIGN_UP, {
+                    changeState,
+                    getInputProps,
+                  })
+                }
+              >
+                Create one
+              </ChangeAuthStateButton>
+              .
+            </ChangeAuthStateText>
+          </CenteredCol>
+        </>
+      )}
     </CenteredCol>
   );
 };

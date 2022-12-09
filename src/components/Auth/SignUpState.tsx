@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { Key } from 'ts-key-enum';
 import {
@@ -23,6 +23,7 @@ import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
 import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
+import { HourGlass } from '../HourGlass';
 
 const Styled = {
   LoginButton: styled(Button)`
@@ -35,6 +36,7 @@ export const SignUpState = ({
   getInputProps,
 }: AuthStateProps[AuthStates.SIGN_UP] &
   ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const {
     Component: EmailInput,
@@ -57,6 +59,7 @@ export const SignUpState = ({
   } = useSignUpInput(getInputProps('confirm password'));
 
   const signUp = () => {
+    setLoading(true);
     let validInputs = true;
     if (!checkEmailValidity('invalid email', isEmailValid)) validInputs = false;
     if (!checkPasswordValidity('invalid password', isPasswordValid))
@@ -103,38 +106,51 @@ export const SignUpState = ({
 
         dispatch(setUserState(data.user));
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   useKeyListener(signUp, Key.Enter);
 
   return (
     <CenteredCol gap={50}>
-      <CenteredCol gap={10}>
-        {EmailInput}
-        {UsernameInput}
-        {PasswordInput}
-        {ConfirmPasswordInput}
-      </CenteredCol>
-      <CenteredCol gap={20}>
-        <Styled.LoginButton
-          onClick={signUp}
-          dimensions={{ width: '165px', height: '35px' }}
-        >
-          sign up
-        </Styled.LoginButton>
-        <ChangeAuthStateText>
-          Have an account already?{' '}
-          <ChangeAuthStateButton
-            onClick={() =>
-              changeState(AuthStates.LOGIN, { changeState, getInputProps })
-            }
-          >
-            Login
-          </ChangeAuthStateButton>
-          .
-        </ChangeAuthStateText>
-      </CenteredCol>
+      {loading ? (
+        <HourGlass
+          size={1}
+          backgroundColor="var(--new-primary-color)"
+          fillColor="black"
+        />
+      ) : (
+        <>
+          <CenteredCol gap={10}>
+            {EmailInput}
+            {UsernameInput}
+            {PasswordInput}
+            {ConfirmPasswordInput}
+          </CenteredCol>
+          <CenteredCol gap={20}>
+            <Styled.LoginButton
+              onClick={signUp}
+              dimensions={{ width: '165px', height: '35px' }}
+            >
+              sign up
+            </Styled.LoginButton>
+            <ChangeAuthStateText>
+              Have an account already?{' '}
+              <ChangeAuthStateButton
+                onClick={() =>
+                  changeState(AuthStates.LOGIN, { changeState, getInputProps })
+                }
+              >
+                Login
+              </ChangeAuthStateButton>
+              .
+            </ChangeAuthStateText>
+          </CenteredCol>
+        </>
+      )}
     </CenteredCol>
   );
 };
