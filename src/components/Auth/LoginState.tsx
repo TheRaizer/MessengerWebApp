@@ -62,7 +62,7 @@ export const LoginState = ({
       {loading ? (
         <HourGlass
           size={1}
-          backgroundColor="var(--new-primary-color)"
+          backgroundColor="var(--primary-color)"
           fillColor="black"
         />
       ) : (

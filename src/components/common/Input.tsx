@@ -7,7 +7,7 @@ import { DimensionStyles } from './StyledDimensions';
 const Styled = {
   InputContainer: styled.input<Dimensions<string>>`
     border: 1px solid black;
-    background-color: var(--primary-color);
+    background-color: #f8ede0;
     ${DimensionStyles};
     padding: 0 0 0 10px;
 

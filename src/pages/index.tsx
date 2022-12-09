@@ -16,7 +16,7 @@ const Styled = {
     font-size: 96px;
   `,
   BackgroundContainer: styled.div`
-    background-color: var(--new-primary-color);
+    background-color: var(--primary-color);
     height: 100%;
     width: 100%;
   `,
