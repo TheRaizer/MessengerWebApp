@@ -40,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
         ${colors}
         font-family: 'RedHatMono-Regular', sans-serif;
         line-height: normal;
-        background-color: var(--new-primary-color);
+        background-color: var(--primary-color);
         color: black;
     }
     body.${NO_SCROLL} {

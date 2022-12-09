@@ -16,7 +16,7 @@ const Styled = {
     ${DimensionStyles}
     border: 1px solid black;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.75);
-    background-color: var(--new-primary-color);
+    background-color: var(--primary-color);
   `,
   DraggableContainer: styled(animated.div)`
     position: absolute;
