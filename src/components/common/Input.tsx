@@ -23,6 +23,7 @@ export const Input = ({
   labelText,
   onChange,
   className,
+  type,
 }: InputProps): ReactElement => {
   return (
     <Styled.InputContainer
@@ -30,6 +31,7 @@ export const Input = ({
       placeholder={labelText}
       onChange={onChange}
       className={className}
+      type={type}
     />
   );
 };

@@ -73,7 +73,7 @@ export const LoginState = ({
               onChange={(evt) => setEmail(evt.target.value)}
             />
             <Input
-              {...getInputProps('password')}
+              {...getInputProps('password', 'password')}
               onChange={(evt) => setPassword(evt.target.value)}
             />
           </CenteredCol>

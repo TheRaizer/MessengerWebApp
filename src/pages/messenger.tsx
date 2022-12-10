@@ -36,7 +36,7 @@ const Home = (): ReactElement => {
     groupChatId: undefined,
   };
   const friendWindowProps: FriendWindowProps = {
-    friendUsername: 'some_friend',
+    friendUsername: '',
   };
 
   const openMessageWindow = useOpenWindow(

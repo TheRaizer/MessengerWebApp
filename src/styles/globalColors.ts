@@ -2,8 +2,9 @@ import { css } from 'styled-components';
 
 export const colors = css`
   // darker
-  --primary-color-5: #d7c0ae;
-  --primary-color-3: #e7ceba;
+  --primary-color-5: #a69e8b;
+  --primary-color-3: #c9c0ab;
+  --primary-color-2: #dbd1ba;
   --primary-color: #eee3cb;
   // lighter
 
