@@ -18,7 +18,9 @@ import { WindowContainer } from '../WindowContainer';
 
 const FriendListState = dynamic<
   ChangeStateProp<FriendWindowStates, FriendsStateProps>
->(() => import('./FriendListState').then((mod) => mod.FriendListState));
+>(() =>
+  import('./FriendList/FriendsListState').then((mod) => mod.FriendsListState)
+);
 const FriendState = dynamic<
   FriendsStateProps[FriendWindowStates.FRIEND] &
     ChangeStateProp<FriendWindowStates, FriendsStateProps>
@@ -50,7 +52,7 @@ export const FriendWindow = ({
   );
 
   return (
-    <WindowContainer title={friendUsername} windowId={id}>
+    <WindowContainer title={friendUsername || 'Friends'} windowId={id}>
       {CurrentComponent}
     </WindowContainer>
   );

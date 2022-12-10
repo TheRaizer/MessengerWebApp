@@ -10,8 +10,10 @@ export type AuthProps = {
   initialState?: AuthStates;
 };
 
+export type GetInputProps = (labelText: string, type?: string) => InputProps;
+
 type AuthInputProps = {
-  getInputProps: (labelText: string) => InputProps;
+  getInputProps: GetInputProps;
 };
 
 export interface AuthStateProps

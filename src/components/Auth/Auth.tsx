@@ -6,6 +6,7 @@ import {
   AuthProps,
   AuthStateProps,
   AuthStates,
+  GetInputProps,
 } from '../../../types/components/Auth/Auth.type';
 import {
   ChangeStateProp,
@@ -51,9 +52,10 @@ export const Auth = ({ initialState }: AuthProps): ReactElement => {
    * Thus this function's referential equality will not often change and cause rerenders of the
    * auth state components.
    */
-  const getInputProps = (labelText: string) => ({
+  const getInputProps: GetInputProps = (labelText: string, type?: string) => ({
     dimensions: inputDimensions,
     labelText: labelText,
+    type: type,
   });
 
   const { CurrentComponent, currentState } = useStateMachine(

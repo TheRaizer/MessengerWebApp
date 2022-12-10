@@ -52,11 +52,11 @@ export const SignUpState = ({
     Component: PasswordInput,
     text: password,
     checkValidity: checkPasswordValidity,
-  } = useSignUpInput(getInputProps('password'));
+  } = useSignUpInput(getInputProps('password', 'password'));
   const {
     Component: ConfirmPasswordInput,
     checkValidity: checkConfirmPasswordValidity,
-  } = useSignUpInput(getInputProps('confirm password'));
+  } = useSignUpInput(getInputProps('confirm password', 'password'));
 
   const signUp = () => {
     setLoading(true);
