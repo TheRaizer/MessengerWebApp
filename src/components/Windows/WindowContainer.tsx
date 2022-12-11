@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   ReactElement,
   useEffect,
@@ -26,6 +21,7 @@ import { animated } from 'react-spring';
 import { useDragViewportConstrained } from '../../hooks/useDragViewportConstrained';
 import { changeActiveIndex } from '../../helpers/window/windowIndexManager';
 import interact from 'interactjs';
+import { MoveEvent } from '../../../types/interactjs.type';
 
 const Styled = {
   WindowContainer: styled(CenteredCol)<Dimensions<string>>`
@@ -105,7 +101,7 @@ export const WindowContainer = ({
     interact(windowContainerRef.current).resizable({
       edges: { top: false, left: true, bottom: true, right: true },
       listeners: {
-        move: (event) => {
+        move: (event: MoveEvent) => {
           //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
 
           // restrict width and height
