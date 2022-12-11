@@ -107,6 +107,8 @@ export const WindowContainer = ({
       listeners: {
         move: (event) => {
           //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
+
+          // restrict width and height
           if (event.rect.width < MINIMUM_WINDOW_WIDTH) {
             updateWindowDimensions(MINIMUM_WINDOW_WIDTH, event.rect.height);
             return;
