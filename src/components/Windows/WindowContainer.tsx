@@ -106,12 +106,13 @@ export const WindowContainer = ({
       edges: { top: false, left: true, bottom: true, right: true },
       listeners: {
         move: (event) => {
-          //* this move function is called every frame, so there is some unexpected behaviour when resizing very fast.
-          if (
-            event.rect.width < MINIMUM_WINDOW_WIDTH ||
-            event.rect.height < MINIMUM_WINDOW_HEIGHT
-          ) {
-            updateWindowDimensions(MINIMUM_WINDOW_WIDTH, MINIMUM_WINDOW_HEIGHT);
+          //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
+          if (event.rect.width < MINIMUM_WINDOW_WIDTH) {
+            updateWindowDimensions(MINIMUM_WINDOW_WIDTH, event.rect.height);
+            return;
+          }
+          if (event.rect.height < MINIMUM_WINDOW_HEIGHT) {
+            updateWindowDimensions(event.rect.width, MINIMUM_WINDOW_HEIGHT);
             return;
           }
 
@@ -120,7 +121,7 @@ export const WindowContainer = ({
           const newTotalDeltaY =
             totalResizeDeltaY.current + event.deltaRect.top;
 
-          // calclate the displacement from the last deltas to the current ones, and simulate a drag event.
+          // calculate the displacement from the last deltas to the current ones, and simulate a drag event.
           const displacementX = newTotalDeltaX - totalResizeDeltaX.current;
           const displacementY = newTotalDeltaY - totalResizeDeltaY.current;
           simulateDrag(displacementX, displacementY);
