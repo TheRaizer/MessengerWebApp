@@ -70,10 +70,6 @@ export const WindowContainer = ({
     }
   );
 
-  const assignActiveWindowZIndex = () => {
-    changeActiveIndex(windowId);
-  };
-
   useLayoutEffect(() => {
     if (!windowContainerRef.current) return;
 
@@ -103,17 +99,6 @@ export const WindowContainer = ({
       listeners: {
         move: (event: MoveEvent) => {
           //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
-
-          // restrict width and height
-          if (event.rect.width < MINIMUM_WINDOW_WIDTH) {
-            updateWindowDimensions(MINIMUM_WINDOW_WIDTH, event.rect.height);
-            return;
-          }
-          if (event.rect.height < MINIMUM_WINDOW_HEIGHT) {
-            updateWindowDimensions(event.rect.width, MINIMUM_WINDOW_HEIGHT);
-            return;
-          }
-
           const newTotalDeltaX =
             totalResizeDeltaX.current + event.deltaRect.left;
           const newTotalDeltaY =
@@ -122,12 +107,29 @@ export const WindowContainer = ({
           // calculate the displacement from the last deltas to the current ones, and simulate a drag event.
           const displacementX = newTotalDeltaX - totalResizeDeltaX.current;
           const displacementY = newTotalDeltaY - totalResizeDeltaY.current;
+
+          // restrict width and height
+          if (event.rect.width < MINIMUM_WINDOW_WIDTH) {
+            updateWindowDimensions(MINIMUM_WINDOW_WIDTH, event.rect.height);
+            simulateDrag(0, displacementY);
+
+            totalResizeDeltaY.current = newTotalDeltaY;
+            return;
+          }
+
+          if (event.rect.height < MINIMUM_WINDOW_HEIGHT) {
+            updateWindowDimensions(event.rect.width, MINIMUM_WINDOW_HEIGHT);
+            simulateDrag(displacementX, 0);
+
+            totalResizeDeltaX.current = newTotalDeltaX;
+            return;
+          }
+
+          updateWindowDimensions(event.rect.width, event.rect.height);
           simulateDrag(displacementX, displacementY);
 
           totalResizeDeltaX.current = newTotalDeltaX;
           totalResizeDeltaY.current = newTotalDeltaY;
-
-          updateWindowDimensions(event.rect.width, event.rect.height);
         },
       },
     });
@@ -136,7 +138,7 @@ export const WindowContainer = ({
   return (
     <Styled.DraggableContainer
       style={{ x: position.x, y: position.y }}
-      onMouseDown={assignActiveWindowZIndex}
+      onMouseDown={() => changeActiveIndex(windowId)}
       ref={draggableContainerRef}
     >
       <Styled.WindowContainer
