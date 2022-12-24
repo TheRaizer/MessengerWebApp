@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import {
   FriendWindowStates,
@@ -50,10 +50,18 @@ export const FriendsListState = ({
 }: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
   const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 1);
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
+  console.log(size);
   const friends = useMemo(
     () => data?.map((data) => data.results).flat(),
     [data]
   );
+
+  useEffect(() => {
+    // data can be retrieved from cache, but size remains 1.
+    // So we set size to the number of possibly cached values.
+    if (!friends) return;
+    setSize(friends.length).catch((err) => console.error(err));
+  }, [setSize, friends]);
 
   return (
     <Styled.FriendsListContainer as="ul">
