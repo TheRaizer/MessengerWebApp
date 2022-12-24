@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 import {
   FriendWindowStates,
@@ -6,12 +6,19 @@ import {
 } from '../../../../../types/components/Windows/FriendWindow.type';
 import { ChangeStateProp } from '../../../../../types/hooks/useStateMachine.type';
 import { Col } from '../../../common/Col';
+import useSWRInfinite from 'swr/infinite';
+import { nextCursorSWRGetKey } from '../../../../helpers/pagination';
+import { fetchNextAPI } from '../../../../helpers/api/api';
+import { CursorPaginationResponse } from '../../../../../types/helpers/pagination.type';
+import { UserModel } from '../../../../../types/Models/User.type';
+import { FriendItem } from './FriendItem';
+import { ActiveStatus } from '../../../../../types/components/Windows/FriendList/FriendItem.type';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
     width: 100%;
     gap: 5px;
-    overflow-y: scroll;
+    overflow-y: auto;
     /* width */
     &::-webkit-scrollbar {
       width: 23px;
@@ -33,8 +40,30 @@ const Styled = {
   `,
 };
 
+const fetcher = (url: string) =>
+  fetchNextAPI<CursorPaginationResponse<UserModel>>(url, 'GET').then(
+    ({ data }) => data
+  );
+
 export const FriendsListState = ({
   changeState,
 }: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
-  return <Styled.FriendsListContainer as="ul"></Styled.FriendsListContainer>;
+  const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 10);
+  const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
+  const friends = useMemo(
+    () => data?.map((data) => data.results).flat(),
+    [data]
+  );
+
+  return (
+    <Styled.FriendsListContainer as="ul">
+      {friends?.map((friend) => (
+        <FriendItem
+          key={friend.user_id}
+          friendUsername={friend.username}
+          friendStatus={ActiveStatus.ACTIVE}
+        />
+      ))}
+    </Styled.FriendsListContainer>
+  );
 };
