@@ -48,7 +48,7 @@ const fetcher = (url: string) =>
 export const FriendsListState = ({
   changeState,
 }: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
-  const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 10);
+  const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 1);
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
   const friends = useMemo(
     () => data?.map((data) => data.results).flat(),
@@ -64,6 +64,7 @@ export const FriendsListState = ({
           friendStatus={ActiveStatus.ACTIVE}
         />
       ))}
+      <button onClick={() => setSize(size + 1)}>load more</button>
     </Styled.FriendsListContainer>
   );
 };
