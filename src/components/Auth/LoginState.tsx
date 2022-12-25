@@ -15,7 +15,7 @@ import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
 import { Input } from '../common/Input';
-import { HourGlass } from '../HourGlass';
+import { HourGlass } from '../Loading/HourGlass';
 import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
 
 const Styled = {

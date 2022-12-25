@@ -1,5 +1,12 @@
+export type LoadingProps = {
+  size: number;
+};
+
 export type HourGlassProps = {
   backgroundColor: string;
   fillColor: string;
-  size: number;
-};
+} & LoadingProps;
+
+export type SpinnerProps = {
+  color: string;
+} & LoadingProps;

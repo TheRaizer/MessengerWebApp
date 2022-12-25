@@ -7,5 +7,5 @@ export enum ActiveStatus {
 
 export type FriendItemProps = {
   friendUsername: string;
-  friendStatus: ActiveStatus;
+  friendId: number;
 };

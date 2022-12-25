@@ -40,7 +40,7 @@ export const fetchAPI = async <T>(
   }
 };
 
-export const fetchNextAPI = async <T>(
+export const fetchNextAPI = async <T extends DefaultData>(
   url: string,
   method: Method,
   body?: unknown,

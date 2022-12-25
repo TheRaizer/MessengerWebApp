@@ -23,7 +23,7 @@ import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
 import { setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
-import { HourGlass } from '../HourGlass';
+import { HourGlass } from '../Loading/HourGlass';
 
 const Styled = {
   LoginButton: styled(Button)`

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { HourGlassProps } from '../../types/components/Loading.type';
+import { HourGlassProps } from '../../../types/components/Loading.type';
 
 const hourGlassRotation = (
   backgroundColor: string,
