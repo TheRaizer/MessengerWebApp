@@ -12,10 +12,12 @@ import { fetchNextAPI } from '../../../../helpers/api/api';
 import { CursorPaginationResponse } from '../../../../../types/helpers/pagination.type';
 import { UserModel } from '../../../../../types/Models/User.type';
 import { FriendItem } from './FriendItem';
-import { ActiveStatus } from '../../../../../types/components/Windows/FriendList/FriendItem.type';
+import { useInView } from 'react-intersection-observer';
+import { Spinner } from '../../../Loading/Spinner';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
+    height: 100%;
     width: 100%;
     gap: 5px;
     overflow-y: auto;
@@ -38,6 +40,9 @@ const Styled = {
       background: var(--primary-color);
     }
   `,
+  SpinnerContainer: styled.div`
+    padding-top: 5%;
+  `,
 };
 
 const fetcher = (url: string) =>
@@ -49,19 +54,31 @@ export const FriendsListState = ({
   changeState,
 }: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
   const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 1);
-  const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
-  console.log(size);
+
+  const [ref, inView] = useInView();
+
+  // we do not need to revalidate this data as it will not change.
+  // friend status will update using socketio
+  const { data, size, setSize, isValidating } = useSWRInfinite(
+    getKey,
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+  const hasMore = data && data[data.length - 1]?.cursor.next_page !== null;
   const friends = useMemo(
     () => data?.map((data) => data.results).flat(),
     [data]
   );
 
   useEffect(() => {
-    // data can be retrieved from cache, but size remains 1.
-    // So we set size to the number of possibly cached values.
-    if (!friends) return;
-    setSize(friends.length).catch((err) => console.error(err));
-  }, [setSize, friends]);
+    if (inView && hasMore && !isValidating) {
+      setSize(size + 1).catch((err) => console.error(err));
+    }
+  }, [setSize, friends, inView, hasMore, isValidating, size]);
 
   return (
     <Styled.FriendsListContainer as="ul">
@@ -69,10 +86,14 @@ export const FriendsListState = ({
         <FriendItem
           key={friend.user_id}
           friendUsername={friend.username}
-          friendStatus={ActiveStatus.ACTIVE}
+          friendId={friend.user_id}
         />
       ))}
-      <button onClick={() => setSize(size + 1)}>load more</button>
+      {hasMore && (
+        <Styled.SpinnerContainer ref={ref}>
+          <Spinner color="black" size={1.1} />
+        </Styled.SpinnerContainer>
+      )}
     </Styled.FriendsListContainer>
   );
 };

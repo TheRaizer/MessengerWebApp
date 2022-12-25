@@ -16,7 +16,7 @@ const Styled = {
   RightContainer: styled.div`
     display: flex;
     align-items: center;
-    width: 85%;
+    width: 100%;
     padding: 10px 0px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   `,
@@ -41,15 +41,17 @@ const EnvelopeIcon = dynamic<IconBaseProps>(() =>
 
 export const FriendItem = ({
   friendUsername,
-  friendStatus,
+  friendId,
 }: FriendItemProps): ReactElement => {
+  // use friend id to get friend status from socketio
+
   return (
     <Styled.FriendItemContainer>
       <UserIcon size={40} />
       <Styled.RightContainer>
         <Styled.FriendInfo>
           <Styled.FriendName>{friendUsername}</Styled.FriendName>
-          <Styled.Status>{friendStatus}</Styled.Status>
+          <Styled.Status>active</Styled.Status>
         </Styled.FriendInfo>
         <EnvelopeIcon size={40} />
       </Styled.RightContainer>
