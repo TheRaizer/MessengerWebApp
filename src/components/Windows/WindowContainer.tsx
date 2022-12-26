@@ -91,15 +91,23 @@ export const WindowContainer = ({
     });
   };
 
+  const calculateResizeDisplacement = (event: MoveEvent) => {
+    const newTotalDeltaX = totalResizeDeltaX.current + event.deltaRect.left;
+    const newTotalDeltaY = totalResizeDeltaY.current + event.deltaRect.top;
+
+    // calculate the displacement from the last deltas to the current ones, and simulate a drag event.
+    const displacementX = newTotalDeltaX - totalResizeDeltaX.current;
+    const displacementY = newTotalDeltaY - totalResizeDeltaY.current;
+
+    return { newTotalDeltaX, newTotalDeltaY, displacementX, displacementY };
+  };
+
   const move = useCallback(
     (event: MoveEvent) => {
       //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
-      const newTotalDeltaX = totalResizeDeltaX.current + event.deltaRect.left;
-      const newTotalDeltaY = totalResizeDeltaY.current + event.deltaRect.top;
 
-      // calculate the displacement from the last deltas to the current ones, and simulate a drag event.
-      const displacementX = newTotalDeltaX - totalResizeDeltaX.current;
-      const displacementY = newTotalDeltaY - totalResizeDeltaY.current;
+      const { newTotalDeltaX, newTotalDeltaY, displacementX, displacementY } =
+        calculateResizeDisplacement(event);
 
       const resizeWidth = (constantHeight?: number) => {
         updateWindowDimensions(
@@ -146,7 +154,7 @@ export const WindowContainer = ({
     interact(windowContainerRef.current).resizable({
       edges: { top: false, left: true, bottom: true, right: true },
       listeners: {
-        move: move,
+        move,
       },
     });
   }, [move]);
