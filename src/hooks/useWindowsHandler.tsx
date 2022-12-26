@@ -9,6 +9,8 @@ import { addWindowIndex } from '../helpers/window/windowIndexManager';
 import { useAppSelector } from '../redux/hooks';
 import { selectWindows } from '../redux/slices/windowsSlice';
 
+//* memoizing here is important as it stops rerenders of the entire array of window components
+//* when windows are added or removed from the array.
 const WindowComponent = memo(
   ({
     windowStateValue,

@@ -1,5 +1,6 @@
 import {
   ReactElement,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -42,20 +43,20 @@ export const WindowContainer = ({
   children,
   windowId,
 }: WindowProps): ReactElement => {
-  const { width, height } = useWindowDimensions();
+  const { width: viewportWidth, height: viewportHeight } =
+    useWindowDimensions();
 
   const windowContainerRef = useRef<HTMLDivElement>(null);
   const draggableContainerRef = useRef<HTMLDivElement>(null);
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
-  const [enabled, setEnabled] = useState(false);
 
   const dragConstraints = {
     top: 0,
     left: 0,
-    right: width - windowWidth,
-    bottom: height - windowHeight,
+    right: viewportWidth - windowWidth,
+    bottom: viewportHeight - windowHeight,
   };
 
   // stores the overall resize delta value which is used to calculate the displacement of the window during resize
@@ -90,50 +91,73 @@ export const WindowContainer = ({
     });
   };
 
+  const calculateResizeDisplacement = (event: MoveEvent) => {
+    const newTotalDeltaX = totalResizeDeltaX.current + event.deltaRect.left;
+    const newTotalDeltaY = totalResizeDeltaY.current + event.deltaRect.top;
+
+    // calculate the displacement from the last deltas to the current ones, and simulate a drag event.
+    const displacementX = newTotalDeltaX - totalResizeDeltaX.current;
+    const displacementY = newTotalDeltaY - totalResizeDeltaY.current;
+
+    return { newTotalDeltaX, newTotalDeltaY, displacementX, displacementY };
+  };
+
+  const move = useCallback(
+    (event: MoveEvent) => {
+      //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
+
+      const { newTotalDeltaX, newTotalDeltaY, displacementX, displacementY } =
+        calculateResizeDisplacement(event);
+
+      const resizeWidth = (constantHeight?: number) => {
+        updateWindowDimensions(
+          event.rect.width,
+          constantHeight || windowHeight
+        );
+        simulateDrag(displacementX, 0);
+
+        totalResizeDeltaX.current = newTotalDeltaX;
+      };
+
+      const resizeHeight = (constantWidth?: number) => {
+        updateWindowDimensions(constantWidth || windowWidth, event.rect.height);
+        simulateDrag(0, displacementY);
+
+        totalResizeDeltaY.current = newTotalDeltaY;
+      };
+
+      // restrict width and height at minimum bounds
+      if (event.rect.width < MINIMUM_WINDOW_WIDTH)
+        return resizeHeight(MINIMUM_WINDOW_WIDTH);
+
+      if (event.rect.height < MINIMUM_WINDOW_HEIGHT)
+        return resizeWidth(MINIMUM_WINDOW_HEIGHT);
+
+      // restrict width and height at maximum bounds
+      if (event.rect.width >= viewportWidth) return resizeHeight(viewportWidth);
+
+      if (event.rect.height >= viewportHeight)
+        return resizeWidth(viewportHeight);
+
+      updateWindowDimensions(event.rect.width, event.rect.height);
+      simulateDrag(displacementX, displacementY);
+
+      totalResizeDeltaX.current = newTotalDeltaX;
+      totalResizeDeltaY.current = newTotalDeltaY;
+    },
+    [simulateDrag, viewportHeight, viewportWidth, windowHeight, windowWidth]
+  );
+
   useEffect(() => {
-    if (!windowContainerRef.current || enabled) return;
-    setEnabled(true);
+    if (!windowContainerRef.current) return;
 
     interact(windowContainerRef.current).resizable({
       edges: { top: false, left: true, bottom: true, right: true },
       listeners: {
-        move: (event: MoveEvent) => {
-          //* this move function is NOT called every frame, so there is some unexpected behaviour when resizing very fast.
-          const newTotalDeltaX =
-            totalResizeDeltaX.current + event.deltaRect.left;
-          const newTotalDeltaY =
-            totalResizeDeltaY.current + event.deltaRect.top;
-
-          // calculate the displacement from the last deltas to the current ones, and simulate a drag event.
-          const displacementX = newTotalDeltaX - totalResizeDeltaX.current;
-          const displacementY = newTotalDeltaY - totalResizeDeltaY.current;
-
-          // restrict width and height
-          if (event.rect.width < MINIMUM_WINDOW_WIDTH) {
-            updateWindowDimensions(MINIMUM_WINDOW_WIDTH, event.rect.height);
-            simulateDrag(0, displacementY);
-
-            totalResizeDeltaY.current = newTotalDeltaY;
-            return;
-          }
-
-          if (event.rect.height < MINIMUM_WINDOW_HEIGHT) {
-            updateWindowDimensions(event.rect.width, MINIMUM_WINDOW_HEIGHT);
-            simulateDrag(displacementX, 0);
-
-            totalResizeDeltaX.current = newTotalDeltaX;
-            return;
-          }
-
-          updateWindowDimensions(event.rect.width, event.rect.height);
-          simulateDrag(displacementX, displacementY);
-
-          totalResizeDeltaX.current = newTotalDeltaX;
-          totalResizeDeltaY.current = newTotalDeltaY;
-        },
+        move,
       },
     });
-  }, [simulateDrag, enabled]);
+  }, [move]);
 
   return (
     <Styled.DraggableContainer

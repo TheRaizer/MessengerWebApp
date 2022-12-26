@@ -54,7 +54,6 @@ export const FriendsListState = ({
   changeState,
 }: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
   const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 1);
-
   const [ref, inView] = useInView();
 
   // we do not need to revalidate this data as it will not change.
