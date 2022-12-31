@@ -1,19 +1,17 @@
 import { NextApiResponse } from 'next';
-import { withSessionRoute } from '../../../helpers/api/session';
+import { withAuthRoute } from '../../../helpers/api/session';
 import { AuthRequest } from '../../../../types/pages/api/auth/auth.type';
 import { DefaultData } from '../../../../types/responseData/DefaultData.type';
 import { StatusCodes } from 'http-status-codes';
 import { enforceMethod, setRes } from '../../../helpers/api/api';
 import { Method } from '../../../../types/helpers/api/request.type';
 
-const signoutRoute = async (req: AuthRequest, res: NextApiResponse) => {
+const signoutRoute = (req: AuthRequest, res: NextApiResponse) => {
   enforceMethod<DefaultData>(res, req.method as Method, 'PUT', {});
 
-  req.session.accessToken = undefined;
-
-  await req.session.save();
+  res.setHeader('Set-Cookie', `accessToken=''; Path=/; Max-Age=-1`);
 
   return setRes<DefaultData>(res, StatusCodes.OK, {});
 };
 
-export default withSessionRoute(signoutRoute);
+export default withAuthRoute(signoutRoute);

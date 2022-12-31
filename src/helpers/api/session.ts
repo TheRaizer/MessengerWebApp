@@ -1,6 +1,3 @@
-import { IncomingHttpHeaders } from 'http';
-import { IronSessionOptions } from 'iron-session';
-import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 import {
   UnknownObject,
@@ -9,53 +6,29 @@ import {
 } from '../../../types/helpers/api/session.type';
 import { isValidAccessToken } from './aws';
 
-declare module 'iron-session' {
-  interface IronSessionData {
-    accessToken?: string;
-  }
-}
-
-const sessionOptions: IronSessionOptions = {
-  password: process.env.IRON_SESSION_ENCRYPT_KEY as string,
-  cookieName: 'messenger',
-  cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
-  },
-};
-
 /**
- * Retrieves auth token from HTTP headers.
- */
-const getAuthToken = (headers: IncomingHttpHeaders): string | null => {
-  const parsed = headers.authorization?.replace('Bearer ', '') ?? null;
-  return parsed;
-};
-
-/**
- * Wrapper for the standard NextApiHandler, that provides the request with iron sessions, encrypted session data.
+ * Wrapper for the standard NextApiHandler, that provides the request with an authentication token
  * @param handler the standard NextApiHandler (api route function that recieves a NextApiResponse and NextApiRequest).
- * @returns the given handler with the additional iron session data.
  */
-export const withSessionRoute = (
+export const withAuthRoute = (
   handler: (
     req: NextApiRequest,
     res: NextApiResponse,
-    token: string | null
+    token: string
   ) => void | Promise<void>
 ): NextApiHandler => {
-  return withIronSessionApiRoute(async (req, res) => {
+  return async (req, res) => {
     try {
-      return await handler(req, res, getAuthToken(req.headers));
-    } catch {
-      res.status(500).send({ detail: 'API Error' });
-    }
-  }, sessionOptions);
-};
+      const authToken = req.cookies['accessToken'];
 
-const withSessionSsr = <T extends UnknownObject>(
-  handler: ContextHandler<T>
-): SsrWithProps<T> => {
-  return withIronSessionSsr(handler, sessionOptions);
+      if (!authToken) {
+        throw Error();
+      }
+      return await handler(req, res, authToken);
+    } catch {
+      res.status(401).send({ detail: 'No access token was given' });
+    }
+  };
 };
 
 /**
@@ -65,23 +38,28 @@ const withSessionSsr = <T extends UnknownObject>(
 export function withAuthentication<T extends UnknownObject = UnknownObject>(
   handler: ContextHandler<T>
 ): SsrWithProps<T> {
-  return withSessionSsr(async (context) => {
-    if (context.req.session.accessToken) {
-      const hasAuthentication = await isValidAccessToken(
-        context.req.session.accessToken
-      );
-
-      if (hasAuthentication) {
-        return handler(context);
-      }
-    }
-
+  return async (context) => {
     const redirectHome = {
       redirect: {
         destination: '/',
         permanent: false,
       },
     };
+
+    try {
+      const accessToken = context.req.cookies['accessToken'];
+
+      if (accessToken) {
+        const hasAuthentication = await isValidAccessToken(accessToken);
+
+        if (hasAuthentication) {
+          return handler(context);
+        }
+      }
+    } catch (err) {
+      return redirectHome;
+    }
+
     return redirectHome;
-  });
+  };
 }
