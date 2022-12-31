@@ -37,7 +37,7 @@ export const authenticate = async (
   // set HTTP only cookie that stores the access token
   res.setHeader(
     'Set-Cookie',
-    `accessToken=${access_token}; HttpOnly; Path=/; ${secure}`
+    `access_token=${access_token}; HttpOnly; Path=/; ${secure}`
   );
 
   const userData = jwt_decode<UserStateProps>(access_token);

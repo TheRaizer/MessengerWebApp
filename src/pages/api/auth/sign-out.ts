@@ -9,8 +9,7 @@ import { Method } from '../../../../types/helpers/api/request.type';
 const signoutRoute = (req: AuthRequest, res: NextApiResponse) => {
   enforceMethod<DefaultData>(res, req.method as Method, 'PUT', {});
 
-  res.setHeader('Set-Cookie', `accessToken=''; Path=/; Max-Age=-1`);
-
+  res.setHeader('Set-Cookie', `access_token=''; Path=/; Max-Age=-1`);
   return setRes<DefaultData>(res, StatusCodes.OK, {});
 };
 
