@@ -32,8 +32,13 @@ export const authenticate = async (
     });
   }
 
-  req.session.accessToken = access_token;
-  await req.session.save();
+  const secure = process.env.NODE_ENV === 'production' ? 'Secure' : '';
+
+  // set HTTP only cookie that stores the access token
+  res.setHeader(
+    'Set-Cookie',
+    `accessToken=${access_token}; HttpOnly; Path=/; ${secure}`
+  );
 
   const userData = jwt_decode<UserStateProps>(access_token);
 

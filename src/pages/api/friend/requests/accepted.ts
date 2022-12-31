@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { withSessionRoute } from '../../../../helpers/api/session';
+import { withAuthRoute } from '../../../../helpers/api/session';
 import {
   enforceMethod,
   fetchServerAPI,
@@ -13,7 +13,8 @@ import { StatusCodes } from 'http-status-codes';
 
 const acceptedFriendsRoute = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
+  accessToken: string
 ) => {
   const { limit, cursor }: { limit?: string; cursor?: string } = req.query;
   enforceMethod<UserData>(res, req.method as Method, 'GET', {});
@@ -27,7 +28,7 @@ const acceptedFriendsRoute = async (
       'GET',
       undefined,
       undefined,
-      req.session.accessToken
+      accessToken
     );
 
     return setRes<CursorPaginationResponse<UserModel>>(
@@ -48,4 +49,4 @@ const acceptedFriendsRoute = async (
   }
 };
 
-export default withSessionRoute(acceptedFriendsRoute);
+export default withAuthRoute(acceptedFriendsRoute);

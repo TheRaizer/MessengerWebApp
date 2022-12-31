@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { withSessionRoute } from '../../../helpers/api/session';
+import { withAuthRoute } from '../../../helpers/api/session';
 import { AuthRequest } from '../../../../types/pages/api/auth/auth.type';
 import { enforceMethod, setRes } from '../../../helpers/api/api';
 import { StatusCodes } from 'http-status-codes';
@@ -11,16 +11,20 @@ import jwt_decode from 'jwt-decode';
 import { Method } from '../../../../types/helpers/api/request.type';
 import { isValidAccessToken } from '../../../helpers/api/aws';
 
-const currentUserRoute = async (req: AuthRequest, res: NextApiResponse) => {
+const currentUserRoute = async (
+  req: AuthRequest,
+  res: NextApiResponse,
+  accessToken: string
+) => {
   enforceMethod<UserData>(res, req.method as Method, 'GET', {});
 
-  if (!req.session.accessToken) {
+  if (!accessToken) {
     return setRes<UserData>(res, StatusCodes.NOT_FOUND, {
       detail: 'no access token was found',
     });
   }
 
-  const isValidToken = await isValidAccessToken(req.session.accessToken);
+  const isValidToken = await isValidAccessToken(accessToken);
 
   if (!isValidToken) {
     return setRes<UserData>(res, StatusCodes.UNAUTHORIZED, {
@@ -28,7 +32,7 @@ const currentUserRoute = async (req: AuthRequest, res: NextApiResponse) => {
     });
   }
 
-  const userData = jwt_decode<UserStateProps>(req.session.accessToken);
+  const userData = jwt_decode<UserStateProps>(accessToken);
 
   return setRes<UserData>(res, StatusCodes.OK, {
     user: {
@@ -39,4 +43,4 @@ const currentUserRoute = async (req: AuthRequest, res: NextApiResponse) => {
   });
 };
 
-export default withSessionRoute(currentUserRoute);
+export default withAuthRoute(currentUserRoute);
