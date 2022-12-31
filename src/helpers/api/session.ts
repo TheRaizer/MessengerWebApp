@@ -7,7 +7,7 @@ import {
 import { isValidAccessToken } from './aws';
 
 /**
- * Wrapper for the standard NextApiHandler, that provides the request with am authentication token
+ * Wrapper for the standard NextApiHandler, that provides the request with an authentication token
  * @param handler the standard NextApiHandler (api route function that recieves a NextApiResponse and NextApiRequest).
  */
 export const withAuthRoute = (
