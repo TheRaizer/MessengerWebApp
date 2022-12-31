@@ -19,7 +19,7 @@ export const withAuthRoute = (
 ): NextApiHandler => {
   return async (req, res) => {
     try {
-      const authToken = req.cookies['accessToken'];
+      const authToken = req.cookies['access_token'];
 
       if (!authToken) {
         throw Error();
@@ -47,7 +47,7 @@ export function withAuthentication<T extends UnknownObject = UnknownObject>(
     };
 
     try {
-      const accessToken = context.req.cookies['accessToken'];
+      const accessToken = context.req.cookies['access_token'];
 
       if (accessToken) {
         const hasAuthentication = await isValidAccessToken(accessToken);
