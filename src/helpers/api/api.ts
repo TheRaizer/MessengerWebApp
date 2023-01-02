@@ -87,12 +87,15 @@ export const fetchAuthAPI = async <T extends DefaultData>(
   };
 
   try {
-    const res = await fetch(`${process.env.SERVER_API_URL as string}/${url}`, {
-      ...options,
-      body: body,
-      method: method,
-      headers,
-    });
+    const res = await fetch(
+      `${process.env.SERVER_API_URL as string}/auth/${url}`,
+      {
+        ...options,
+        body: body,
+        method: method,
+        headers,
+      }
+    );
 
     const data: T = (await res.json()) as T;
     return { data, res };

@@ -22,7 +22,12 @@ export const generateCSP = () => {
 
   add('script-src', `'unsafe-eval'`, { devOnly: true });
 
-  add('connect-src', `'self'`);
+  add(
+    'connect-src',
+    `'self' ${process.env.SOCKET_URL as string} ${
+      process.env.SERVER_API_URL as string
+    };`
+  );
 
   add('style-src', `'self' 'unsafe-inline'`);
 

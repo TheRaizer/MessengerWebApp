@@ -1,3 +1,4 @@
+import { CookieKeys } from './../cookie';
 import { StatusCodes } from 'http-status-codes';
 import { AuthRequest } from '../../../types/pages/api/auth/auth.type';
 import {
@@ -23,7 +24,7 @@ export const authenticate = async (
   const {
     data: { access_token, detail },
     res: authRes,
-  } = await fetchAuthAPI<AccessTokenData>(`auth/${route}`, 'POST', body);
+  } = await fetchAuthAPI<AccessTokenData>(`${route}`, 'POST', body);
 
   if (authRes.status !== StatusCodes.CREATED) {
     console.error(detail);
@@ -34,19 +35,29 @@ export const authenticate = async (
 
   const secure = process.env.NODE_ENV === 'production' ? 'Secure' : '';
 
-  // set HTTP only cookie that stores the access token
+  //* We will knowingly not use httpOnly setting.
+  //* This does leave the access_token open to XSS attacks, however extra preventitive measures
+  //* will be taken to block XSS attacks.
+  //* We do this so that we can send the access_token to socketio which otherwise wouldn't
+  //* be possible with httpOnly cookies.
   res.setHeader(
     'Set-Cookie',
-    `access_token=${access_token}; HttpOnly; Path=/; ${secure}`
+    `${CookieKeys.ACCESS_TOKEN}=${access_token}; Path=/; ${secure}`
   );
 
-  const userData = jwt_decode<UserStateProps>(access_token);
-
-  return setRes<UserData>(res, StatusCodes.CREATED, {
-    user: {
-      user_id: userData.user_id,
-      username: userData.username,
-      email: userData.email,
-    },
-  });
+  try {
+    const userData = jwt_decode<UserStateProps>(access_token);
+    return setRes<UserData>(res, StatusCodes.CREATED, {
+      user: {
+        user_id: userData.user_id,
+        username: userData.username,
+        email: userData.email,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return setRes<UserData>(res, StatusCodes.INTERNAL_SERVER_ERROR, {
+      detail: 'access token could not be decoded',
+    });
+  }
 };
