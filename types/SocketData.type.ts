@@ -4,3 +4,7 @@ export type StatusChangeData = {
   user_id: number;
   status: ActiveStatus;
 };
+
+export type FriendStatusChangeData = {
+  friend_id: number;
+} & StatusChangeData;

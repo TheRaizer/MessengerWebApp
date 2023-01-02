@@ -1,30 +1,35 @@
 import { useEffect } from 'react';
 import { getSocket } from '../../../helpers/sockets/socketio';
-import { useAppDispatch } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addOrUpdateStatus } from '../../../redux/slices/friendStatusesSlice';
 import { ActiveStatus } from '../../../../types/components/Windows/FriendList/FriendItem.type';
+import { selectUser } from '../../../redux/slices/userSlice';
 
 export const useUserStatusSocket = (): void => {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector(selectUser);
 
   useEffect(() => {
+    if (!user) return;
+
     getSocket()
       .then((socket) => {
+        // this will fire if one of your friend's is broadcasting their status
+        // to all their friends on initial connection.
         socket.on('status change', (data) => {
           dispatch(addOrUpdateStatus(data));
-          console.log('status change');
-          console.log(data);
 
+          // send a active status to the friend that sent you their new status
           socket.emit('broadcast_current_status_to_friend', {
-            user_id: data.user_id,
+            user_id: user.user_id,
             status: ActiveStatus.ACTIVE,
+            friend_id: data.user_id,
           });
         });
 
+        // if a friend's status has changed this will fire
         socket.on('friend status change', (data) => {
           dispatch(addOrUpdateStatus(data));
-          console.log('friend status change');
-          console.log(data);
         });
       })
       .catch((err) => console.error(err));
@@ -36,5 +41,5 @@ export const useUserStatusSocket = (): void => {
         })
         .catch((err) => console.error(err));
     };
-  }, [dispatch]);
+  }, [dispatch, user]);
 };
