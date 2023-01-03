@@ -29,19 +29,10 @@ const MessagesIcon = dynamic<IconBaseProps>(() =>
 );
 
 export const IconContainer = (): ReactElement => {
-  const messageWindowProps: MessageWindowProps = {
-    usernameToMessage: 'some_username',
-    groupChatId: undefined,
-  };
-  const friendWindowProps: FriendWindowProps = {
+  const openMessageWindow = useOpenWindow(WindowType.MESSAGE, {});
+  const openFriendWindow = useOpenWindow(WindowType.FRIEND, {
     friendUsername: '',
-  };
-
-  const openMessageWindow = useOpenWindow(
-    WindowType.MESSAGE,
-    messageWindowProps
-  );
-  const openFriendWindow = useOpenWindow(WindowType.FRIEND, friendWindowProps);
+  });
 
   return (
     <Styled.IconContainer>
