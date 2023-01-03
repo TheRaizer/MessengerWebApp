@@ -4,6 +4,7 @@ import { appLoadingReducer } from './slices/appLoadingSlice';
 import { modalReducer } from './slices/modalSlice';
 import { userReducer } from './slices/userSlice';
 import { windowsReducer } from './slices/windowsSlice';
+import { friendStatusesReducer } from './slices/friendStatusesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     modal: modalReducer,
     windows: windowsReducer,
     user: userReducer,
+    friendStatuses: friendStatusesReducer,
   },
 });

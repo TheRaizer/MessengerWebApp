@@ -30,7 +30,7 @@ const Styled = {
   `,
 };
 
-const Home = (): ReactElement => {
+const Messenger = (): ReactElement => {
   const messageWindowProps: MessageWindowProps = {
     usernameToMessage: 'some_username',
     groupChatId: undefined,
@@ -63,4 +63,4 @@ const Home = (): ReactElement => {
   );
 };
 
-export default Home;
+export default Messenger;

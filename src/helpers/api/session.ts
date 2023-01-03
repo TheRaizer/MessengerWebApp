@@ -5,6 +5,7 @@ import {
   SsrWithProps,
 } from '../../../types/helpers/api/session.type';
 import { isValidAccessToken } from './aws';
+import { CookieKeys, deleteCookie, deleteCookieServerside } from '../cookie';
 
 /**
  * Wrapper for the standard NextApiHandler, that provides the request with an authentication token
@@ -19,14 +20,14 @@ export const withAuthRoute = (
 ): NextApiHandler => {
   return async (req, res) => {
     try {
-      const authToken = req.cookies['access_token'];
+      const authToken = req.cookies[CookieKeys.ACCESS_TOKEN];
 
       if (!authToken) {
-        throw Error();
+        return res.status(401).send({ detail: 'No access token was given' });
       }
       return await handler(req, res, authToken);
     } catch {
-      res.status(401).send({ detail: 'No access token was given' });
+      return res.status(500).send({ detail: 'API Error' });
     }
   };
 };
@@ -47,7 +48,7 @@ export function withAuthentication<T extends UnknownObject = UnknownObject>(
     };
 
     try {
-      const accessToken = context.req.cookies['access_token'];
+      const accessToken = context.req.cookies[CookieKeys.ACCESS_TOKEN];
 
       if (accessToken) {
         const hasAuthentication = await isValidAccessToken(accessToken);
@@ -55,6 +56,8 @@ export function withAuthentication<T extends UnknownObject = UnknownObject>(
         if (hasAuthentication) {
           return handler(context);
         }
+
+        deleteCookieServerside(CookieKeys.ACCESS_TOKEN, context.res);
       }
     } catch (err) {
       return redirectHome;

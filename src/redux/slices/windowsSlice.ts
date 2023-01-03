@@ -28,10 +28,11 @@ const windowsSlice = createSlice({
       delete state[action.payload];
       removeWindowIndex(action.payload);
     },
+    reset: () => ({}),
   },
 });
 
-export const { addWindow, removeWindow } = windowsSlice.actions;
+export const { addWindow, removeWindow, reset } = windowsSlice.actions;
 
 export const selectWindows = (state: RootState) => state.windows;
 export const selectWindow = (id: WindowIdentifier) => (state: RootState) =>

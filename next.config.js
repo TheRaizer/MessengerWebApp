@@ -38,6 +38,10 @@ const nextConfig = {
     // Enables the styled-components SWC transform
     styledComponents: true,
   },
+  env: {
+    SERVER_API_URL: process.env.SERVER_API_URL,
+    SOCKET_URL: process.env.SOCKET_URL,
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

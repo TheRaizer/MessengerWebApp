@@ -5,11 +5,13 @@ import { DefaultData } from '../../../../types/responseData/DefaultData.type';
 import { StatusCodes } from 'http-status-codes';
 import { enforceMethod, setRes } from '../../../helpers/api/api';
 import { Method } from '../../../../types/helpers/api/request.type';
+import { CookieKeys, deleteCookieServerside } from '../../../helpers/cookie';
 
 const signoutRoute = (req: AuthRequest, res: NextApiResponse) => {
   enforceMethod<DefaultData>(res, req.method as Method, 'PUT', {});
 
-  res.setHeader('Set-Cookie', `access_token=''; Path=/; Max-Age=-1`);
+  deleteCookieServerside(CookieKeys.ACCESS_TOKEN, res);
+
   return setRes<DefaultData>(res, StatusCodes.OK, {});
 };
 
