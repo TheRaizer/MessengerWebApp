@@ -76,7 +76,7 @@ export const SignUpState = ({
       )
     )
       validInputs = false;
-    if (!validInputs) return;
+    if (!validInputs) return setLoading(false);
 
     const body: AuthRequirements = {
       email,
@@ -88,28 +88,27 @@ export const SignUpState = ({
         if (data.detail || !data.user) {
           switch (data.detail) {
             case EmailError.ACCOUNT_EXISTS:
-              checkEmailValidity(
-                'account already exists with this email',
-                () => ({
-                  isValid: false,
-                  errors: [EmailError.ACCOUNT_EXISTS],
-                })
-              );
+              checkEmailValidity('account already exists', () => ({
+                isValid: false,
+                errors: [EmailError.ACCOUNT_EXISTS],
+              }));
               break;
             case UsernameError.USERNAME_TAKEN:
               checkUsernameValidity('username taken', () => ({
                 isValid: false,
                 errors: [UsernameError.USERNAME_TAKEN],
               }));
+              break;
           }
+          return;
         }
 
         dispatch(setUserState(data.user));
       })
       .catch((err) => {
         console.error(err);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   useKeyListener(signUp, Key.Enter);
