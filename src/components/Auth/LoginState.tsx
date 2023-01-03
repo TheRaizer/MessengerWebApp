@@ -17,6 +17,7 @@ import { CenteredCol } from '../common/Col';
 import { Input } from '../common/Input';
 import { HourGlass } from '../Loading/HourGlass';
 import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
+import { emitErrorToast } from '../../helpers/toast/toast';
 
 const Styled = {
   LoginButton: styled(Button)`
@@ -49,8 +50,9 @@ export const LoginState = ({
 
         dispatch(setUserState(data.user));
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         console.error(err);
+        emitErrorToast(err.message);
         setLoading(false);
       });
   };
