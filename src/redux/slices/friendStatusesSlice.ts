@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../types/redux/store.type';
 import { ActiveStatus } from '../../../types/components/Windows/FriendList/FriendItem.type';
-import { StatusChangeData } from '../../../types/SocketData.type';
+import { StatusChangeEventData } from '../../../types/SocketData.type';
 
 const initialState: { [key: number]: ActiveStatus } = {};
 
@@ -9,7 +9,10 @@ const friendStatusesSlice = createSlice({
   name: 'friendStatuses',
   initialState: initialState,
   reducers: {
-    addOrUpdateStatus: (state, action: PayloadAction<StatusChangeData>) => {
+    addOrUpdateStatus: (
+      state,
+      action: PayloadAction<StatusChangeEventData>
+    ) => {
       state[action.payload.user_id] = action.payload.status;
       return state;
     },

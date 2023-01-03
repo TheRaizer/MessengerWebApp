@@ -1,10 +1,10 @@
 import { ActiveStatus } from './components/Windows/FriendList/FriendItem.type';
 
-export type StatusChangeData = {
+export type StatusChangeEventData = {
   user_id: number;
   status: ActiveStatus;
 };
 
-export type FriendStatusChangeData = {
+export type FriendStatusChangeEventData = {
   friend_id: number;
-} & StatusChangeData;
+} & StatusChangeEventData;

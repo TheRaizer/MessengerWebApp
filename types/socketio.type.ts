@@ -1,12 +1,15 @@
-import { FriendStatusChangeData, StatusChangeData } from './SocketData.type';
+import {
+  FriendStatusChangeEventData,
+  StatusChangeEventData,
+} from './SocketData.type';
 
 export interface ServerToClientEvents {
-  ['status change']: (data: StatusChangeData) => void;
-  ['friend status change']: (data: StatusChangeData) => void;
+  ['status change']: (data: StatusChangeEventData) => void;
+  ['friend status change']: (data: StatusChangeEventData) => void;
 }
 
 export interface ClientToServerEvents {
   ['broadcast_current_status_to_friend']: (
-    data: FriendStatusChangeData
+    data: FriendStatusChangeEventData
   ) => void;
 }
