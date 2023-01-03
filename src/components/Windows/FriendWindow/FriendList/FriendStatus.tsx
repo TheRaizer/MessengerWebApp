@@ -1,5 +1,7 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
+import { useAppSelector } from '../../../../redux/hooks';
+import { selectFriendStatuses } from '../../../../redux/slices/friendStatusesSlice';
 
 const Styled = {
   Status: styled.p`
@@ -12,5 +14,6 @@ export const FriendStatus = ({
 }: {
   friendId: number;
 }): ReactElement => {
-  return <Styled.Status></Styled.Status>;
+  const friendStatuses = useAppSelector(selectFriendStatuses);
+  return <Styled.Status>{friendStatuses[friendId] || 'offline'}</Styled.Status>;
 };

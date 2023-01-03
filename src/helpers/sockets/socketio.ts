@@ -26,3 +26,10 @@ export const getSocket = async (): Promise<
 
   return socket;
 };
+
+export const closeSocket = () => {
+  if (socket) {
+    socket.close();
+    socket = null;
+  }
+};

@@ -4,10 +4,12 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addOrUpdateStatus } from '../../../redux/slices/friendStatusesSlice';
 import { ActiveStatus } from '../../../../types/components/Windows/FriendList/FriendItem.type';
 import { selectUser } from '../../../redux/slices/userSlice';
+import { useRouter } from 'next/router';
 
 export const useUserStatusSocket = (): void => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectUser);
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -41,5 +43,5 @@ export const useUserStatusSocket = (): void => {
         })
         .catch((err) => console.error(err));
     };
-  }, [dispatch, user]);
+  }, [dispatch, user, router.pathname]);
 };

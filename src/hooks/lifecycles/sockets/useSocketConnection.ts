@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { getSocket } from '../../../helpers/sockets/socketio';
+import { useRouter } from 'next/router';
 
 export const useSocketConnection = (): void => {
+  const router = useRouter();
+
   useEffect(() => {
     getSocket()
       .then((socket) => {
@@ -22,5 +25,5 @@ export const useSocketConnection = (): void => {
         })
         .catch((err) => console.error(err));
     };
-  }, []);
+  }, [router.pathname]);
 };

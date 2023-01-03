@@ -19,10 +19,12 @@ const friendStatusesSlice = createSlice({
     removeStatus: (state, action: PayloadAction<{ user_id: number }>) => {
       delete state[action.payload.user_id];
     },
+    reset: () => initialState,
   },
 });
 
-export const { addOrUpdateStatus, removeStatus } = friendStatusesSlice.actions;
+export const { addOrUpdateStatus, removeStatus, reset } =
+  friendStatusesSlice.actions;
 
 export const selectFriendStatuses = (state: RootState) => state.friendStatuses;
 

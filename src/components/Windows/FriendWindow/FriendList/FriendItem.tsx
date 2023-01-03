@@ -4,6 +4,7 @@ import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { FriendItemProps } from '../../../../../types/components/Windows/FriendList/FriendItem.type';
 import { Col } from '../../../common/Col';
+import { FriendStatus } from './FriendStatus';
 
 const Styled = {
   FriendItemContainer: styled.li`
@@ -22,9 +23,6 @@ const Styled = {
   `,
   FriendName: styled.p`
     font-size: 1em;
-  `,
-  Status: styled.p`
-    font-size: 0.8em;
   `,
   FriendInfo: styled(Col)`
     width: 100%;
@@ -51,7 +49,7 @@ export const FriendItem = ({
       <Styled.RightContainer>
         <Styled.FriendInfo>
           <Styled.FriendName>{friendUsername}</Styled.FriendName>
-          <Styled.Status>active</Styled.Status>
+          <FriendStatus friendId={friendId} />
         </Styled.FriendInfo>
         <EnvelopeIcon size={40} />
       </Styled.RightContainer>
