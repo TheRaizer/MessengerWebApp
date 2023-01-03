@@ -3,11 +3,8 @@ import styled from 'styled-components';
 import Head from 'next/head';
 import { CenteredCol } from '../components/common/Col';
 import { Windows } from '../components/Windows/WindowHandler';
-import { useOpenWindow } from '../hooks/actions/window/useOpenWindow';
-import { WindowType } from '../../types/redux/states/windows.type';
-import { MessageWindowProps } from '../../types/components/Windows/MessageWindow.type';
-import { FriendWindowProps } from '../../types/components/Windows/FriendWindow.type';
 import { withAuthentication } from '../helpers/api/session';
+import { IconContainer } from '../components/DesktopIcons/IconContainer';
 
 export const getServerSideProps = withAuthentication(() => {
   return {
@@ -31,20 +28,6 @@ const Styled = {
 };
 
 const Messenger = (): ReactElement => {
-  const messageWindowProps: MessageWindowProps = {
-    usernameToMessage: 'some_username',
-    groupChatId: undefined,
-  };
-  const friendWindowProps: FriendWindowProps = {
-    friendUsername: '',
-  };
-
-  const openMessageWindow = useOpenWindow(
-    WindowType.MESSAGE,
-    messageWindowProps
-  );
-  const openFriendWindow = useOpenWindow(WindowType.FRIEND, friendWindowProps);
-
   return (
     <>
       <Head>
@@ -56,8 +39,7 @@ const Messenger = (): ReactElement => {
       </Head>
       <Styled.BackgroundContainer>
         <Windows />
-        <button onClick={openMessageWindow}>Open Message Window</button>
-        <button onClick={openFriendWindow}>Open Friend Window</button>
+        <IconContainer />
       </Styled.BackgroundContainer>
     </>
   );
