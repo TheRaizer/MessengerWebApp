@@ -1,29 +1,22 @@
 import { useEffect } from 'react';
-import { getSocket } from '../../../helpers/sockets/socketio';
 import { useRouter } from 'next/router';
+import { useSocket } from './useSocket';
 
 export const useSocketConnection = (): void => {
   const router = useRouter();
+  const socket = useSocket();
 
   useEffect(() => {
-    getSocket()
-      .then((socket) => {
-        socket.on('connect', () => {
-          console.log('connect');
-        });
-        socket.on('disconnect', () => {
-          console.log('disconnect');
-        });
-      })
-      .catch((err) => console.error(err));
+    socket?.on('connect', () => {
+      console.log('connect');
+    });
+    socket?.on('disconnect', () => {
+      console.log('disconnect');
+    });
 
     return () => {
-      getSocket()
-        .then((socket) => {
-          socket.off('connect');
-          socket.off('disconnect');
-        })
-        .catch((err) => console.error(err));
+      socket?.removeListener('connect');
+      socket?.removeListener('disconnect');
     };
-  }, [router.pathname]);
+  }, [router.pathname, socket]);
 };

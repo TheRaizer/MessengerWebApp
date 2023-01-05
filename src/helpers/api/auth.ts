@@ -9,6 +9,7 @@ import { AccessTokenData } from '../../../types/responseData/AccessTokenData.typ
 import { fetchAuthAPI, setRes } from './api';
 import jwt_decode from 'jwt-decode';
 import { NextApiResponse } from 'next';
+import { serialize } from 'cookie';
 
 export const authenticate = async (
   route: string,
@@ -33,16 +34,16 @@ export const authenticate = async (
     });
   }
 
-  const secure = process.env.NODE_ENV === 'production' ? 'Secure' : '';
+  const secure = process.env.NODE_ENV === 'production' ? true : false;
 
-  //* We will knowingly not use httpOnly setting.
-  //* This does leave the access_token open to XSS attacks, however extra preventitive measures
-  //* will be taken to block XSS attacks.
-  //* We do this so that we can send the access_token to socketio which otherwise wouldn't
-  //* be possible with httpOnly cookies.
   res.setHeader(
     'Set-Cookie',
-    `${CookieKeys.ACCESS_TOKEN}=${access_token}; Path=/; ${secure}`
+    serialize(CookieKeys.ACCESS_TOKEN, access_token, {
+      httpOnly: true,
+      secure: secure,
+      path: '/',
+      sameSite: 'lax',
+    })
   );
 
   try {

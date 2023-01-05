@@ -5,7 +5,7 @@ import {
   SsrWithProps,
 } from '../../../types/helpers/api/session.type';
 import { isValidAccessToken } from './aws';
-import { CookieKeys, deleteCookie, deleteCookieServerside } from '../cookie';
+import { CookieKeys, deleteHttpOnlyCookie } from '../cookie';
 
 /**
  * Wrapper for the standard NextApiHandler, that provides the request with an authentication token
@@ -57,7 +57,7 @@ export function withAuthentication<T extends UnknownObject = UnknownObject>(
           return handler(context);
         }
 
-        deleteCookieServerside(CookieKeys.ACCESS_TOKEN, context.res);
+        deleteHttpOnlyCookie(CookieKeys.ACCESS_TOKEN, context.res);
       }
     } catch (err) {
       return redirectHome;

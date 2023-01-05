@@ -5,12 +5,12 @@ import { DefaultData } from '../../../../types/responseData/DefaultData.type';
 import { StatusCodes } from 'http-status-codes';
 import { enforceMethod, setRes } from '../../../helpers/api/api';
 import { Method } from '../../../../types/helpers/api/request.type';
-import { CookieKeys, deleteCookieServerside } from '../../../helpers/cookie';
+import { CookieKeys, deleteHttpOnlyCookie } from '../../../helpers/cookie';
 
 const signoutRoute = (req: AuthRequest, res: NextApiResponse) => {
   enforceMethod<DefaultData>(res, req.method as Method, 'PUT', {});
 
-  deleteCookieServerside(CookieKeys.ACCESS_TOKEN, res);
+  deleteHttpOnlyCookie(CookieKeys.ACCESS_TOKEN, res);
 
   return setRes<DefaultData>(res, StatusCodes.OK, {});
 };
