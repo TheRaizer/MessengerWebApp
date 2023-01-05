@@ -34,7 +34,7 @@ export const authenticate = async (
     });
   }
 
-  const secure = process.env.NODE_ENV === 'production' ? true : false;
+  const secure = process.env.NODE_ENV === 'production';
 
   res.setHeader(
     'Set-Cookie',
