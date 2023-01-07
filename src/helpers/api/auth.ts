@@ -22,6 +22,7 @@ export const authenticate = async (
     password: req.body.password,
   });
 
+  // authenticate user and retrieve access token
   const {
     data: { access_token, detail },
     res: authRes,
@@ -34,17 +35,35 @@ export const authenticate = async (
     });
   }
 
+  // retrieve socketio token for socket connection authentication
+  const {
+    data: { access_token: socketioToken, detail: socketioDetail },
+    res: socketioAuthRes,
+  } = await fetchAuthAPI<AccessTokenData>('socket-ticket', 'POST', body);
+
+  if (socketioAuthRes.status !== StatusCodes.CREATED) {
+    console.error(detail);
+    return setRes<UserData>(res, socketioAuthRes.status, {
+      detail: socketioDetail,
+    });
+  }
+
   const secure = process.env.NODE_ENV === 'production';
 
-  res.setHeader(
-    'Set-Cookie',
+  // set cookies for access tokens
+  res.setHeader('Set-Cookie', [
     serialize(CookieKeys.ACCESS_TOKEN, access_token, {
       httpOnly: true,
       secure: secure,
       path: '/',
-      sameSite: 'lax',
-    })
-  );
+      sameSite: 'strict',
+    }),
+    serialize(CookieKeys.SOCKETIO_ACCESS_TOKEN, socketioToken, {
+      secure: secure,
+      path: '/',
+      sameSite: 'strict',
+    }),
+  ]);
 
   try {
     const userData = jwt_decode<UserStateProps>(access_token);
