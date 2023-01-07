@@ -38,6 +38,7 @@ const Styled = {
     width: inherit;
     display: flex;
     justify-content: center;
+    user-select: none;
 
     &:hover {
       cursor: grab;
