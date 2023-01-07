@@ -20,6 +20,14 @@ export const isPasswordValid = (
     PasswordError.NUMBER_NOT_FOUND_ERROR,
   ];
 
+  const removeError = (err: PasswordError) => {
+    const indexToRemove = errors.indexOf(err);
+
+    if (indexToRemove == -1) return;
+
+    errors.splice(indexToRemove, 1);
+  };
+
   if (password.length < 8) {
     errors.push(PasswordError.LENGTH_ERROR);
   }
@@ -28,19 +36,14 @@ export const isPasswordValid = (
     const char = password[i];
 
     if (!isNumeric(char) && char === char.toLowerCase())
-      errors.splice(
-        errors.indexOf(PasswordError.LOWER_CASE_NOT_FOUND_ERROR),
-        1
-      );
+      removeError(PasswordError.LOWER_CASE_NOT_FOUND_ERROR);
 
     if (!isNumeric(char) && char === char.toUpperCase())
-      errors.splice(
-        errors.indexOf(PasswordError.UPPER_CASE_NOT_FOUND_ERROR),
-        1
-      );
+      removeError(PasswordError.UPPER_CASE_NOT_FOUND_ERROR);
 
-    if (isNumeric(char))
-      errors.splice(errors.indexOf(PasswordError.NUMBER_NOT_FOUND_ERROR), 1);
+    if (isNumeric(char)) {
+      removeError(PasswordError.NUMBER_NOT_FOUND_ERROR);
+    }
   }
 
   return { isValid: errors.length === 0, errors };
