@@ -10,6 +10,7 @@ import { reset as resetUserState } from '../../redux/slices/userSlice';
 import { useSWRConfig } from 'swr';
 import { reset as resetFriendStatusesState } from '../../redux/slices/friendStatusesSlice';
 import { reset as resetWindowsState } from '../../redux/slices/windowsSlice';
+import { CookieKeys, deleteCookie } from '../../helpers/cookie';
 
 const Styled = {
   Button: styled.button`
@@ -34,6 +35,8 @@ export const SignOutButton = (): ReactElement => {
         Array.from(cache.keys()).forEach((key) => {
           cache.delete(key);
         });
+
+        deleteCookie(CookieKeys.SOCKETIO_ACCESS_TOKEN);
 
         // reset states
         dispatch(resetFriendStatusesState());
