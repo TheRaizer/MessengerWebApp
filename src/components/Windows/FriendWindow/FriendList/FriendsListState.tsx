@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useMemo } from 'react';
+import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 import {
   FriendWindowStates,
@@ -6,14 +6,12 @@ import {
 } from '../../../../../types/components/Windows/FriendWindow.type';
 import { ChangeStateProp } from '../../../../../types/hooks/useStateMachine.type';
 import { Col } from '../../../common/Col';
-import useSWRInfinite from 'swr/infinite';
-import { nextCursorSWRGetKey } from '../../../../helpers/pagination';
 import { fetchNextAPI } from '../../../../helpers/api/api';
 import { CursorPaginationResponse } from '../../../../../types/helpers/pagination.type';
 import { UserModel } from '../../../../../types/Models/User.type';
 import { FriendItem } from './FriendItem';
-import { useInView } from 'react-intersection-observer';
 import { Spinner } from '../../../Loading/Spinner';
+import { usePaginateInView } from '../../../../hooks/data/usePaginateInView';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
@@ -50,34 +48,22 @@ const fetcher = (url: string) =>
     ({ data }) => data
   );
 
+const hasMoreData = (data?: CursorPaginationResponse<UserModel>[]): boolean => {
+  return data !== undefined && data[data.length - 1]?.cursor.next_page !== null;
+};
+
 export const FriendsListState = ({
   changeState,
 }: ChangeStateProp<FriendWindowStates, FriendsStateProps>): ReactElement => {
-  const getKey = nextCursorSWRGetKey('/friend/requests/accepted', 1);
-  const [ref, inView] = useInView();
-
-  // we do not need to revalidate this data as it will not change.
-  // friend status will update using socketio
-  const { data, size, setSize, isValidating } = useSWRInfinite(
-    getKey,
+  const { data, ref } = usePaginateInView(
+    '/friend/requests/accepted',
     fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    hasMoreData
   );
-  const hasMore = data && data[data.length - 1]?.cursor.next_page !== null;
   const friends = useMemo(
     () => data?.map((data) => data.results).flat(),
     [data]
   );
-
-  useEffect(() => {
-    if (inView && hasMore && !isValidating) {
-      setSize(size + 1).catch((err) => console.error(err));
-    }
-  }, [setSize, friends, inView, hasMore, isValidating, size]);
 
   return (
     <Styled.FriendsListContainer as="ul">
@@ -88,7 +74,7 @@ export const FriendsListState = ({
           friendId={friend.user_id}
         />
       ))}
-      {hasMore && (
+      {hasMoreData(data) && (
         <Styled.SpinnerContainer ref={ref}>
           <Spinner color="black" size={1.1} />
         </Styled.SpinnerContainer>

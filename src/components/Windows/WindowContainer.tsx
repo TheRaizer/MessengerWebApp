@@ -13,6 +13,7 @@ import {
   INITIAL_WINDOW_DIMENSIONS,
   MINIMUM_WINDOW_HEIGHT,
   MINIMUM_WINDOW_WIDTH,
+  NAV_BAR_HEIGHT,
 } from '../../constants/dimensions';
 import { CenteredCol } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
@@ -56,7 +57,7 @@ export const WindowContainer = ({
     top: 0,
     left: 0,
     right: viewportWidth - windowWidth,
-    bottom: viewportHeight - windowHeight,
+    bottom: viewportHeight - windowHeight - NAV_BAR_HEIGHT,
   };
 
   // stores the overall resize delta value which is used to calculate the displacement of the window during resize
