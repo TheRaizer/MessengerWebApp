@@ -1,4 +1,4 @@
-import { DefaultData } from './DefaultData.type';
+import { DefaultData } from './DefaultData';
 
 export interface AccessTokenData extends DefaultData {
   access_token: string;

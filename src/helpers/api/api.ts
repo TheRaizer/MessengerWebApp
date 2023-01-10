@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NextApiResponse } from 'next';
 import { FetchReturn } from '../../../types/helpers/api/fetchAPI.type';
 import { Method } from '../../../types/helpers/api/request.type';
-import { DefaultData } from '../../../types/responseData/DefaultData.type';
+import { DefaultData } from '../../../types/responseData/DefaultData';
 
 /**
  * Fetch function for the front end to access the api correctly.

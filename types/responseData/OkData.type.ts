@@ -1,4 +1,4 @@
-import { DefaultData } from './DefaultData.type';
+import { DefaultData } from './DefaultData';
 
 export interface OkData extends DefaultData {
   ok: boolean;

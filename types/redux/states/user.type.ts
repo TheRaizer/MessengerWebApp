@@ -1,4 +1,4 @@
-import { DefaultData } from '../../responseData/DefaultData.type';
+import { DefaultData } from '../../responseData/DefaultData';
 
 export type UserState = {
   user?: UserStateProps;
