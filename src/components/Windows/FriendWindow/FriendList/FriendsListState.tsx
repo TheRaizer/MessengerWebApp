@@ -12,6 +12,7 @@ import { UserModel } from '../../../../../types/Models/User.type';
 import { FriendItem } from './FriendItem';
 import { Spinner } from '../../../Loading/Spinner';
 import { usePaginateInView } from '../../../../hooks/data/usePaginateInView';
+import { RESTRICT_REVALIDATION_CONFIG } from '../../../../constants/swrConfig';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
@@ -19,6 +20,7 @@ const Styled = {
     width: 100%;
     gap: 5px;
     overflow-y: auto;
+
     /* width */
     &::-webkit-scrollbar {
       width: 23px;
@@ -58,7 +60,9 @@ export const FriendsListState = ({
   const { data, ref } = usePaginateInView(
     '/friend/requests/accepted',
     fetcher,
-    hasMoreData
+    hasMoreData,
+    1,
+    RESTRICT_REVALIDATION_CONFIG
   );
   const friends = useMemo(
     () => data?.map((data) => data.results).flat(),

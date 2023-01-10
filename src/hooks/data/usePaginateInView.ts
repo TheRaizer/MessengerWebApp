@@ -1,25 +1,23 @@
 import { useEffect } from 'react';
 import { nextCursorSWRGetKey } from '../../helpers/pagination';
 import { useInView } from 'react-intersection-observer';
-import useSWRInfinite from 'swr/infinite';
+import useSWRInfinite, { SWRInfiniteConfiguration } from 'swr/infinite';
 
 export const usePaginateInView = <T>(
   swrKeyUrl: string,
   fetcher: (url: string) => Promise<T>,
-  hasMoreData: (data: T[] | undefined) => boolean
+  hasMoreData: (data: T[] | undefined) => boolean,
+  limit: number,
+  swrConfig?: SWRInfiniteConfiguration<T>
 ) => {
-  const getKey = nextCursorSWRGetKey(swrKeyUrl, 1);
+  const getKey = nextCursorSWRGetKey(swrKeyUrl, limit);
   const [ref, inView] = useInView();
 
   // we do not revalidate this data
   const { data, size, setSize, isValidating } = useSWRInfinite(
     getKey,
     fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    swrConfig
   );
 
   useEffect(() => {
