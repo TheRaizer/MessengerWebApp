@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import {
   FriendsStateProps,
   FriendWindowStates,
-} from '../../../../types/components/Windows/FriendWindow.type';
+} from '../../../../types/components/Windows/FriendWindow/FriendWindow.type';
 import {
   ChangeStateProp,
   StatesDictionary,
@@ -19,12 +19,14 @@ import { WindowContainer } from '../WindowContainer';
 const FriendListState = dynamic<
   ChangeStateProp<FriendWindowStates, FriendsStateProps>
 >(() =>
-  import('./FriendList/FriendsListState').then((mod) => mod.FriendsListState)
+  import('./States/FriendList/FriendsListState').then(
+    (mod) => mod.FriendsListState
+  )
 );
 const FriendState = dynamic<
   FriendsStateProps[FriendWindowStates.FRIEND] &
     ChangeStateProp<FriendWindowStates, FriendsStateProps>
->(() => import('./FriendState').then((mod) => mod.FriendState));
+>(() => import('./States/FriendState').then((mod) => mod.FriendState));
 
 const friendWindowStates: StatesDictionary<
   FriendWindowStates,

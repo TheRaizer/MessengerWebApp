@@ -2,9 +2,9 @@ import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
-import { FriendItemProps } from '../../../../../types/components/Windows/FriendList/FriendItem.type';
-import { Col } from '../../../common/Col';
+import { Col } from '../../../../common/Col';
 import { FriendStatus } from './FriendStatus';
+import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendItem.type';
 
 const Styled = {
   FriendItemContainer: styled.li`
