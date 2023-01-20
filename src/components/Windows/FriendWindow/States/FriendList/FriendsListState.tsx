@@ -14,6 +14,7 @@ import {
   FriendListStates,
   FriendListStateProps,
 } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
+import { Header } from './Header';
 import dynamic from 'next/dynamic';
 
 const Styled = {
@@ -22,6 +23,7 @@ const Styled = {
     width: 100%;
     gap: 5px;
     overflow-y: auto;
+    border-top: 1px solid black;
 
     /* width */
     &::-webkit-scrollbar {
@@ -69,15 +71,26 @@ export const FriendsListState = ({}: ChangeStateProp<
   FriendWindowStates,
   FriendsStateProps
 >): ReactElement => {
-  const { CurrentComponent } = useStateMachine(
+  const { CurrentComponent, changeState, currentState } = useStateMachine(
     friendWindowStates,
     FriendListStates.FRIENDS,
     {}
   );
 
   return (
-    <Styled.FriendsListContainer as="ul">
-      {CurrentComponent}
-    </Styled.FriendsListContainer>
+    <>
+      <Header
+        changeState={
+          changeState as (
+            newState: FriendListStates,
+            props: ChangeStateProp<FriendListStates, FriendListStateProps>
+          ) => void
+        }
+        currentState={currentState}
+      />
+      <Styled.FriendsListContainer as="ul">
+        {CurrentComponent}
+      </Styled.FriendsListContainer>
+    </>
   );
 };
