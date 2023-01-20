@@ -17,6 +17,7 @@ import {
   FriendListStates,
   FriendListStateProps,
 } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
+import { Header } from './Header';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
@@ -24,6 +25,7 @@ const Styled = {
     width: 100%;
     gap: 5px;
     overflow-y: auto;
+    border-top: 1px solid black;
 
     /* width */
     &::-webkit-scrollbar {
@@ -66,8 +68,11 @@ export const FriendsListState = ({}: ChangeStateProp<
   );
 
   return (
-    <Styled.FriendsListContainer as="ul">
-      {CurrentComponent}
-    </Styled.FriendsListContainer>
+    <>
+      <Header />
+      <Styled.FriendsListContainer as="ul">
+        {CurrentComponent}
+      </Styled.FriendsListContainer>
+    </>
   );
 };

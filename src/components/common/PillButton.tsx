@@ -5,10 +5,13 @@ import { ButtonProps } from '../../../types/components/common/Button.type';
 
 const Styled = {
   Pill: styled(Button)`
-    border-radius: 30%;
+    border-radius: 20px;
   `,
 };
 
-export const PillButton = (props: ButtonProps): ReactElement => {
-  return <Styled.Pill {...props}>{props.children}</Styled.Pill>;
+export const PillButton = ({
+  children,
+  ...props
+}: ButtonProps): ReactElement => {
+  return <Styled.Pill {...props}>{children}</Styled.Pill>;
 };
