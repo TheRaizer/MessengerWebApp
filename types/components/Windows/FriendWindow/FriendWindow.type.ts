@@ -1,5 +1,5 @@
-import { ChangeStateProp } from '../../hooks/useStateMachine.type';
-import { GeneralWindowProps } from '../../redux/states/windows.type';
+import { ChangeStateProp } from '../../../hooks/useStateMachine.type';
+import { GeneralWindowProps } from '../../../redux/states/windows.type';
 
 export type FriendWindowProps = {
   friendUsername: string;

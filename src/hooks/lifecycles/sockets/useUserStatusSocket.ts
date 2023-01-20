@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addOrUpdateStatus } from '../../../redux/slices/friendStatusesSlice';
-import { ActiveStatus } from '../../../../types/components/Windows/FriendList/FriendItem.type';
 import { selectUser } from '../../../redux/slices/userSlice';
 import { useRouter } from 'next/router';
 import { useSocket } from './useSocket';
+import { ActiveStatus } from '../../../../types/components/Windows/FriendWindow/States/FriendList/FriendItem.type';
 
 export const useUserStatusSocket = (): void => {
   const dispatch = useAppDispatch();

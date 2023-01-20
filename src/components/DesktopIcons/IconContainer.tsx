@@ -3,8 +3,6 @@ import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { DesktopIcon } from './DesktopIcon';
-import { MessageWindowProps } from '../../../types/components/Windows/MessageWindow.type';
-import { FriendWindowProps } from '../../../types/components/Windows/FriendWindow.type';
 import { WindowType } from '../../../types/redux/states/windows.type';
 import { useOpenWindow } from '../../hooks/actions/window/useOpenWindow';
 

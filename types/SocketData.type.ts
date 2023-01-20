@@ -1,4 +1,4 @@
-import { ActiveStatus } from './components/Windows/FriendList/FriendItem.type';
+import { ActiveStatus } from './components/Windows/FriendWindow/States/FriendList/FriendItem.type';
 
 export type StatusChangeEventData = {
   user_id: number;

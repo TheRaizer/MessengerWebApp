@@ -1,4 +1,4 @@
-import { FriendWindowProps } from '../../components/Windows/FriendWindow.type';
+import { FriendWindowProps } from '../../components/Windows/FriendWindow/FriendWindow.type';
 import { MessageWindowProps } from '../../components/Windows/MessageWindow.type';
 
 export enum WindowType {
