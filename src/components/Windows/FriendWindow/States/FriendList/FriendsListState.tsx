@@ -9,15 +9,13 @@ import {
   StatesDictionary,
 } from '../../../../../../types/hooks/useStateMachine.type';
 import { Col } from '../../../../common/Col';
-import { Friends } from './States/Friends';
-import { Recieved } from './States/Recieved';
-import { Sent } from './States/Sent';
 import { useStateMachine } from '../../../../../hooks/statemachine/useStateMachine';
 import {
   FriendListStates,
   FriendListStateProps,
 } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { Header } from './Header';
+import dynamic from 'next/dynamic';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
@@ -47,6 +45,18 @@ const Styled = {
     }
   `,
 };
+
+const Friends = dynamic<
+  ChangeStateProp<FriendListStates, FriendListStateProps>
+>(() => import('./States/Friends').then((mod) => mod.Friends));
+
+const Recieved = dynamic<
+  ChangeStateProp<FriendListStates, FriendListStateProps>
+>(() => import('./States/Recieved').then((mod) => mod.Recieved));
+
+const Sent = dynamic<ChangeStateProp<FriendListStates, FriendListStateProps>>(
+  () => import('./States/Sent').then((mod) => mod.Sent)
+);
 
 const friendWindowStates: StatesDictionary<
   FriendListStates,
