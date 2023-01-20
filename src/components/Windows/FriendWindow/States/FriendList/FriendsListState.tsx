@@ -71,7 +71,7 @@ export const FriendsListState = ({}: ChangeStateProp<
   FriendWindowStates,
   FriendsStateProps
 >): ReactElement => {
-  const { CurrentComponent } = useStateMachine(
+  const { CurrentComponent, changeState, currentState } = useStateMachine(
     friendWindowStates,
     FriendListStates.FRIENDS,
     {}
@@ -79,7 +79,15 @@ export const FriendsListState = ({}: ChangeStateProp<
 
   return (
     <>
-      <Header />
+      <Header
+        changeState={
+          changeState as (
+            newState: FriendListStates,
+            props: ChangeStateProp<FriendListStates, FriendListStateProps>
+          ) => void
+        }
+        currentState={currentState}
+      />
       <Styled.FriendsListContainer as="ul">
         {CurrentComponent}
       </Styled.FriendsListContainer>
