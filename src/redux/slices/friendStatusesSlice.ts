@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../types/redux/store.type';
-import { ActiveStatus } from '../../../types/components/Windows/FriendList/FriendItem.type';
 import { StatusChangeEventData } from '../../../types/SocketData.type';
+import { ActiveStatus } from '../../../types/components/Windows/FriendWindow/States/FriendList/FriendItem.type';
 
 const initialState: { [key: number]: ActiveStatus } = {};
 
