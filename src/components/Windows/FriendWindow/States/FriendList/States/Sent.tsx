@@ -17,9 +17,8 @@ export const Sent = ({}: ChangeStateProp<
   FriendListStates,
   FriendListStateProps
 >): ReactElement => {
-  // TODO: change endpoint
   const { data, ref } = usePaginateInView(
-    '/friend/requests/accepted',
+    '/friends/requests/recievers',
     cursorPaginationFetcher<UserModel>(),
     cursorPaginationHasMoreData<UserModel>(),
     1,

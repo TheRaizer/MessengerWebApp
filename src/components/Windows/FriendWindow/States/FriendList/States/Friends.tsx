@@ -18,7 +18,7 @@ export const Friends = ({}: ChangeStateProp<
   FriendListStateProps
 >): ReactElement => {
   const { data, ref } = usePaginateInView(
-    '/friend/requests/accepted',
+    '/friends',
     cursorPaginationFetcher<UserModel>(),
     cursorPaginationHasMoreData<UserModel>(),
     1,

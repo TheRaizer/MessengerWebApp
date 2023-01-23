@@ -11,7 +11,7 @@ import { CursorPaginationResponse } from '../../../../../types/helpers/paginatio
 import { UserModel } from '../../../../../types/Models/User.type';
 import { StatusCodes } from 'http-status-codes';
 
-const acceptedFriendsRoute = async (
+const friendRequestReceiversRoute = async (
   req: NextApiRequest,
   res: NextApiResponse,
   accessToken: string
@@ -24,7 +24,7 @@ const acceptedFriendsRoute = async (
     const { data, res: serverRes } = await fetchServerAPI<
       CursorPaginationResponse<UserModel>
     >(
-      `friends/requests/accepted?limit=${limit || ''}&${cursorParam}`,
+      `friends/requests/recievers?limit=${limit || ''}&${cursorParam}`,
       'GET',
       undefined,
       undefined,
@@ -49,4 +49,4 @@ const acceptedFriendsRoute = async (
   }
 };
 
-export default withAuthRoute(acceptedFriendsRoute);
+export default withAuthRoute(friendRequestReceiversRoute);
