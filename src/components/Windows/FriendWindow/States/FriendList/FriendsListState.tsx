@@ -14,8 +14,8 @@ import {
   FriendListStates,
   FriendListStateProps,
 } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
-import { Header } from './Header';
 import dynamic from 'next/dynamic';
+import { Header } from './common/Header';
 
 const Styled = {
   FriendsListContainer: styled(Col)`

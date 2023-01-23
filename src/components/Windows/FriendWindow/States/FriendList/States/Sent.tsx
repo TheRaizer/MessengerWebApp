@@ -12,6 +12,7 @@ import {
 } from '../../../../../../helpers/swr/cursorPaginationFetcher';
 import { usePaginateInView } from '../../../../../../hooks/data/usePaginateInView';
 import { FriendItemsList } from './common/FriendItemsList';
+import { SentItem } from './common/SentItem';
 
 export const Sent = ({}: ChangeStateProp<
   FriendListStates,
@@ -25,5 +26,5 @@ export const Sent = ({}: ChangeStateProp<
     RESTRICT_REVALIDATION_CONFIG
   );
 
-  return <FriendItemsList data={data} ref={ref} />;
+  return <FriendItemsList data={data} ref={ref} ItemComponent={SentItem} />;
 };

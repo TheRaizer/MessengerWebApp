@@ -2,9 +2,9 @@ import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
-import { Col } from '../../../../common/Col';
+import { Col } from '../../../../../../common/Col';
+import { FriendItemProps } from '../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem.type';
 import { FriendStatus } from './FriendStatus';
-import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendItem.type';
 
 const Styled = {
   FriendItemContainer: styled.li`
@@ -33,25 +33,20 @@ const UserIcon = dynamic<IconBaseProps>(() =>
   import('react-icons/bi').then((mod) => mod.BiUserCircle)
 );
 
-const EnvelopeIcon = dynamic<IconBaseProps>(() =>
-  import('react-icons/bi').then((mod) => mod.BiEnvelope)
-);
-
-export const FriendItem = ({
+export const FriendInfo = ({
   friendUsername,
   friendId,
-}: FriendItemProps): ReactElement => {
-  // use friend id to get friend status from socketio
-
+  children
+}: Partial<FriendItemProps> & {children: React.ReactNode}): ReactElement => {
   return (
     <Styled.FriendItemContainer>
       <UserIcon size={40} />
       <Styled.RightContainer>
         <Styled.FriendInfo>
           <Styled.FriendName>{friendUsername}</Styled.FriendName>
-          <FriendStatus friendId={friendId} />
+          {friendId && <FriendStatus friendId={friendId}/>}
         </Styled.FriendInfo>
-        <EnvelopeIcon size={40} />
+          {children}
       </Styled.RightContainer>
     </Styled.FriendItemContainer>
   );

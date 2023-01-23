@@ -14,7 +14,6 @@ const useMobileTheme = () => {
   const viewportStateRef = useRef(viewportState);
 
   const handleResize = useCallback(
-    () =>
       ({ width }: RequiredDimensions<number>) => {
         const changeViewportState = (newViewportState: ViewportStates) => {
           if (viewportStateRef.current !== newViewportState) {
