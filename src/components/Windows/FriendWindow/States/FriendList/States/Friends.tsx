@@ -12,18 +12,19 @@ import {
   FriendListStates,
 } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { FriendItemsList } from './common/FriendItemsList';
+import { FriendItem } from './common/FriendItem';
 
 export const Friends = ({}: ChangeStateProp<
   FriendListStates,
   FriendListStateProps
 >): ReactElement => {
   const { data, ref } = usePaginateInView(
-    '/friend/requests/accepted',
+    '/friends',
     cursorPaginationFetcher<UserModel>(),
     cursorPaginationHasMoreData<UserModel>(),
     1,
     RESTRICT_REVALIDATION_CONFIG
   );
 
-  return <FriendItemsList data={data} ref={ref} />;
+  return <FriendItemsList data={data} ref={ref} ItemComponent={FriendItem}/>;
 };

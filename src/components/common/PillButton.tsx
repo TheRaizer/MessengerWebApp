@@ -6,6 +6,11 @@ import { ButtonProps } from '../../../types/components/common/Button.type';
 const Styled = {
   Pill: styled(Button)`
     border-radius: 20px;
+    background-color: var(--primary-color);
+
+    &:hover {
+      filter: brightness(0.8);
+    }
   `,
 };
 

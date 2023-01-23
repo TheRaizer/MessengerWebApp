@@ -12,19 +12,19 @@ import {
 } from '../../../../../../helpers/swr/cursorPaginationFetcher';
 import { usePaginateInView } from '../../../../../../hooks/data/usePaginateInView';
 import { FriendItemsList } from './common/FriendItemsList';
+import { RecievedItem } from './common/RecievedItem';
 
 export const Recieved = ({}: ChangeStateProp<
   FriendListStates,
   FriendListStateProps
 >): ReactElement => {
-  // TODO: change endpoint
   const { data, ref } = usePaginateInView(
-    '/friend/requests/accepted',
+    '/friends/requests/senders',
     cursorPaginationFetcher<UserModel>(),
     cursorPaginationHasMoreData<UserModel>(),
     1,
     RESTRICT_REVALIDATION_CONFIG
   );
 
-  return <FriendItemsList data={data} ref={ref} />;
+  return <FriendItemsList data={data} ref={ref} ItemComponent={RecievedItem}/>;
 };

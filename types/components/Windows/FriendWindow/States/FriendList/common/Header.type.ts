@@ -1,5 +1,5 @@
-import { ChangeStateProp } from '../../../../../hooks/useStateMachine.type';
-import { FriendListStates, FriendListStateProps } from './FriendList.type';
+import { ChangeStateProp } from '../../../../../../hooks/useStateMachine.type';
+import { FriendListStates, FriendListStateProps } from '../FriendList.type';
 
 export type HeaderProps = {
   changeState: (

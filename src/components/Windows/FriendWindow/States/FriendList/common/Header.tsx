@@ -1,9 +1,9 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
-import { PillButton } from '../../../../common/PillButton';
-import { HeaderProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/Header.type';
-import { FriendListStates } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { FriendListSearchBar } from './FriendListSearchBar';
+import { FriendListStates } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
+import { HeaderProps } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/Header.type';
+import { PillButton } from '../../../../../common/PillButton';
 
 const Styled = {
   HeaderContainer: styled.div`
@@ -15,8 +15,6 @@ const Styled = {
   `,
   SelectablePillButton: styled(PillButton)<{ selected: boolean }>`
     padding: 1px 5px;
-
-    background-color: var(--primary-color);
 
     filter: ${({ selected }) => selected && 'brightness(0.7)'};
   `,

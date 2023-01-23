@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import styled from 'styled-components';
-import { useAppSelector } from '../../../../../redux/hooks';
-import { selectFriendStatuses } from '../../../../../redux/slices/friendStatusesSlice';
+import { useAppSelector } from '../../../../../../../redux/hooks';
+import { selectFriendStatuses } from '../../../../../../../redux/slices/friendStatusesSlice';
 
 const Styled = {
   Status: styled.p`
