@@ -13,7 +13,7 @@ export const usePaginateInView = <T>(
   const getKey = nextCursorSWRGetKey(swrKeyUrl, limit);
   const [ref, inView] = useInView();
 
-  const { data, size, setSize, isValidating } = useSWRInfinite(
+  const { data, size, setSize, isValidating, mutate } = useSWRInfinite(
     getKey,
     fetcher,
     swrConfig
@@ -25,5 +25,5 @@ export const usePaginateInView = <T>(
     }
   }, [setSize, inView, hasMoreData, isValidating, size, data]);
 
-  return { data, ref };
+  return { data, ref, mutate };
 };
