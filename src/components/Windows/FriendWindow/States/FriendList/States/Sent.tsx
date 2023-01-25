@@ -18,7 +18,7 @@ export const Sent = ({}: ChangeStateProp<
   FriendListStates,
   FriendListStateProps
 >): ReactElement => {
-  const { data, ref } = usePaginateInView(
+  const { data, ref, mutate } = usePaginateInView(
     '/friends/requests/recievers',
     cursorPaginationFetcher<UserModel>(),
     cursorPaginationHasMoreData<UserModel>(),
@@ -26,5 +26,12 @@ export const Sent = ({}: ChangeStateProp<
     RESTRICT_REVALIDATION_CONFIG
   );
 
-  return <FriendItemsList data={data} ref={ref} ItemComponent={SentItem} />;
+  return (
+    <FriendItemsList
+      mutate={mutate}
+      data={data}
+      ref={ref}
+      ItemComponent={SentItem}
+    />
+  );
 };

@@ -1,3 +1,7 @@
+import { KeyedMutator } from 'swr';
+import { UserModel } from '../../../../../../Models/User.type';
+import { CursorPaginationResponse } from '../../../../../../helpers/pagination.type';
+
 export enum ActiveStatus {
   ACTIVE = 'active',
   OFFLINE = 'offline',
@@ -8,4 +12,5 @@ export enum ActiveStatus {
 export type FriendItemProps = {
   friendUsername: string;
   friendId: number;
+  mutate: KeyedMutator<CursorPaginationResponse<UserModel>[]>;
 };

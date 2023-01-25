@@ -8,7 +8,7 @@ import React from 'react';
 export const FriendItemsList = React.forwardRef<
   HTMLDivElement,
   FriendItemsListProps
->(({ data, ItemComponent }, ref): ReactElement => {
+>(({ data, ItemComponent, mutate }, ref): ReactElement => {
   const hasMoreData = cursorPaginationHasMoreData<UserModel>();
 
   const friends = useMemo(
@@ -23,6 +23,7 @@ export const FriendItemsList = React.forwardRef<
           key={friend.user_id}
           friendUsername={friend.username}
           friendId={friend.user_id}
+          mutate={mutate}
         />
       ))}
       {hasMoreData(data) && <FriendLoadingSpinner ref={ref} />}
