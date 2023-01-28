@@ -8,7 +8,7 @@ import {
 import { UserData } from '../../../../types/redux/states/user.type';
 import { Method } from '../../../../types/helpers/api/request.type';
 import { CursorPaginationResponse } from '../../../../types/helpers/pagination.type';
-import { UserModel } from '../../../../types/Models/User.type';
+import { PublicUserModel } from '../../../../types/Models/User.type';
 import { StatusCodes } from 'http-status-codes';
 
 const acceptedFriendsRoute = async (
@@ -22,7 +22,7 @@ const acceptedFriendsRoute = async (
 
   try {
     const { data, res: serverRes } = await fetchServerAPI<
-      CursorPaginationResponse<UserModel>
+      CursorPaginationResponse<PublicUserModel>
     >(
       `friends?limit=${limit || ''}&${cursorParam}`,
       'GET',
@@ -31,13 +31,13 @@ const acceptedFriendsRoute = async (
       accessToken
     );
 
-    return setRes<CursorPaginationResponse<UserModel>>(
+    return setRes<CursorPaginationResponse<PublicUserModel>>(
       res,
       serverRes.status,
       data
     );
   } catch (err) {
-    return setRes<CursorPaginationResponse<UserModel>>(
+    return setRes<CursorPaginationResponse<PublicUserModel>>(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       {

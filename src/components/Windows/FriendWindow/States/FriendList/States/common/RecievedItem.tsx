@@ -10,6 +10,10 @@ export const RecievedItem = (props: FriendItemProps): ReactElement => {
         `friends/requests/accept?requester_username=${friendUsername}`
       }
       buttonText={'Accept'}
+      onClick={() => {
+        // TODO: add user to friends list using global mutation
+        // TODO: listen for that users status in socketio
+      }}
     />
   );
 };

@@ -4,7 +4,7 @@ import {
   FriendListStates,
   FriendListStateProps,
 } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
-import { UserModel } from '../../../../../../../types/Models/User.type';
+import { PublicUserModel } from '../../../../../../../types/Models/User.type';
 import { RESTRICT_REVALIDATION_CONFIG } from '../../../../../../constants/swrConfig';
 import {
   cursorPaginationFetcher,
@@ -20,8 +20,8 @@ export const Recieved = ({}: ChangeStateProp<
 >): ReactElement => {
   const { data, ref, mutate } = usePaginateInView(
     '/friends/requests/senders',
-    cursorPaginationFetcher<UserModel>(),
-    cursorPaginationHasMoreData<UserModel>(),
+    cursorPaginationFetcher<PublicUserModel>(),
+    cursorPaginationHasMoreData<PublicUserModel>(),
     1,
     RESTRICT_REVALIDATION_CONFIG
   );

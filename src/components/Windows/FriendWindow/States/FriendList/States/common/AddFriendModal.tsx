@@ -7,6 +7,12 @@ import { Input } from '../../../../../../common/Input';
 import { fetchNextAPI } from '../../../../../../../helpers/api/api';
 import { emitErrorToast } from '../../../../../../../helpers/toast/toast';
 import { AddFriendModalProps } from '../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/AddFriendModal.type';
+import { useSWRConfig } from 'swr';
+import { CursorPaginationResponse } from '../../../../../../../../types/helpers/pagination.type';
+import { PublicUserModel } from '../../../../../../../../types/Models/User.type';
+import { unstable_serialize } from 'swr/infinite';
+import { nextCursorSWRGetKey } from '../../../../../../../helpers/pagination';
+import { FriendshipData } from '../../../../../../../../types/responseData/FriendshipData';
 
 const Styled = {
   ModalContainer: styled.div`
@@ -65,6 +71,7 @@ export const AddFriendModal = ({
   onClose,
 }: AddFriendModalProps): ReactElement => {
   const [username, setUsername] = useState('');
+  const { mutate } = useSWRConfig();
 
   return (
     <Styled.ModalContainer>
@@ -80,12 +87,41 @@ export const AddFriendModal = ({
           />
           <Styled.AddButton
             onClick={() => {
-              fetchNextAPI(`friends/requests/send?username=${username}`, 'POST')
-                .then(({ data }) => {
-                  if (!data?.detail) {
-                    // success
+              fetchNextAPI<FriendshipData>(
+                `friends/requests/send?username=${username}`,
+                'POST'
+              )
+                .then(({ data: friendshipData }) => {
+                  if (!friendshipData?.detail) {
+                    mutate<CursorPaginationResponse<PublicUserModel>[]>(
+                      // serialize key for proper swr infinite mutation
+                      unstable_serialize(
+                        nextCursorSWRGetKey('/friends/requests/recievers', 1)
+                      ),
+                      (requestRecieverData) => {
+                        // add user to list of recievers
+                        const newUser = {
+                          user_id: friendshipData.addressee_id || -1,
+                          username: username,
+                        };
+                        const newData = requestRecieverData
+                          ? [...requestRecieverData]
+                          : [];
+
+                        if (newData.length === 0) {
+                          newData.push({
+                            cursor: {},
+                            results: [newUser],
+                          });
+                        } else {
+                          newData?.[0].results.unshift(newUser);
+                        }
+
+                        return newData;
+                      }
+                    ).catch((err) => console.error(err));
                   } else {
-                    emitErrorToast(data.detail);
+                    emitErrorToast(friendshipData.detail);
                   }
                 })
                 .catch((err) => {

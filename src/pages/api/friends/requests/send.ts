@@ -1,4 +1,3 @@
-import { DefaultData } from './../../../../../types/responseData/DefaultData';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { withAuthRoute } from '../../../../helpers/api/session';
 import {
@@ -8,6 +7,7 @@ import {
 } from '../../../../helpers/api/api';
 import { Method } from '../../../../../types/helpers/api/request.type';
 import { StatusCodes } from 'http-status-codes';
+import { FriendshipData } from '../../../../../types/responseData/FriendshipData';
 
 const sendFriendRequestRoute = async (
   req: NextApiRequest,
@@ -18,7 +18,7 @@ const sendFriendRequestRoute = async (
   enforceMethod(res, req.method as Method, 'POST', {});
 
   try {
-    const { data, res: serverRes } = await fetchServerAPI(
+    const { data, res: serverRes } = await fetchServerAPI<FriendshipData>(
       `friends/requests/send?username=${username as string}`,
       'POST',
       undefined,
@@ -26,9 +26,9 @@ const sendFriendRequestRoute = async (
       accessToken
     );
 
-    return setRes<DefaultData>(res, serverRes.status, data);
+    return setRes<FriendshipData>(res, serverRes.status, data);
   } catch (err) {
-    return setRes<DefaultData>(res, StatusCodes.INTERNAL_SERVER_ERROR, {
+    return setRes<FriendshipData>(res, StatusCodes.INTERNAL_SERVER_ERROR, {
       detail: 'friendship request failed to send',
     });
   }

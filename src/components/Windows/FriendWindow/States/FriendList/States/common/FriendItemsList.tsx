@@ -1,5 +1,5 @@
 import { ReactElement, useMemo } from 'react';
-import { UserModel } from '../../../../../../../../types/Models/User.type';
+import { PublicUserModel } from '../../../../../../../../types/Models/User.type';
 import { cursorPaginationHasMoreData } from '../../../../../../../helpers/swr/cursorPaginationFetcher';
 import { FriendLoadingSpinner } from './FriendLoadingSpinner';
 import { FriendItemsListProps } from '../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/States/common/FriendItemsList.type';
@@ -9,7 +9,7 @@ export const FriendItemsList = React.forwardRef<
   HTMLDivElement,
   FriendItemsListProps
 >(({ data, ItemComponent, mutate }, ref): ReactElement => {
-  const hasMoreData = cursorPaginationHasMoreData<UserModel>();
+  const hasMoreData = cursorPaginationHasMoreData<PublicUserModel>();
 
   const friends = useMemo(
     () => data?.map((data) => data.results).flat(),
