@@ -1,9 +1,9 @@
 import { ReactElement, useState } from 'react';
-import { fetchNextAPI } from '../../../../../../../helpers/api/api';
-import { Spinner } from '../../../../../../Loading/Spinner';
-import { FriendInfo } from './FriendInfo';
-import { ItemButton } from './ItemPillButton';
-import { AddressRequestItemProps } from '../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/AddressRequestItem.type';
+import { fetchNextAPI } from '../../../../../../../../helpers/api/api';
+import { Spinner } from '../../../../../../../Loading/Spinner';
+import { FriendInfo } from '../FriendInfo';
+import { ItemButton } from '../ItemPillButton';
+import { AddressRequestItemProps } from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/AddressRequestItem.type';
 
 export const AddressRequestItem = ({
   friendUsername,

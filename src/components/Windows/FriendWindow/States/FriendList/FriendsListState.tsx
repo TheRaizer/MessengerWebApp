@@ -17,7 +17,7 @@ import {
 import dynamic from 'next/dynamic';
 import { Header } from './common/Header';
 import { IconBaseProps } from 'react-icons';
-import { AddFriendModal } from './States/common/AddFriendModal';
+import { AddFriendModal } from './States/common/AddFriendModal/AddFriendModal';
 
 const Styled = {
   FriendsListContainer: styled(Col)`

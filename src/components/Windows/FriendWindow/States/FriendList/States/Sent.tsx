@@ -12,7 +12,7 @@ import {
 } from '../../../../../../helpers/swr/cursorPaginationFetcher';
 import { usePaginateInView } from '../../../../../../hooks/data/usePaginateInView';
 import { FriendItemsList } from './common/FriendItemsList';
-import { SentItem } from './common/SentItem';
+import { SentItem } from './common/AddressRequestItem/SentItem';
 
 export const Sent = ({}: ChangeStateProp<
   FriendListStates,
