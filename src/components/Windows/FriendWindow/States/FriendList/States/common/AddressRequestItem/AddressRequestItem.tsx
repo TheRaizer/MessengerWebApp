@@ -27,6 +27,7 @@ export const AddressRequestItem = ({
               console.error(err)
             );
 
+            // instead of refetching we remove user with a specified username from SWR cache
             mutate((data) => {
               const newData = data ? [...data] : [];
               newData?.forEach((cursorModel) => {

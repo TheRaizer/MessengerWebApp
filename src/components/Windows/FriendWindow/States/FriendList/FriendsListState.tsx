@@ -46,7 +46,7 @@ const Styled = {
       background: var(--primary-color);
     }
   `,
-  AddFriendButton: styled.button`
+  OpenModalButton: styled.button`
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     position: absolute;
     bottom: 10px;
@@ -114,9 +114,9 @@ export const FriendsListState = ({}: ChangeStateProp<
         }
         currentState={currentState}
       />
-      <Styled.AddFriendButton onClick={() => setOpenModal(true)}>
+      <Styled.OpenModalButton onClick={() => setOpenModal(true)}>
         <PlusCircleIcon size={'2em'} />
-      </Styled.AddFriendButton>
+      </Styled.OpenModalButton>
       <Styled.FriendsListContainer as="ul">
         {CurrentComponent}
       </Styled.FriendsListContainer>

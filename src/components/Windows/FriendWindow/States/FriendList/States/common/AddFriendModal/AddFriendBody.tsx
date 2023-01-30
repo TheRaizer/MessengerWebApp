@@ -52,6 +52,7 @@ export const AddFriendBody = ({
     )
       .then(({ data: friendshipData }) => {
         if (!friendshipData?.detail) {
+          // instead of refetching we can mutate the SWR cached list and insert the new user
           mutate<CursorPaginationResponse<PublicUserModel>[]>(
             // serialize key for proper swr infinite mutation
             unstable_serialize(

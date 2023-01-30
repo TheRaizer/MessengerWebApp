@@ -36,24 +36,6 @@ const Styled = {
     top: 0;
     right: 0;
   `,
-  Title: styled.h3`
-    font-size: 1.5em;
-    font-weight: normal;
-  `,
-  InputsContainer: styled.div`
-    display: flex;
-    gap: 7px;
-  `,
-  AddButton: styled.button`
-    background-color: white;
-    width: 75px;
-    height: 25px;
-    border: 1px solid black;
-
-    &:hover {
-      filter: brightness(0.7);
-    }
-  `,
 };
 
 const Close = dynamic<IconBaseProps>(() =>

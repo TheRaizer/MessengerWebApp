@@ -6,7 +6,7 @@ export const addUserToCursorPagination = (
   user_id: number,
   initialData?: CursorPaginationResponse<PublicUserModel>[]
 ): CursorPaginationResponse<PublicUserModel>[] => {
-  // insert user to list of recievers or create new list with user in it.
+  // insert user into initial list of data or create a new list with the user in it
   const newUser = {
     user_id: user_id,
     username: username,
