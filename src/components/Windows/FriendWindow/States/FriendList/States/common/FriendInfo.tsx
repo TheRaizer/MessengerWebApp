@@ -27,6 +27,9 @@ const Styled = {
   FriendInfo: styled(Col)`
     width: 100%;
   `,
+  ChildrenContainer: styled.div`
+    padding: 0px 10px;
+  `,
 };
 
 const UserIcon = dynamic<IconBaseProps>(() =>
@@ -36,18 +39,18 @@ const UserIcon = dynamic<IconBaseProps>(() =>
 export const FriendInfo = ({
   friendUsername,
   friendId,
-  children
-}: Partial<FriendItemProps> & {children: React.ReactNode}): ReactElement => {
+  children,
+}: Partial<FriendItemProps> & { children: React.ReactNode }): ReactElement => {
   return (
     <Styled.FriendItemContainer>
       <UserIcon size={40} />
       <Styled.RightContainer>
         <Styled.FriendInfo>
           <Styled.FriendName>{friendUsername}</Styled.FriendName>
-          {friendId && <FriendStatus friendId={friendId}/>}
+          {friendId && <FriendStatus friendId={friendId} />}
         </Styled.FriendInfo>
-          {children}
       </Styled.RightContainer>
+      <Styled.ChildrenContainer>{children}</Styled.ChildrenContainer>
     </Styled.FriendItemContainer>
   );
 };

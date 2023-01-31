@@ -6,7 +6,7 @@ import {
   cursorPaginationFetcher,
   cursorPaginationHasMoreData,
 } from '../../../../../../helpers/swr/cursorPaginationFetcher';
-import { UserModel } from '../../../../../../../types/Models/User.type';
+import { PublicUserModel } from '../../../../../../../types/Models/User.type';
 import {
   FriendListStateProps,
   FriendListStates,
@@ -20,8 +20,8 @@ export const Friends = ({}: ChangeStateProp<
 >): ReactElement => {
   const { data, ref, mutate } = usePaginateInView(
     '/friends',
-    cursorPaginationFetcher<UserModel>(),
-    cursorPaginationHasMoreData<UserModel>(),
+    cursorPaginationFetcher<PublicUserModel>(),
+    cursorPaginationHasMoreData<PublicUserModel>(),
     1,
     RESTRICT_REVALIDATION_CONFIG
   );
