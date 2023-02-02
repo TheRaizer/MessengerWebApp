@@ -13,7 +13,6 @@ import { useKeyListener } from '../../../../../../../../hooks/effects/useKeyList
 import { Key } from 'ts-key-enum';
 import { AddFriendBodyProps } from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/AddFriendModal/AddFriendBody.type';
 import { Spinner } from '../../../../../../../Loading/Spinner';
-import { addUserToCursorPagination } from '../../../../../../../../helpers/swr/mutations/addUserToCursorPagination';
 
 const Styled = {
   Title: styled.h3`
@@ -57,13 +56,7 @@ export const AddFriendBody = ({
             // serialize key for proper swr infinite mutation
             unstable_serialize(
               nextCursorSWRGetKey('/friends/requests/recievers', 1)
-            ),
-            (requestRecieverData) =>
-              addUserToCursorPagination(
-                username,
-                friendshipData.addressee_id || -1,
-                requestRecieverData
-              )
+            )
           )
             .then(() => onRequestComplete())
             .catch((err) => console.error(err))

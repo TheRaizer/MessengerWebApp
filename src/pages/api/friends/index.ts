@@ -18,18 +18,20 @@ const acceptedFriendsRoute = async (
 ) => {
   const { limit, cursor }: { limit?: string; cursor?: string } = req.query;
   enforceMethod<UserData>(res, req.method as Method, 'GET', {});
-  const cursorParam = cursor ? `cursor=${cursor}` : '';
+  const cursorParam = cursor ? `&cursor=${cursor}` : '';
 
   try {
     const { data, res: serverRes } = await fetchServerAPI<
       CursorPaginationResponse<PublicUserModel>
     >(
-      `friends?limit=${limit || ''}&${cursorParam}`,
+      `friends?limit=${limit || ''}${cursorParam}`,
       'GET',
       undefined,
       undefined,
       accessToken
     );
+
+    res.setHeader('Cache-Control', 'max-age=60');
 
     return setRes<CursorPaginationResponse<PublicUserModel>>(
       res,
