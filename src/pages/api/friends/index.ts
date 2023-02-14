@@ -31,8 +31,6 @@ const acceptedFriendsRoute = async (
       accessToken
     );
 
-    res.setHeader('Cache-Control', 'max-age=60');
-
     return setRes<CursorPaginationResponse<PublicUserModel>>(
       res,
       serverRes.status,

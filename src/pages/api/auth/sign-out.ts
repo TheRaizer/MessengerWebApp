@@ -12,9 +12,6 @@ const signoutRoute = (req: AuthRequest, res: NextApiResponse) => {
 
   deleteHttpOnlyCookie(CookieKeys.ACCESS_TOKEN, res);
 
-  // TODO: find a way to clear all cached data set by cache-control header in friends route
-  res.setHeader('Clear-Site-Data', 'cache');
-
   return setRes<DefaultData>(res, StatusCodes.OK, {});
 };
 

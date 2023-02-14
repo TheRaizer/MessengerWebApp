@@ -55,7 +55,7 @@ export const AddFriendBody = ({
           mutate<CursorPaginationResponse<PublicUserModel>[]>(
             // serialize key for proper swr infinite mutation
             unstable_serialize(
-              nextCursorSWRGetKey('/friends/requests/recievers', 1)
+              nextCursorSWRGetKey('/friends/requests/recievers', 10)
             )
           )
             .then(() => onRequestComplete())

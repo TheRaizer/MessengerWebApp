@@ -5,7 +5,6 @@ import {
   FriendListStateProps,
 } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { PublicUserModel } from '../../../../../../../types/Models/User.type';
-import { RESTRICT_REVALIDATION_CONFIG } from '../../../../../../constants/swrConfig';
 import {
   cursorPaginationFetcher,
   cursorPaginationHasMoreData,
@@ -22,8 +21,7 @@ export const Sent = ({}: ChangeStateProp<
     '/friends/requests/recievers',
     cursorPaginationFetcher<PublicUserModel>(),
     cursorPaginationHasMoreData<PublicUserModel>(),
-    1,
-    RESTRICT_REVALIDATION_CONFIG
+    10
   );
 
   return (

@@ -36,7 +36,7 @@ export const fetchAPI = async <T>(
     return { data, res };
   } catch (err: unknown) {
     console.error(err);
-    throw new Error('request failed: ' + (err as { message: string }).message);
+    throw err;
   }
 };
 
@@ -101,7 +101,7 @@ export const fetchAuthAPI = async <T extends DefaultData>(
     return { data, res };
   } catch (err: unknown) {
     console.error(err);
-    throw new Error('request failed: ' + (err as { message: string }).message);
+    throw err;
   }
 };
 
