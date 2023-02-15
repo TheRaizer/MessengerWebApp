@@ -50,7 +50,7 @@ const Styled = {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    right: 25px;
     width: 32px;
     height: 32px;
     z-index: 10;

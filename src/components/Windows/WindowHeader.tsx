@@ -7,6 +7,7 @@ import { Dimensions } from '../../../types/dimensions.type';
 import { useCloseWindow } from '../../hooks/actions/window/useCloseWindow';
 import { Col } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
+import { WINDOW_HEADER_HEIGHT } from '../../constants/dimensions';
 
 const Styled = {
   HeaderContainer: styled.header`
@@ -15,6 +16,7 @@ const Styled = {
     justify-content: center;
     border-bottom: 1px solid black;
     touch-action: none;
+    height: ${WINDOW_HEADER_HEIGHT};
   `,
   HeaderLine: styled.div`
     border-top: 1px solid black;

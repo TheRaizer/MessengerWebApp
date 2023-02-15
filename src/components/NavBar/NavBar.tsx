@@ -44,6 +44,9 @@ export const NavBar = (): ReactElement => {
   const userState = useAppSelector(selectUser);
 
   useEffect(() => {
+    setDateString(getFormattedLocalDateString());
+    setTimeString(getFormattedLocalTimeString());
+
     const datetimeUpdateInterval = setInterval(() => {
       setDateString(getFormattedLocalDateString());
       setTimeString(getFormattedLocalTimeString());

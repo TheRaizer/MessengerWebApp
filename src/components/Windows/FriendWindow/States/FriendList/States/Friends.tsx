@@ -19,7 +19,7 @@ export const Friends = ({}: ChangeStateProp<
   FriendListStateProps
 >): ReactElement => {
   const { data, ref, mutate } = usePaginateInView(
-    '/friends',
+    'friends',
     cursorPaginationFetcher<PublicUserModel>(),
     cursorPaginationHasMoreData<PublicUserModel>(),
     FRIEND_LIMIT

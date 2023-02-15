@@ -22,6 +22,7 @@ import { useAppSelector } from '../redux/hooks';
 import { selectAppConfig } from '../redux/slices/appConfigSlice';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { NavBar } from '../components/NavBar/NavBar';
+import { SWRConfig } from 'swr';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -54,22 +55,24 @@ const PageComponent = ({ Component, pageProps }: AppProps): ReactElement => {
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={{ viewportState }}>
-        <NavBar />
-        <StyledPageContainer>
-          <Component {...pageProps} />
-        </StyledPageContainer>
-        <AppLifecycle />
-        <ToastContainer
-          position="top-right"
-          autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          pauseOnHover
-        />
-        <AppLoading />
+        <SWRConfig>
+          <NavBar />
+          <StyledPageContainer>
+            <Component {...pageProps} />
+          </StyledPageContainer>
+          <AppLifecycle />
+          <ToastContainer
+            position="top-right"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            pauseOnHover
+          />
+          <AppLoading />
+        </SWRConfig>
       </ThemeProvider>
     </>
   );

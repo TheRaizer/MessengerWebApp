@@ -28,6 +28,10 @@ export const useSocket = () => {
     } else if (socket.disconnected) {
       socket.connect();
     }
+
+    return () => {
+      socket?.disconnect();
+    };
   }, [user]);
 
   return socket;
