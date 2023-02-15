@@ -15,8 +15,7 @@ export const useUserStatusSocket = (): void => {
   useEffect(() => {
     if (!user) return;
 
-    // this will fire if one of your friend's is broadcasting their status
-    // to all their friends on initial connection.
+    // this will fire if one of your friend's is broadcasting their status to you
     socket?.on('status change', (data) => {
       dispatch(addOrUpdateStatus(data));
 

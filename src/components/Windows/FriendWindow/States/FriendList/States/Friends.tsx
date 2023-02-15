@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { ChangeStateProp } from '../../../../../../../types/hooks/useStateMachine.type';
-import { RESTRICT_REVALIDATION_CONFIG } from '../../../../../../constants/swrConfig';
 import { usePaginateInView } from '../../../../../../hooks/data/usePaginateInView';
 import {
   cursorPaginationFetcher,
@@ -13,6 +12,7 @@ import {
 } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { FriendItemsList } from './common/FriendItemsList';
 import { FriendItem } from './common/FriendItem';
+import { FRIEND_LIMIT } from '../../../../../../constants/pagination';
 
 export const Friends = ({}: ChangeStateProp<
   FriendListStates,
@@ -22,8 +22,7 @@ export const Friends = ({}: ChangeStateProp<
     '/friends',
     cursorPaginationFetcher<PublicUserModel>(),
     cursorPaginationHasMoreData<PublicUserModel>(),
-    1,
-    RESTRICT_REVALIDATION_CONFIG
+    FRIEND_LIMIT
   );
 
   return (

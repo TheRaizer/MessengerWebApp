@@ -11,6 +11,7 @@ import { useSWRConfig } from 'swr';
 import { reset as resetFriendStatusesState } from '../../redux/slices/friendStatusesSlice';
 import { reset as resetWindowsState } from '../../redux/slices/windowsSlice';
 import { CookieKeys, deleteCookie } from '../../helpers/cookie';
+import { useSocket } from '../../hooks/lifecycles/sockets/useSocket';
 
 const Styled = {
   Button: styled.button`
@@ -26,6 +27,7 @@ export const SignOutButton = (): ReactElement => {
   const dispatch = useAppDispatch();
   const routeToHome = usePageRouting(PageRoutes.HOME);
   const { cache } = useSWRConfig();
+  const socket = useSocket();
 
   const signout = () => {
     fetchNextAPI('auth/sign-out', 'PUT')
@@ -36,6 +38,7 @@ export const SignOutButton = (): ReactElement => {
           cache.delete(key);
         });
 
+        socket?.disconnect();
         deleteCookie(CookieKeys.SOCKETIO_ACCESS_TOKEN);
 
         // reset states
@@ -44,6 +47,7 @@ export const SignOutButton = (): ReactElement => {
         dispatch(resetWindowsState());
 
         routeToHome();
+        socket?.disconnect();
       })
       .catch((err) => console.error(err));
   };

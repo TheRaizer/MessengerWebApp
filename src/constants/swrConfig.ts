@@ -1,5 +1,5 @@
-export const RESTRICT_REVALIDATION_CONFIG = Object.freeze({
-  revalidateIfStale: false,
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
-});
+import { SWRInfiniteConfiguration } from 'swr/infinite';
+
+export const RESTRICT_FIRST_PAGE_REVALIDATION: SWRInfiniteConfiguration = {
+  revalidateFirstPage: true,
+};

@@ -23,25 +23,15 @@ export const AddressRequestItem = ({
           onClick={() => {
             setLoading(true);
 
-            fetchNextAPI(getRoute(friendUsername), 'POST').catch((err) =>
-              console.error(err)
-            );
-
-            // instead of refetching we remove user with a specified username from SWR cache
-            mutate((data) => {
-              const newData = data ? [...data] : [];
-              newData?.forEach((cursorModel) => {
-                cursorModel.results = cursorModel.results.filter(
-                  (userModel) => userModel.username !== friendUsername
-                );
-              });
-
-              return newData;
-            })
-              .catch((err) => console.error(err))
-              .finally(() => setLoading(false));
-
-            onClick?.();
+            fetchNextAPI(getRoute(friendUsername), 'POST')
+              .then(() => {
+                // instead of refetching we remove user with a specified username from SWR cache
+                mutate()
+                  .catch((err) => console.error(err))
+                  .finally(() => setLoading(false));
+                onClick?.();
+              })
+              .catch((err) => console.error(err));
           }}
         >
           {buttonText}
