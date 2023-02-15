@@ -14,6 +14,7 @@ import {
   MINIMUM_WINDOW_HEIGHT,
   MINIMUM_WINDOW_WIDTH,
   NAV_BAR_HEIGHT,
+  WINDOW_HEADER_HEIGHT,
 } from '../../constants/dimensions';
 import { CenteredCol } from '../common/Col';
 import { DimensionStyles } from '../common/StyledDimensions';
@@ -36,6 +37,10 @@ const Styled = {
   DraggableContainer: styled(animated.div)`
     position: absolute;
     z-index: inherit;
+  `,
+  WindowContent: styled.div`
+    width: 100%;
+    height: calc(100% - ${WINDOW_HEADER_HEIGHT}px);
   `,
 };
 
@@ -171,7 +176,7 @@ export const WindowContainer = ({
         ref={windowContainerRef}
       >
         <WindowHeader title={title} windowId={windowId} dragBind={bind} />
-        {children}
+        <Styled.WindowContent>{children}</Styled.WindowContent>
       </Styled.WindowContainer>
     </Styled.DraggableContainer>
   );

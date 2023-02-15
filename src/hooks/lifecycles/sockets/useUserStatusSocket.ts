@@ -13,27 +13,37 @@ export const useUserStatusSocket = (): void => {
   const socket = useSocket();
 
   useEffect(() => {
+    /**
+     * On initial connection to the socket the server will emit
+     * "ping status change" events to all your friends. Thus you will listen to
+     * any "ping status change" events to detect whether your friends' status has changed.
+     * On recieving a "ping status change" event, you will send back a "pong status change"
+     * event back to your friend.
+     *
+     * To avoid infinite recursion within these two events, we create a third event called
+     * "friend status changed" which will be called from the server when "pong status change"
+     * is invoked.
+     */
     if (!user) return;
 
-    // this will fire if one of your friend's is broadcasting their status to you
-    socket?.on('status change', (data) => {
+    socket?.on('ping status change', (data) => {
       dispatch(addOrUpdateStatus(data));
 
       // send a active status to the friend that sent you their new status
-      socket.emit('broadcast_current_status_to_friend', {
+      socket.emit('pong status change', {
         user_id: user.user_id,
         status: ActiveStatus.ACTIVE,
         friend_id: data.user_id,
       });
     });
 
-    // if a friend's status has changed this will fire
-    socket?.on('friend status change', (data) => {
-      dispatch(addOrUpdateStatus(data));
-    });
+    socket?.on('friend status changed', (data) =>
+      dispatch(addOrUpdateStatus(data))
+    );
 
     return () => {
-      socket?.removeListener('status change');
+      socket?.removeListener('ping status change');
+      socket?.removeListener('friend status changed');
     };
   }, [dispatch, user, router.pathname, socket]);
 };

@@ -27,7 +27,7 @@ export const RecievedItem = ({
       buttonText={'Accept'}
       onClick={() => {
         mutateFriends(
-          unstable_serialize(nextCursorSWRGetKey('/friends', FRIEND_LIMIT))
+          unstable_serialize(nextCursorSWRGetKey('friends', FRIEND_LIMIT))
         ).catch((err) => console.error(err));
 
         if (!user) return;

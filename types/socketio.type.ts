@@ -4,12 +4,10 @@ import {
 } from './SocketData.type';
 
 export interface ServerToClientEvents {
-  ['status change']: (data: StatusChangeEventData) => void;
-  ['friend status change']: (data: StatusChangeEventData) => void;
+  ['ping status change']: (data: StatusChangeEventData) => void;
+  ['friend status changed']: (data: StatusChangeEventData) => void;
 }
 
 export interface ClientToServerEvents {
-  ['broadcast_current_status_to_friend']: (
-    data: FriendStatusChangeEventData
-  ) => void;
+  ['pong status change']: (data: FriendStatusChangeEventData) => void;
 }

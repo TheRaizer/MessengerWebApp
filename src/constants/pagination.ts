@@ -1,1 +1,1 @@
-export const FRIEND_LIMIT = 10;
+export const FRIEND_LIMIT = 20;

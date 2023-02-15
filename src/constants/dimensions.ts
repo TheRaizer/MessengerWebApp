@@ -9,3 +9,5 @@ export const INITIAL_WINDOW_DIMENSIONS: Dimensions<string> = {
   width: `min(${MINIMUM_WINDOW_WIDTH}px, 100vw)`,
   height: `min(${MINIMUM_WINDOW_HEIGHT}px, var(--page-height))`,
 };
+
+export const WINDOW_HEADER_HEIGHT = 21;
