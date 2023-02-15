@@ -10,4 +10,5 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   ['pong status change']: (data: FriendStatusChangeEventData) => void;
+  ['ping status change']: (data: FriendStatusChangeEventData) => void;
 }
