@@ -12,6 +12,7 @@ import {
 } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { FriendItemsList } from './common/FriendItemsList';
 import { FriendItem } from './common/FriendItem';
+import { FRIEND_LIMIT } from '../../../../../../constants/pagination';
 
 export const Friends = ({}: ChangeStateProp<
   FriendListStates,
@@ -21,7 +22,7 @@ export const Friends = ({}: ChangeStateProp<
     '/friends',
     cursorPaginationFetcher<PublicUserModel>(),
     cursorPaginationHasMoreData<PublicUserModel>(),
-    10
+    FRIEND_LIMIT
   );
 
   return (

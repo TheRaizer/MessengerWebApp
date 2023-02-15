@@ -12,6 +12,7 @@ import {
 import { usePaginateInView } from '../../../../../../hooks/data/usePaginateInView';
 import { FriendItemsList } from './common/FriendItemsList';
 import { RecievedItem } from './common/AddressRequestItem/RecievedItem';
+import { FRIEND_LIMIT } from '../../../../../../constants/pagination';
 
 export const Recieved = ({}: ChangeStateProp<
   FriendListStates,
@@ -21,7 +22,7 @@ export const Recieved = ({}: ChangeStateProp<
     '/friends/requests/senders',
     cursorPaginationFetcher<PublicUserModel>(),
     cursorPaginationHasMoreData<PublicUserModel>(),
-    10
+    FRIEND_LIMIT
   );
 
   return (
