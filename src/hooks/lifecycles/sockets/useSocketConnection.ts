@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSocket } from './useSocket';
+import { socketContext } from '../../../components/Providers/SocketProvider';
 
 export const useSocketConnection = (): void => {
   const router = useRouter();
-  const socket = useSocket();
+  const socket = useContext(socketContext);
 
   useEffect(() => {
     socket?.on('connect', () => {

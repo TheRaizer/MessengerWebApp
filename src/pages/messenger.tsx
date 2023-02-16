@@ -5,6 +5,8 @@ import { CenteredCol } from '../components/common/Col';
 import { Windows } from '../components/Windows/WindowHandler';
 import { withAuthentication } from '../helpers/api/session';
 import { IconContainer } from '../components/DesktopIcons/IconContainer';
+import { SocketListeners } from '../components/Containers/SocketListeners';
+import { SocketProvider } from '../components/Providers/SocketProvider';
 
 export const getServerSideProps = withAuthentication(() => {
   return {
@@ -37,10 +39,13 @@ const Messenger = (): ReactElement => {
           content="A retro messenger formatted like an OS"
         />
       </Head>
-      <Styled.BackgroundContainer>
-        <Windows />
-        <IconContainer />
-      </Styled.BackgroundContainer>
+      <SocketProvider>
+        <SocketListeners />
+        <Styled.BackgroundContainer>
+          <Windows />
+          <IconContainer />
+        </Styled.BackgroundContainer>
+      </SocketProvider>
     </>
   );
 };

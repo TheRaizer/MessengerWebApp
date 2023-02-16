@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ReactElement } from 'react';
+import { ReactElement, useContext } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { PageRoutes } from '../../constants/pageRoutes';
@@ -11,7 +11,7 @@ import { useSWRConfig } from 'swr';
 import { reset as resetFriendStatusesState } from '../../redux/slices/friendStatusesSlice';
 import { reset as resetWindowsState } from '../../redux/slices/windowsSlice';
 import { CookieKeys, deleteCookie } from '../../helpers/cookie';
-import { useSocket } from '../../hooks/lifecycles/sockets/useSocket';
+import { socketContext } from '../Providers/SocketProvider';
 
 const Styled = {
   Button: styled.button`
@@ -27,7 +27,7 @@ export const SignOutButton = (): ReactElement => {
   const dispatch = useAppDispatch();
   const routeToHome = usePageRouting(PageRoutes.HOME);
   const { cache } = useSWRConfig();
-  const socket = useSocket();
+  const socket = useContext(socketContext);
 
   const signout = () => {
     fetchNextAPI('auth/sign-out', 'PUT')

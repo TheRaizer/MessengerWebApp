@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addOrUpdateStatus } from '../../../redux/slices/friendStatusesSlice';
 import { selectUser } from '../../../redux/slices/userSlice';
 import { useRouter } from 'next/router';
-import { useSocket } from './useSocket';
 import { ActiveStatus } from '../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem.type';
+import { socketContext } from '../../../components/Providers/SocketProvider';
 
 export const useUserStatusSocket = (): void => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectUser);
   const router = useRouter();
-  const socket = useSocket();
+  const socket = useContext(socketContext);
 
   useEffect(() => {
     /**
@@ -37,9 +37,9 @@ export const useUserStatusSocket = (): void => {
       });
     });
 
-    socket?.on('friend status changed', (data) =>
-      dispatch(addOrUpdateStatus(data))
-    );
+    socket?.on('friend status changed', (data) => {
+      dispatch(addOrUpdateStatus(data));
+    });
 
     return () => {
       socket?.removeListener('ping status change');
