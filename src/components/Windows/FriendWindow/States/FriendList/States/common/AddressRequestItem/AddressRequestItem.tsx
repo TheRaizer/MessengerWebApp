@@ -9,6 +9,7 @@ export const AddressRequestItem = ({
   friendUsername,
   mutate,
   getRoute,
+  routeMethod,
   buttonText,
   onClick,
 }: AddressRequestItemProps): ReactElement => {
@@ -23,7 +24,7 @@ export const AddressRequestItem = ({
           onClick={() => {
             setLoading(true);
 
-            fetchNextAPI(getRoute(friendUsername), 'POST')
+            fetchNextAPI(getRoute(friendUsername), routeMethod)
               .then(() => {
                 // instead of refetching we remove user with a specified username from SWR cache
                 mutate()
@@ -31,7 +32,8 @@ export const AddressRequestItem = ({
                   .finally(() => setLoading(false));
                 onClick?.();
               })
-              .catch((err) => console.error(err));
+              .catch((err) => console.error(err))
+              .finally(() => setLoading(false));
           }}
         >
           {buttonText}

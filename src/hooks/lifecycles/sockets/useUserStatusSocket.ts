@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addOrUpdateStatus } from '../../../redux/slices/friendStatusesSlice';
 import { selectUser } from '../../../redux/slices/userSlice';
 import { useRouter } from 'next/router';
-import { ActiveStatus } from '../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem.type';
+import { ActiveStatus } from '../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { socketContext } from '../../../components/Providers/SocketProvider';
 
 export const useUserStatusSocket = (): void => {

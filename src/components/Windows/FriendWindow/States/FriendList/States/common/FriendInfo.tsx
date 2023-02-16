@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { IconBaseProps } from 'react-icons';
 import styled from 'styled-components';
 import { Col } from '../../../../../../common/Col';
-import { FriendItemProps } from '../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem.type';
+import { FriendItemProps } from '../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { FriendStatus } from './FriendStatus';
 
 const Styled = {

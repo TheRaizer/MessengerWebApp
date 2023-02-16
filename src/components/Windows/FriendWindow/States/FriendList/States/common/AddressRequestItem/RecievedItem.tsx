@@ -2,7 +2,7 @@ import { ReactElement, useContext } from 'react';
 import {
   ActiveStatus,
   FriendItemProps,
-} from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem.type';
+} from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { AddressRequestItem } from './AddressRequestItem';
 import { useSWRConfig } from 'swr';
 import { unstable_serialize } from 'swr/infinite';
@@ -29,6 +29,7 @@ export const RecievedItem = ({
       getRoute={(friendUsername) =>
         `friends/requests/accept?requester_username=${friendUsername}`
       }
+      routeMethod={'POST'}
       buttonText={'Accept'}
       onClick={() => {
         mutateFriends(
