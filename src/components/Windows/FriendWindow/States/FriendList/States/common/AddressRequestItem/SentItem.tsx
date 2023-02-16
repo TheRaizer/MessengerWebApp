@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { FriendItemProps } from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem.type';
+import { FriendItemProps } from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { AddressRequestItem } from './AddressRequestItem';
 
 export const SentItem = (props: FriendItemProps): ReactElement => {
@@ -7,8 +7,9 @@ export const SentItem = (props: FriendItemProps): ReactElement => {
     <AddressRequestItem
       {...props}
       getRoute={(friendUsername) =>
-        `friends/requests/cancel?request_addressee_username=${friendUsername}`
+        `friends/requests?friend_username=${friendUsername}`
       }
+      routeMethod={'DELETE'}
       buttonText={'Cancel'}
     />
   );

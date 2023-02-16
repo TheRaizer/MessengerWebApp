@@ -1,6 +1,6 @@
 import { KeyedMutator } from 'swr';
-import { PublicUserModel } from '../../../../../../Models/User.type';
-import { CursorPaginationResponse } from '../../../../../../helpers/pagination.type';
+import { PublicUserModel } from '../../../../../../../Models/User.type';
+import { CursorPaginationResponse } from '../../../../../../../helpers/pagination.type';
 
 export enum ActiveStatus {
   ACTIVE = 'active',

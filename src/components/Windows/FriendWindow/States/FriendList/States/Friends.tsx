@@ -11,7 +11,7 @@ import {
   FriendListStates,
 } from '../../../../../../../types/components/Windows/FriendWindow/States/FriendList/FriendList.type';
 import { FriendItemsList } from './common/FriendItemsList';
-import { FriendItem } from './common/FriendItem';
+import { FriendItem } from './common/FriendItem/FriendItem';
 import { FRIEND_LIMIT } from '../../../../../../constants/pagination';
 
 export const Friends = ({}: ChangeStateProp<

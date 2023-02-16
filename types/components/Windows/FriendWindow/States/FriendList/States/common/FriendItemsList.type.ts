@@ -1,7 +1,7 @@
 import { ComponentType } from 'react';
 import { PublicUserModel } from '../../../../../../../Models/User.type';
 import { CursorPaginationResponse } from '../../../../../../../helpers/pagination.type';
-import { FriendItemProps } from '../../common/FriendItem.type';
+import { FriendItemProps } from '../../common/FriendItem/FriendItem.type';
 import { KeyedMutator } from 'swr';
 
 export type FriendItemsListProps = {

@@ -47,7 +47,7 @@ export const AddFriendBody = ({
   const addFriend = useCallback(() => {
     setLoading(true);
     fetchNextAPI<FriendshipData>(
-      `friends/requests/send?username=${username}`,
+      `friends/requests?username=${username}`,
       'POST'
     )
       .then(({ data: friendshipData }) => {
