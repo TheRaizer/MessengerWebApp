@@ -8,3 +8,15 @@ export type StatusChangeEventData = {
 export type FriendStatusChangeEventData = {
   friend_id: number;
 } & StatusChangeEventData;
+
+export type SendMessageData = {
+  addressee_username: string;
+  content: string;
+  group_chat_id: number | null;
+  access_token: string;
+};
+
+export type ErrorData = {
+  detail: string;
+  status_code: string;
+};
