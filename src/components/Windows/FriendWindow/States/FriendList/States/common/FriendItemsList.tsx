@@ -57,6 +57,7 @@ export const FriendItemsList = React.forwardRef<
           mutate={mutate}
         />
       ))}
+      {!friends && <FriendLoadingSpinner ref={ref} />}
       {hasMoreData(data) && <FriendLoadingSpinner ref={ref} />}
     </Styled.FriendsListContainer>
   );
