@@ -27,7 +27,7 @@ export const getWindowComponent = <K extends WindowType>(
     case WindowType.MESSAGE:
       Component = dynamic<WithRequired<WindowProps[WindowType.MESSAGE], 'id'>>(
         () =>
-          import('../../components/Windows/MessageWindow').then(
+          import('../../components/Windows/MessageWindow/MessageWindow').then(
             (mod) => mod.MessageWindow
           )
       );

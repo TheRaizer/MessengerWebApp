@@ -20,32 +20,6 @@ import { IconBaseProps } from 'react-icons';
 import { AddFriendModal } from './States/common/AddFriendModal/AddFriendModal';
 
 const Styled = {
-  FriendsListContainer: styled(Col)`
-    height: 100%;
-    width: 100%;
-    gap: 5px;
-    overflow-y: auto;
-    border-top: 1px solid black;
-
-    /* width */
-    &::-webkit-scrollbar {
-      width: 23px;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: var(--primary-color-2);
-      border-left: 1px solid black;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      border-left: 1px solid black;
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
-      background: var(--primary-color);
-    }
-  `,
   OpenModalButton: styled.button`
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     position: absolute;
@@ -117,9 +91,7 @@ export const FriendsListState = ({}: ChangeStateProp<
       <Styled.OpenModalButton onClick={() => setOpenModal(true)}>
         <PlusCircleIcon size={'2em'} />
       </Styled.OpenModalButton>
-      <Styled.FriendsListContainer as="ul">
-        {CurrentComponent}
-      </Styled.FriendsListContainer>
+      {CurrentComponent}
       {openModal && (
         <Styled.ModalContainer>
           <AddFriendModal onClose={() => setOpenModal(false)} />

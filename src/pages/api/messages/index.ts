@@ -7,41 +7,60 @@ import {
 } from '../../../helpers/api/api';
 import { Method } from '../../../../types/helpers/api/request.type';
 import { CursorPaginationResponse } from '../../../../types/helpers/pagination.type';
-import { PublicUserModel } from '../../../../types/Models/User.type';
 import { StatusCodes } from 'http-status-codes';
+import { MessageModel } from '../../../../types/Models/MessageModel.type';
 
-const acceptedFriendsRoute = async (
+const messagesRoute = async (
   req: NextApiRequest,
   res: NextApiResponse,
   accessToken: string
 ) => {
-  const { limit, cursor }: { limit?: string; cursor?: string } = req.query;
-  enforceMethod<CursorPaginationResponse<PublicUserModel>>(
+  const {
+    friend_username,
+    limit,
+    cursor,
+  }: { friend_username?: string; limit?: string; cursor?: string } = req.query;
+  enforceMethod<CursorPaginationResponse<MessageModel>>(
     res,
     req.method as Method,
     'GET',
     { cursor: {}, results: [] }
   );
+
+  if (!friend_username) {
+    return setRes<CursorPaginationResponse<MessageModel>>(
+      res,
+      StatusCodes.BAD_REQUEST,
+      {
+        cursor: {},
+        results: [],
+        detail: 'friend username was not provided',
+      }
+    );
+  }
+
   const cursorParam = cursor ? `&cursor=${cursor}` : '';
 
   try {
     const { data, res: serverRes } = await fetchServerAPI<
-      CursorPaginationResponse<PublicUserModel>
+      CursorPaginationResponse<MessageModel>
     >(
-      `friends?limit=${limit || ''}${cursorParam}`,
+      `messages?friend_username=${friend_username}&limit=${
+        limit || ''
+      }${cursorParam}`,
       'GET',
       undefined,
       undefined,
       accessToken
     );
 
-    return setRes<CursorPaginationResponse<PublicUserModel>>(
+    return setRes<CursorPaginationResponse<MessageModel>>(
       res,
       serverRes.status,
       data
     );
   } catch (err) {
-    return setRes<CursorPaginationResponse<PublicUserModel>>(
+    return setRes<CursorPaginationResponse<MessageModel>>(
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       {
@@ -53,4 +72,4 @@ const acceptedFriendsRoute = async (
   }
 };
 
-export default withAuthRoute(acceptedFriendsRoute);
+export default withAuthRoute(messagesRoute);
