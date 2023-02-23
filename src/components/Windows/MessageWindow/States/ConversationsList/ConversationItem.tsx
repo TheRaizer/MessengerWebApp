@@ -7,6 +7,7 @@ import { nextCursorSWRGetKey } from '../../../../../helpers/pagination';
 import useSWRInfinite from 'swr/infinite';
 import { MessageModel } from '../../../../../../types/Models/MessageModel.type';
 import styled from 'styled-components';
+import Skeleton from '@mui/material/Skeleton';
 
 const Styled = {
   LatestMessage: styled.p`
@@ -16,18 +17,28 @@ const Styled = {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  `
-}
+  `,
+  SkeletonContainer: styled.div`
+    padding: 0px 10px;
+    display: flex;
+    width: 80%;
+    gap: 10px;
+  `,
+};
 
 export const ConversationItem = ({
   friendUsername,
   friendId,
 }: Omit<FriendItemProps, 'mutate'>): ReactElement | null => {
-  const getKey = nextCursorSWRGetKey('messages', MESSAGES_LIMIT, `friend_username=${friendUsername}`);
+  const getKey = nextCursorSWRGetKey(
+    'messages',
+    MESSAGES_LIMIT,
+    `friend_username=${friendUsername}`
+  );
 
   const { data } = useSWRInfinite(
     getKey,
-    cursorPaginationFetcher<MessageModel>(),
+    cursorPaginationFetcher<MessageModel>()
   );
 
   const messages = useMemo(
@@ -35,7 +46,15 @@ export const ConversationItem = ({
     [data]
   );
 
-  if(!messages || messages.length === 0) return null;
+  if (messages === undefined)
+    return (
+      <Styled.SkeletonContainer>
+        <Skeleton variant="circular" width={40} height={40} />
+        <Skeleton variant="rectangular" width={'100%'} height={40} />
+      </Styled.SkeletonContainer>
+    );
+
+  if (messages.length === 0) return null;
 
   return (
     <FriendInfo friendUsername={friendUsername} friendId={friendId}>
