@@ -5,35 +5,55 @@ import {
 } from '../../../../types/redux/states/windows.type';
 import { WithRequired } from '../../../../types/Required.type';
 import { WindowContainer } from '../WindowContainer';
-import { FriendItemsList } from '../FriendWindow/States/FriendList/States/common/FriendItemsList';
-import { PublicUserModel } from '../../../../types/Models/User.type';
-import { FRIEND_LIMIT } from '../../../constants/pagination';
+import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 import {
-  cursorPaginationFetcher,
-  cursorPaginationHasMoreData,
-} from '../../../helpers/swr/cursorPaginationFetcher';
-import { usePaginateInView } from '../../../hooks/data/usePaginateInView';
-import { ConversationItem } from './States/ConversationsList/ConversationItem';
+  ChangeStateProp,
+  StatesDictionary,
+} from '../../../../types/hooks/useStateMachine.type';
+import {
+  MessageWindowStateProps,
+  MessageWindowStates,
+} from '../../../../types/components/Windows/MessageWindow/MessageWindow.type';
+import dynamic from 'next/dynamic';
+import { FriendItemProps } from '../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
+
+const Conversation = dynamic<
+  Omit<FriendItemProps, 'mutate'> &
+    ChangeStateProp<MessageWindowStates, MessageWindowStateProps>
+>(() =>
+  import('./States/Conversation/Conversation').then((mod) => mod.Conversation)
+);
+
+const ConversationsList = dynamic<
+  ChangeStateProp<MessageWindowStates, MessageWindowStateProps>
+>(() =>
+  import('./States/ConversationsList/ConversationsList').then(
+    (mod) => mod.ConversationsList
+  )
+);
+
+const messageWindowStates: StatesDictionary<
+  MessageWindowStates,
+  MessageWindowStateProps
+> = {
+  [MessageWindowStates.CONVERSATION]: (props) => <Conversation {...props} />,
+  [MessageWindowStates.CONVERSATIONS_LIST]: (props) => (
+    <ConversationsList {...props} />
+  ),
+};
 
 export const MessageWindow = ({
-  usernameToMessage,
   id,
 }: WithRequired<WindowProps[WindowType.MESSAGE], 'id'>): ReactElement => {
-  const { data, ref, mutate } = usePaginateInView(
-    'friends',
-    cursorPaginationFetcher<PublicUserModel>(),
-    cursorPaginationHasMoreData<PublicUserModel>(),
-    FRIEND_LIMIT
+  const { CurrentComponent } = useStateMachine(
+    messageWindowStates,
+    MessageWindowStates.CONVERSATIONS_LIST,
+    {}
   );
 
   return (
     <WindowContainer title={'Message'} windowId={id}>
-      <FriendItemsList
-        data={data}
-        mutate={mutate}
-        ref={ref}
-        ItemComponent={ConversationItem}
-      />
+      {CurrentComponent}
     </WindowContainer>
   );
 };

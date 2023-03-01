@@ -1,11 +1,14 @@
-export const getFormattedLocalDateString = (): string => {
-  return new Date().toLocaleString('en-US', {
+export const getFormattedLocalDateString = (date?: Date): string => {
+  const dateToFormat = date || new Date();
+
+  return dateToFormat.toLocaleString('en-US', {
     month: 'short',
     weekday: 'short',
     day: 'numeric',
   });
 };
 
-export const getFormattedLocalTimeString = (): string => {
-  return new Date().toLocaleTimeString('en-US', { timeStyle: 'short' });
+export const getFormattedLocalTimeString = (date?: Date): string => {
+  const dateToFormat = date || new Date();
+  return dateToFormat.toLocaleTimeString('en-US', { timeStyle: 'short' });
 };

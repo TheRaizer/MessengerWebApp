@@ -7,12 +7,13 @@ import { FriendItemProps } from '../../../../../../../../types/components/Window
 import { FriendStatus } from './FriendStatus';
 
 const Styled = {
-  FriendItemContainer: styled.li`
+  FriendItemContainer: styled.li<{ canClick: boolean }>`
     display: flex;
     align-items: center;
     width: 100%;
     padding: 0px 10px;
     gap: 10px;
+    cursor: ${({ canClick }) => canClick && 'pointer'};
   `,
   RightContainer: styled.div`
     display: flex;
@@ -40,9 +41,16 @@ export const FriendInfo = ({
   friendUsername,
   friendId,
   children,
-}: Partial<FriendItemProps> & { children: React.ReactNode }): ReactElement => {
+  onClick,
+}: Partial<FriendItemProps> & {
+  children: React.ReactNode;
+  onClick?: () => void;
+}): ReactElement => {
   return (
-    <Styled.FriendItemContainer>
+    <Styled.FriendItemContainer
+      onClick={onClick}
+      canClick={onClick !== undefined}
+    >
       <UserIcon size={40} />
       <Styled.RightContainer>
         <Styled.FriendInfo>
