@@ -8,6 +8,11 @@ import useSWRInfinite from 'swr/infinite';
 import { MessageModel } from '../../../../../../types/Models/MessageModel.type';
 import styled from 'styled-components';
 import Skeleton from '@mui/material/Skeleton';
+import {
+  MessageWindowStates,
+  MessageWindowStateProps,
+} from '../../../../../../types/components/Windows/MessageWindow/MessageWindow.type';
+import { ChangeStateProp } from '../../../../../../types/hooks/useStateMachine.type';
 
 const Styled = {
   LatestMessage: styled.p`
@@ -29,7 +34,12 @@ const Styled = {
 export const ConversationItem = ({
   friendUsername,
   friendId,
-}: Omit<FriendItemProps, 'mutate'>): ReactElement | null => {
+  changeState,
+}: Omit<FriendItemProps, 'mutate'> &
+  ChangeStateProp<
+    MessageWindowStates,
+    MessageWindowStateProps
+  >): ReactElement | null => {
   const getKey = nextCursorSWRGetKey(
     'messages',
     MESSAGES_LIMIT,
@@ -57,7 +67,17 @@ export const ConversationItem = ({
   if (messages.length === 0) return null;
 
   return (
-    <FriendInfo friendUsername={friendUsername} friendId={friendId}>
+    <FriendInfo
+      friendUsername={friendUsername}
+      friendId={friendId}
+      onClick={() =>
+        changeState(MessageWindowStates.CONVERSATION, {
+          friendId,
+          friendUsername,
+          changeState
+        })
+      }
+    >
       <Styled.LatestMessage>{messages?.[0]?.content}</Styled.LatestMessage>
     </FriendInfo>
   );

@@ -8,9 +8,10 @@ export const usePaginateInView = <T>(
   fetcher: (url: string) => Promise<T>,
   hasMoreData: (data: T[] | undefined) => boolean,
   limit: number,
-  swrConfig?: SWRInfiniteConfiguration<T>
+  swrConfig?: SWRInfiniteConfiguration<T>,
+  parameters?: string
 ) => {
-  const getKey = nextCursorSWRGetKey(swrKeyUrl, limit);
+  const getKey = nextCursorSWRGetKey(swrKeyUrl, limit, parameters);
   const [ref, inView] = useInView();
 
   const { data, size, setSize, isValidating, mutate } = useSWRInfinite(
