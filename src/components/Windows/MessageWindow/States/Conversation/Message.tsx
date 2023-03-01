@@ -37,7 +37,6 @@ const Styled = {
     border: 1px solid black;
     justify-content: center;
   `,
-  Content: styled.p``,
   Header: styled.div<{ senderIsUser: boolean }>`
     display: flex;
     gap: 10px;
@@ -73,7 +72,7 @@ export const Message = ({
             {!senderIsUser && <p>{friendUsername}</p>}
             <p>{createdDateTime}</p>
           </Styled.Header>
-          <Styled.Content>{content}</Styled.Content>
+          <p>{content}</p>
         </Styled.ContentContainer>
         {senderIsUser && (
           <Styled.Icon>
