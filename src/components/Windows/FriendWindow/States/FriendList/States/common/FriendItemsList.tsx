@@ -6,6 +6,7 @@ import { FriendItemsListProps } from '../../../../../../../../types/components/W
 import React from 'react';
 import styled from 'styled-components';
 import { Col } from '../../../../../../common/Col';
+import { WindowScrollBar } from '../../../../../../common/WindowScrollBar';
 
 const Styled = {
   FriendsListContainer: styled(Col)`
@@ -13,26 +14,8 @@ const Styled = {
     width: 100%;
     gap: 5px;
     overflow-y: auto;
-    border-top: 1px solid black;
 
-    /* width */
-    &::-webkit-scrollbar {
-      width: 23px;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: var(--primary-color-2);
-      border-left: 1px solid black;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      border-left: 1px solid black;
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
-      background: var(--primary-color);
-    }
+    ${WindowScrollBar}
   `,
 };
 

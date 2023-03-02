@@ -12,6 +12,7 @@ const Styled = {
     padding: 4px 10px;
     gap: 10px;
     font-size: 0.8em;
+    border-bottom: 1px solid black;
   `,
   SelectablePillButton: styled(PillButton)<{ selected: boolean }>`
     padding: 1px 5px;
