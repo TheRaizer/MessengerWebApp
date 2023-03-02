@@ -25,6 +25,10 @@ export const useSocket = () => {
           access_token: socketioAccessToken,
         },
       });
+
+      if (socket.disconnected) {
+        socket.connect();
+      }
     } else if (socket.disconnected) {
       socket.connect();
     }
