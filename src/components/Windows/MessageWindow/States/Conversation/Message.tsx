@@ -7,11 +7,11 @@ import { Col } from '../../../../common/Col';
 import { getFormattedLocalTimeString } from '../../../../../helpers/datetime';
 
 const Styled = {
-  PositioningContainer: styled.div<{ senderIsUser: boolean }>`
+  PositioningContainer: styled.div<{ justifyEnd: boolean }>`
     width: 100%;
     display: flex;
-    justify-content: ${({ senderIsUser }) =>
-      senderIsUser ? 'flex-end' : 'flex-start'};
+    justify-content: ${({ justifyEnd }) =>
+      justifyEnd ? 'flex-end' : 'flex-start'};
     padding: 0px 10px;
   `,
   Container: styled.div`
@@ -32,15 +32,15 @@ const Styled = {
   `,
   ContentContainer: styled(Col)`
     padding: 0px 10px;
-    min-width: 80px;
+    max-width: 230px;
     height: 100%;
     border: 1px solid black;
     justify-content: center;
   `,
-  Header: styled.div<{ senderIsUser: boolean }>`
+  Header: styled.div<{ alignTextLeft: boolean }>`
     display: flex;
     gap: 10px;
-    text-align: ${({ senderIsUser }) => (senderIsUser ? 'left' : 'right')};
+    text-align: ${({ alignTextLeft }) => (alignTextLeft ? 'left' : 'right')};
     opacity: 0.4;
     font-size: 0.8em;
     justify-content: space-between;
@@ -57,10 +57,13 @@ export const Message = ({
 
   const senderIsUser = user.user?.user_id == senderId;
   const username = senderIsUser ? user.user?.username || '' : friendUsername;
-  const createdDateTime = getFormattedLocalTimeString(new Date(createdDate));
+  const createdDateTime =
+    new Date(createdDate).toLocaleDateString() +
+    ' ' +
+    getFormattedLocalTimeString(new Date(createdDate));
 
   return (
-    <Styled.PositioningContainer senderIsUser={senderIsUser}>
+    <Styled.PositioningContainer justifyEnd={senderIsUser}>
       <Styled.Container>
         {!senderIsUser && (
           <Styled.Icon>
@@ -68,7 +71,7 @@ export const Message = ({
           </Styled.Icon>
         )}
         <Styled.ContentContainer>
-          <Styled.Header senderIsUser={senderIsUser}>
+          <Styled.Header alignTextLeft={senderIsUser}>
             {!senderIsUser && <p>{friendUsername}</p>}
             <p>{createdDateTime}</p>
           </Styled.Header>
