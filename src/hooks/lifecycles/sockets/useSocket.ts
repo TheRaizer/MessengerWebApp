@@ -16,22 +16,14 @@ export const useSocket = () => {
   useEffect(() => {
     if (!user) return;
 
-    if (!socket) {
-      const socketioAccessToken = getCookie(CookieKeys.SOCKETIO_ACCESS_TOKEN);
-      socket = io(process.env.SOCKET_URL as string, {
-        path: '/ws/socket.io',
-        transports: ['websocket', 'polling'],
-        auth: {
-          access_token: socketioAccessToken,
-        },
-      });
-
-      if (socket.disconnected) {
-        socket.connect();
-      }
-    } else if (socket.disconnected) {
-      socket.connect();
-    }
+    const socketioAccessToken = getCookie(CookieKeys.SOCKETIO_ACCESS_TOKEN);
+    socket = io(process.env.SOCKET_URL as string, {
+      path: '/ws/socket.io',
+      transports: ['websocket', 'polling'],
+      auth: {
+        access_token: socketioAccessToken,
+      },
+    });
 
     return () => {
       socket?.disconnect();
