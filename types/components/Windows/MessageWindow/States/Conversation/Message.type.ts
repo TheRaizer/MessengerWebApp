@@ -3,4 +3,5 @@ export type MessageProps = {
   createdDate: Date;
   friendUsername: string;
   senderId: number;
+  messageId: number;
 };

@@ -5,6 +5,7 @@ import { DefaultTheme, StyledComponentProps } from 'styled-components';
 export type InputProps = {
   labelText: string;
   type?: string;
+  onEnter?: () => void;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   className?: string;
   dimensions?: Dimensions<string>;
