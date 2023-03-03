@@ -24,7 +24,6 @@ export const MessageInput = ({
     (content: string) => {
       const socketioAccessToken = getCookie(CookieKeys.SOCKETIO_ACCESS_TOKEN);
 
-      // TODO: mutate the messages and add this message to it
       socket?.emit('message', {
         addressee_username: friendUsername,
         content: content,

@@ -105,6 +105,7 @@ export const Conversation = ({
         {messages?.map((message) => (
           <li key={message.message_id}>
             <Message
+              messageId={message.message_id}
               content={message.content}
               createdDate={message.created_date_time}
               friendUsername={friendUsername}

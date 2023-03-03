@@ -52,6 +52,7 @@ export const Message = ({
   createdDate,
   friendUsername,
   senderId,
+  messageId,
 }: MessageProps): ReactElement => {
   const user = useAppSelector(selectUser);
 
