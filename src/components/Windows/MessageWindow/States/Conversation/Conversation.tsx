@@ -21,6 +21,7 @@ import { selectFriendStatuses } from '../../../../../redux/slices/friendStatuses
 import dynamic from 'next/dynamic';
 import { IconBaseProps } from 'react-icons';
 import { WindowScrollBar } from '../../../../common/WindowScrollBar';
+import { MessageInput } from './MessageInput';
 
 const BsArrowLeftCircle = dynamic<IconBaseProps>(() =>
   import('react-icons/bs').then((mod) => mod.BsArrowLeftCircle)
@@ -36,6 +37,10 @@ const Styled = {
     height: 100%;
     flex-direction: column-reverse;
     ${WindowScrollBar}
+
+    &::-webkit-scrollbar-track {
+      border-bottom: 1px solid black;
+    }
   `,
   Header: styled.div`
     display: flex;
@@ -109,6 +114,7 @@ export const Conversation = ({
         ))}
         {hasMoreData(data) && <FriendLoadingSpinner ref={ref} />}
       </Styled.MessageList>
+      <MessageInput friendUsername={friendUsername} />
     </Styled.MessageListContainer>
   );
 };

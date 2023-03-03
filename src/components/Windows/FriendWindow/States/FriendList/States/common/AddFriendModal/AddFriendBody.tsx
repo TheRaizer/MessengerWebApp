@@ -9,11 +9,10 @@ import { PublicUserModel } from '../../../../../../../../../types/Models/User.ty
 import { unstable_serialize } from 'swr/infinite';
 import { nextCursorSWRGetKey } from '../../../../../../../../helpers/pagination';
 import { FriendshipData } from '../../../../../../../../../types/responseData/FriendshipData';
-import { useKeyListener } from '../../../../../../../../hooks/effects/useKeyListener';
-import { Key } from 'ts-key-enum';
 import { AddFriendBodyProps } from '../../../../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/AddFriendModal/AddFriendBody.type';
 import { Spinner } from '../../../../../../../Loading/Spinner';
 import { FRIEND_LIMIT } from '../../../../../../../../constants/pagination';
+import { sanitize } from 'dompurify';
 
 const Styled = {
   Title: styled.h3`
@@ -41,13 +40,13 @@ export const AddFriendBody = ({
 }: AddFriendBodyProps): ReactElement => {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
-  const [focused, setFocused] = useState(false);
   const { mutate } = useSWRConfig();
 
   const addFriend = useCallback(() => {
     setLoading(true);
+    const sanitizedUsername = sanitize(username);
     fetchNextAPI<FriendshipData>(
-      `friends/requests?username=${username}`,
+      `friends/requests?username=${sanitizedUsername}`,
       'POST'
     )
       .then(({ data: friendshipData }) => {
@@ -72,12 +71,6 @@ export const AddFriendBody = ({
       .finally(() => setLoading(false));
   }, [mutate, onRequestComplete, username]);
 
-  useKeyListener(() => {
-    if (focused) {
-      addFriend();
-    }
-  }, Key.Enter);
-
   return (
     <>
       <Styled.Title>Add Friend</Styled.Title>
@@ -85,8 +78,7 @@ export const AddFriendBody = ({
         <Input
           labelText="username"
           onChange={(evt) => setUsername(evt.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onEnter={addFriend}
         />
         {loading ? (
           <Spinner color="black" size={0.8} />
