@@ -9,7 +9,11 @@ import {
 export interface ServerToClientEvents {
   ['ping status change']: (data: StatusChangeEventData) => void;
   ['friend status changed']: (data: StatusChangeEventData) => void;
-  ['message response']: (data: MessageModel | ErrorData) => void;
+  ['message response']: (
+    data: { message?: string } & Partial<ErrorData> & {
+        message_tracking_id?: number;
+      }
+  ) => void;
 }
 
 export interface ClientToServerEvents {

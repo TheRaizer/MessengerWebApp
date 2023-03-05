@@ -1,3 +1,4 @@
+import { MessageModel } from './Models/MessageModel.type';
 import { ActiveStatus } from './components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 
 export type StatusChangeEventData = {
@@ -13,8 +14,7 @@ export type SendMessageData = {
   addressee_username: string;
   content: string;
   group_chat_id: number | null;
-  access_token: string;
-};
+} & Required<Pick<MessageModel, 'message_tracking_id'>>;
 
 export type ErrorData = {
   detail: string;

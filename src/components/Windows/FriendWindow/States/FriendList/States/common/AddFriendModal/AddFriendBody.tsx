@@ -4,8 +4,6 @@ import { Input } from '../../../../../../../common/Input';
 import { fetchNextAPI } from '../../../../../../../../helpers/api/api';
 import { emitErrorToast } from '../../../../../../../../helpers/toast/toast';
 import { useSWRConfig } from 'swr';
-import { CursorPaginationResponse } from '../../../../../../../../../types/helpers/pagination.type';
-import { PublicUserModel } from '../../../../../../../../../types/Models/User.type';
 import { unstable_serialize } from 'swr/infinite';
 import { nextCursorSWRGetKey } from '../../../../../../../../helpers/pagination';
 import { FriendshipData } from '../../../../../../../../../types/responseData/FriendshipData';
@@ -52,7 +50,7 @@ export const AddFriendBody = ({
       .then(({ data: friendshipData }) => {
         if (!friendshipData?.detail) {
           // instead of refetching we can mutate the SWR cached list and insert the new user
-          mutate<CursorPaginationResponse<PublicUserModel>[]>(
+          mutate(
             // serialize key for proper swr infinite mutation
             unstable_serialize(
               nextCursorSWRGetKey('friends/requests/recievers', FRIEND_LIMIT)
