@@ -1,7 +1,3 @@
-export type MessageProps = {
-  content: string;
-  createdDate: Date;
-  friendUsername: string;
-  senderId: number;
-  messageId: number;
-};
+import { MessageModel } from '../../../../../Models/MessageModel.type';
+
+export type MessageProps = MessageModel & { friendUsername: string };

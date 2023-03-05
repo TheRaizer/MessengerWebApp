@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useMemo, useState } from 'react';
 import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { MessageModel } from '../../../../../../types/Models/MessageModel.type';
 import { MESSAGES_LIMIT } from '../../../../../constants/pagination';
@@ -70,8 +70,9 @@ export const Conversation = ({
     MessageWindowStateProps
   >): ReactElement => {
   const friendStatuses = useAppSelector(selectFriendStatuses);
+  const [sentMessages, setSentMessages] = useState<MessageModel[]>([]);
   const hasMoreData = cursorPaginationHasMoreData<MessageModel>();
-  const { data, ref, mutate } = usePaginateInView(
+  const { data, ref } = usePaginateInView(
     'messages',
     cursorPaginationFetcher<MessageModel>(),
     hasMoreData,
@@ -80,10 +81,20 @@ export const Conversation = ({
     `friend_username=${friendUsername}`
   );
 
-  const messages = useMemo(
-    () => data?.map((data) => data.results).flat(),
-    [data]
-  );
+  const addSentMessage = (message: MessageModel) => {
+    setSentMessages(() => {
+      const newSentMessages = [...sentMessages];
+      newSentMessages.unshift(message);
+
+      return newSentMessages;
+    });
+  };
+
+  const messages = useMemo(() => {
+    const fetchedMessages = data?.map((data) => data.results).flat();
+
+    return fetchedMessages ? sentMessages.concat(fetchedMessages) : [];
+  }, [data, sentMessages]);
 
   return (
     <Styled.MessageListContainer>
@@ -104,18 +115,16 @@ export const Conversation = ({
       <Styled.MessageList as="ul" gap={20}>
         {messages?.map((message) => (
           <li key={message.message_id}>
-            <Message
-              messageId={message.message_id}
-              content={message.content}
-              createdDate={message.created_date_time}
-              friendUsername={friendUsername}
-              senderId={message.sender_id}
-            />
+            <Message {...message} friendUsername={friendUsername} />
           </li>
         ))}
         {hasMoreData(data) && <FriendLoadingSpinner ref={ref} />}
       </Styled.MessageList>
-      <MessageInput friendUsername={friendUsername} />
+      <MessageInput
+        friendUsername={friendUsername}
+        friendId={friendId}
+        onMessageEmit={addSentMessage}
+      />
     </Styled.MessageListContainer>
   );
 };

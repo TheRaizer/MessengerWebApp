@@ -23,14 +23,14 @@ const Styled = {
 };
 
 const Home = (): ReactElement => {
-  const userState = useAppSelector(selectUser);
+  const { user } = useAppSelector(selectUser);
   const routeToMessengerPage = usePageRouting(PageRoutes.MESSENGER);
 
   useEffect(() => {
-    if (userState.user) {
+    if (user) {
       routeToMessengerPage();
     }
-  }, [userState.user, routeToMessengerPage]);
+  }, [user, routeToMessengerPage]);
 
   return (
     <>

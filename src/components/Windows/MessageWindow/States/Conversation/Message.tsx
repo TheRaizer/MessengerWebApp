@@ -1,18 +1,20 @@
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import styled from 'styled-components';
 import { MessageProps } from '../../../../../../types/components/Windows/MessageWindow/States/Conversation/Message.type';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectUser } from '../../../../../redux/slices/userSlice';
 import { Col } from '../../../../common/Col';
 import { getFormattedLocalTimeString } from '../../../../../helpers/datetime';
+import { selectPendingMessages } from '../../../../../redux/slices/pendingMessagesSlice';
 
 const Styled = {
-  PositioningContainer: styled.div<{ justifyEnd: boolean }>`
+  PositioningContainer: styled.div<{ justifyEnd: boolean; isPending: boolean }>`
     width: 100%;
     display: flex;
     justify-content: ${({ justifyEnd }) =>
       justifyEnd ? 'flex-end' : 'flex-start'};
     padding: 0px 10px;
+    padding-bottom: ${({ isPending }) => isPending && '10'}px;
   `,
   Container: styled.div`
     display: flex;
@@ -36,6 +38,7 @@ const Styled = {
     height: 100%;
     border: 1px solid black;
     justify-content: center;
+    position: relative;
   `,
   Header: styled.div<{ alignTextLeft: boolean }>`
     display: flex;
@@ -45,26 +48,48 @@ const Styled = {
     font-size: 0.8em;
     justify-content: space-between;
   `,
+  MessageStatus: styled.p`
+    position: absolute;
+    bottom: -15px;
+    font-size: 0.7em;
+  `,
 };
 
 export const Message = ({
   content,
-  createdDate,
+  created_date_time,
   friendUsername,
-  senderId,
-  messageId,
+  sender_id,
+  reciever_id,
+  message_tracking_id,
 }: MessageProps): ReactElement => {
-  const user = useAppSelector(selectUser);
+  const pendingMessages = useAppSelector(selectPendingMessages);
+  const { user } = useAppSelector(selectUser);
 
-  const senderIsUser = user.user?.user_id == senderId;
-  const username = senderIsUser ? user.user?.username || '' : friendUsername;
+  const isPending = useMemo(() => {
+    if (pendingMessages[reciever_id]) {
+      if (
+        message_tracking_id !== undefined &&
+        pendingMessages[reciever_id][message_tracking_id] !== undefined
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }, [message_tracking_id, pendingMessages, reciever_id]);
+
+  const senderIsUser = user?.user_id == sender_id;
+  const username = senderIsUser ? user?.username || '' : friendUsername;
   const createdDateTime =
-    new Date(createdDate).toLocaleDateString() +
+    new Date(created_date_time).toLocaleDateString() +
     ' ' +
-    getFormattedLocalTimeString(new Date(createdDate));
+    getFormattedLocalTimeString(new Date(created_date_time));
 
   return (
-    <Styled.PositioningContainer justifyEnd={senderIsUser}>
+    <Styled.PositioningContainer
+      justifyEnd={senderIsUser}
+      isPending={isPending}
+    >
       <Styled.Container>
         {!senderIsUser && (
           <Styled.Icon>
@@ -77,6 +102,7 @@ export const Message = ({
             <p>{createdDateTime}</p>
           </Styled.Header>
           <p>{content}</p>
+          {isPending && <Styled.MessageStatus>sending...</Styled.MessageStatus>}
         </Styled.ContentContainer>
         {senderIsUser && (
           <Styled.Icon>
