@@ -14,3 +14,7 @@ const toastOptions: ToastOptions = {
 export const emitErrorToast = (message: string) => {
   toast.error(message, toastOptions);
 };
+
+export const emitMessageToast = (message: string) => {
+  toast.success(message, toastOptions);
+};

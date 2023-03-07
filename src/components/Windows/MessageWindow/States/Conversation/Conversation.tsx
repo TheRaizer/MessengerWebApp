@@ -1,4 +1,4 @@
-import { ReactElement, useMemo, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useRef } from 'react';
 import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { MessageModel } from '../../../../../../types/Models/MessageModel.type';
 import { MESSAGES_LIMIT } from '../../../../../constants/pagination';
@@ -22,6 +22,7 @@ import dynamic from 'next/dynamic';
 import { IconBaseProps } from 'react-icons';
 import { WindowScrollBar } from '../../../../common/WindowScrollBar';
 import { MessageInput } from './MessageInput';
+import { selectMessages } from '../../../../../redux/slices/messagesSlice';
 
 const BsArrowLeftCircle = dynamic<IconBaseProps>(() =>
   import('react-icons/bs').then((mod) => mod.BsArrowLeftCircle)
@@ -69,32 +70,44 @@ export const Conversation = ({
     MessageWindowStates,
     MessageWindowStateProps
   >): ReactElement => {
+  const messageListElement = useRef<HTMLUListElement>(null);
   const friendStatuses = useAppSelector(selectFriendStatuses);
-  const [sentMessages, setSentMessages] = useState<MessageModel[]>([]);
   const hasMoreData = cursorPaginationHasMoreData<MessageModel>();
+  const storedMessages = useAppSelector(selectMessages);
   const { data, ref } = usePaginateInView(
     'messages',
     cursorPaginationFetcher<MessageModel>(),
     hasMoreData,
     MESSAGES_LIMIT,
-    undefined,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      revalidateFirstPage: false,
+    },
     `friend_username=${friendUsername}`
   );
 
-  const addSentMessage = (message: MessageModel) => {
-    setSentMessages(() => {
-      const newSentMessages = [...sentMessages];
-      newSentMessages.unshift(message);
-
-      return newSentMessages;
-    });
-  };
+  const activeMessages = storedMessages[friendId];
 
   const messages = useMemo(() => {
     const fetchedMessages = data?.map((data) => data.results).flat();
 
-    return fetchedMessages ? sentMessages.concat(fetchedMessages) : [];
-  }, [data, sentMessages]);
+    if (activeMessages !== undefined) {
+      const newMessages = activeMessages.map((data) => data.message);
+
+      return fetchedMessages ? newMessages.concat(fetchedMessages) : [];
+    }
+
+    return fetchedMessages;
+  }, [data, activeMessages]);
+
+  useEffect(() => {
+    if (messageListElement.current && activeMessages?.length > 0) {
+      messageListElement.current.scrollTop =
+        messageListElement.current.clientHeight;
+    }
+  }, [activeMessages]);
 
   return (
     <Styled.MessageListContainer>
@@ -112,19 +125,15 @@ export const Conversation = ({
         <p>{friendUsername}</p>
         <Styled.Status>{friendStatuses[friendId] || 'offline'}</Styled.Status>
       </Styled.Header>
-      <Styled.MessageList as="ul" gap={20}>
-        {messages?.map((message) => (
-          <li key={message.message_id}>
+      <Styled.MessageList as="ul" gap={20} ref={messageListElement}>
+        {messages?.map((message, idx) => (
+          <li key={idx}>
             <Message {...message} friendUsername={friendUsername} />
           </li>
         ))}
         {hasMoreData(data) && <FriendLoadingSpinner ref={ref} />}
       </Styled.MessageList>
-      <MessageInput
-        friendUsername={friendUsername}
-        friendId={friendId}
-        onMessageEmit={addSentMessage}
-      />
+      <MessageInput friendUsername={friendUsername} friendId={friendId} />
     </Styled.MessageListContainer>
   );
 };

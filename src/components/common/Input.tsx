@@ -5,6 +5,7 @@ import { Dimensions } from '../../../types/dimensions.type';
 import { DimensionStyles } from './StyledDimensions';
 import { useKeyListener } from '../../hooks/effects/useKeyListener';
 import { Key } from 'ts-key-enum';
+import React from 'react';
 
 const Styled = {
   InputContainer: styled.input<Dimensions<string>>`
@@ -20,33 +21,33 @@ const Styled = {
   `,
 };
 
-export const Input = ({
-  dimensions,
-  labelText,
-  onChange,
-  onEnter,
-  className,
-  type,
-  ...props
-}: InputProps): ReactElement => {
-  const [focused, setFocused] = useState(false);
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    { dimensions, labelText, onChange, onEnter, className, type, ...props },
+    ref
+  ): ReactElement => {
+    const [focused, setFocused] = useState(false);
 
-  useKeyListener(() => {
-    if (focused) {
-      onEnter?.();
-    }
-  }, Key.Enter);
+    useKeyListener(() => {
+      if (focused) {
+        onEnter?.();
+      }
+    }, Key.Enter);
 
-  return (
-    <Styled.InputContainer
-      {...props}
-      {...dimensions}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-      placeholder={labelText}
-      onChange={onChange}
-      className={className}
-      type={type}
-    />
-  );
-};
+    return (
+      <Styled.InputContainer
+        {...props}
+        {...dimensions}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        placeholder={labelText}
+        onChange={onChange}
+        className={className}
+        type={type}
+        ref={ref}
+      />
+    );
+  }
+);
+
+Input.displayName = 'Input';

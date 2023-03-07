@@ -1,5 +1,5 @@
 export type MessageModel = {
-  message_id: number;
+  message_id: string;
   sender_id: number;
   reciever_id: number;
   created_date_time: string;
@@ -7,5 +7,5 @@ export type MessageModel = {
   seen: boolean;
   content: string;
   group_chat_id: number | null;
-  message_tracking_id?: number;
+  message_tracking_id?: string;
 };

@@ -1,4 +1,3 @@
-import { MessageModel } from './Models/MessageModel.type';
 import {
   FriendStatusChangeEventData,
   StatusChangeEventData,
@@ -11,7 +10,7 @@ export interface ServerToClientEvents {
   ['friend status changed']: (data: StatusChangeEventData) => void;
   ['message response']: (
     data: { message?: string } & Partial<ErrorData> & {
-        message_tracking_id?: number;
+        message_tracking_id?: string;
       }
   ) => void;
 }

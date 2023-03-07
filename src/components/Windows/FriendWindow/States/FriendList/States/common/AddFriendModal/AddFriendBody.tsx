@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useState } from 'react';
+import { ChangeEvent, ReactElement, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Input } from '../../../../../../../common/Input';
 import { fetchNextAPI } from '../../../../../../../../helpers/api/api';
@@ -75,7 +75,9 @@ export const AddFriendBody = ({
       <Styled.InputsContainer>
         <Input
           labelText="username"
-          onChange={(evt) => setUsername(evt.target.value)}
+          onInputChange={(evt: ChangeEvent<HTMLInputElement>) =>
+            setUsername(evt.target.value)
+          }
           onEnter={addFriend}
         />
         {loading ? (

@@ -5,7 +5,7 @@ import { modalReducer } from './slices/modalSlice';
 import { userReducer } from './slices/userSlice';
 import { windowsReducer } from './slices/windowsSlice';
 import { friendStatusesReducer } from './slices/friendStatusesSlice';
-import { pendingMessagesReducer } from './slices/pendingMessagesSlice';
+import { messagesReducer } from './slices/messagesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +15,6 @@ export const store = configureStore({
     windows: windowsReducer,
     user: userReducer,
     friendStatuses: friendStatusesReducer,
-    pendingMessages: pendingMessagesReducer,
+    messages: messagesReducer,
   },
 });

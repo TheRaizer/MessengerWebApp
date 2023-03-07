@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ChangeEvent, ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { Key } from 'ts-key-enum';
 import {
@@ -72,11 +72,15 @@ export const LoginState = ({
           <CenteredCol gap={20}>
             <Input
               {...getInputProps('email')}
-              onChange={(evt) => setEmail(evt.target.value)}
+              onChange={(evt: ChangeEvent<HTMLInputElement>) =>
+                setEmail(evt.target.value)
+              }
             />
             <Input
               {...getInputProps('password', 'password')}
-              onChange={(evt) => setPassword(evt.target.value)}
+              onChange={(evt: ChangeEvent<HTMLInputElement>) =>
+                setPassword(evt.target.value)
+              }
             />
           </CenteredCol>
           <CenteredCol gap={20}>

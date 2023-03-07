@@ -1,16 +1,22 @@
-import { ReactElement, useCallback, useContext, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ReactElement,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from 'react';
 import { Input } from '../../../../common/Input';
 import { socketContext } from '../../../../Providers/SocketProvider';
 import { sanitize } from 'dompurify';
 import { MessageInputProps } from '../../../../../../types/components/Windows/MessageWindow/States/Conversation/MessageInput.type';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import {
-  addPendingMessage,
-  selectPendingMessages,
-} from '../../../../../redux/slices/pendingMessagesSlice';
 import { selectUser } from '../../../../../redux/slices/userSlice';
 import { MessageModel } from '../../../../../../types/Models/MessageModel.type';
+import { addMessage } from '../../../../../redux/slices/messagesSlice';
+import { MessageStatus } from '../../../../../../types/redux/states/messages.type';
+import { v4 as uuidv4 } from 'uuid';
 
 const Styled = {
   InputContainer: styled.div`
@@ -23,40 +29,36 @@ const Styled = {
 export const MessageInput = ({
   friendUsername,
   friendId,
-  onMessageEmit,
 }: MessageInputProps): ReactElement => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const { user } = useAppSelector(selectUser);
-  const pendingMessages = useAppSelector(selectPendingMessages);
   const socket = useContext(socketContext);
   const [content, setContent] = useState('');
-  const counter = useRef(
-    pendingMessages[friendId]
-      ? Object.keys(pendingMessages[friendId]).length
-      : 0
-  );
-
   const dispatch = useAppDispatch();
 
   const emitMessageToFriend = useCallback(
     (content: string) => {
       if (!user) return;
 
+      const message_tracking_id = uuidv4();
+
       const message: MessageModel = {
         reciever_id: friendId,
         sender_id: user.user_id,
         content: content,
         group_chat_id: null,
-        message_tracking_id: counter.current,
+        message_tracking_id: message_tracking_id,
         created_date_time: new Date().toString(),
         last_edited_date_time: null,
-        message_id: counter.current,
+        message_id: message_tracking_id,
         seen: false,
       };
 
       dispatch(
-        addPendingMessage({
-          recieverId: friendId,
-          recieverUsername: friendUsername,
+        addMessage({
+          friendId: friendId,
+          messageId: message_tracking_id,
+          messageStatus: MessageStatus.SENDING,
           message: message,
         })
       );
@@ -65,13 +67,11 @@ export const MessageInput = ({
         addressee_username: friendUsername,
         content: content,
         group_chat_id: null,
-        message_tracking_id: counter.current,
+        message_tracking_id: message_tracking_id,
       });
-
-      onMessageEmit(message);
-      counter.current += 1;
+      if (inputRef.current) inputRef.current.value = '';
     },
-    [dispatch, friendId, friendUsername, onMessageEmit, socket, user]
+    [dispatch, friendId, friendUsername, socket, user]
   );
 
   const onEnter = () => {
@@ -86,8 +86,11 @@ export const MessageInput = ({
       <Input
         dimensions={{ width: '93%' }}
         labelText={`Message ${friendUsername}`}
-        onChange={(evt) => setContent(evt.target.value)}
+        onChange={(evt: ChangeEvent<HTMLInputElement>) =>
+          setContent(evt.target.value)
+        }
         onEnter={onEnter}
+        ref={inputRef}
       />
     </Styled.InputContainer>
   );

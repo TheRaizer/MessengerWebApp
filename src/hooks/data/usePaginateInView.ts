@@ -26,5 +26,5 @@ export const usePaginateInView = <T>(
     }
   }, [setSize, inView, hasMoreData, isValidating, size, data]);
 
-  return { data, ref, mutate };
+  return { data, ref, mutate, isValidating };
 };

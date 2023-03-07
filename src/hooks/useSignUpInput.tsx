@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { InputProps } from '../../types/components/common/Input.type';
 import {
   AuthErrors,
@@ -18,7 +18,9 @@ export const useSignUpInput = <T extends AuthErrors>(
       {...inputProps}
       failed={failed}
       failedText={failedText}
-      onChange={(evt) => setText(evt.target.value)}
+      onInputChange={(evt: ChangeEvent<HTMLInputElement>) =>
+        setText(evt.target.value)
+      }
     />
   );
 

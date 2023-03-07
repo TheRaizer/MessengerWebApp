@@ -5,7 +5,8 @@ import { useAppSelector } from '../../../../../redux/hooks';
 import { selectUser } from '../../../../../redux/slices/userSlice';
 import { Col } from '../../../../common/Col';
 import { getFormattedLocalTimeString } from '../../../../../helpers/datetime';
-import { selectPendingMessages } from '../../../../../redux/slices/pendingMessagesSlice';
+import { selectMessages } from '../../../../../redux/slices/messagesSlice';
+import { MessageStatus } from '../../../../../../types/redux/states/messages.type';
 
 const Styled = {
   PositioningContainer: styled.div<{ justifyEnd: boolean; isPending: boolean }>`
@@ -63,20 +64,21 @@ export const Message = ({
   reciever_id,
   message_tracking_id,
 }: MessageProps): ReactElement => {
-  const pendingMessages = useAppSelector(selectPendingMessages);
+  const messages = useAppSelector(selectMessages);
   const { user } = useAppSelector(selectUser);
 
   const isPending = useMemo(() => {
-    if (pendingMessages[reciever_id]) {
-      if (
-        message_tracking_id !== undefined &&
-        pendingMessages[reciever_id][message_tracking_id] !== undefined
-      ) {
-        return true;
+    if (messages[reciever_id]) {
+      const message = messages[reciever_id].find(
+        (messageData) => messageData.message.message_id == message_tracking_id
+      );
+
+      if (message !== undefined) {
+        return message.messageStatus === MessageStatus.SENDING;
       }
     }
     return false;
-  }, [message_tracking_id, pendingMessages, reciever_id]);
+  }, [message_tracking_id, messages, reciever_id]);
 
   const senderIsUser = user?.user_id == sender_id;
   const username = senderIsUser ? user?.username || '' : friendUsername;

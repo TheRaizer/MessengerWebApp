@@ -1,17 +1,19 @@
-import { selectPendingMessages } from './../../../redux/slices/pendingMessagesSlice';
 import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { socketContext } from '../../../components/Providers/SocketProvider';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { selectUser } from '../../../redux/slices/userSlice';
-import { removePendingMessage } from '../../../redux/slices/pendingMessagesSlice';
 import { MessageModel } from '../../../../types/Models/MessageModel.type';
 import { useSWRConfig } from 'swr';
+import {
+  addMessage,
+  changeMessageStatus,
+} from '../../../redux/slices/messagesSlice';
+import { MessageStatus } from '../../../../types/redux/states/messages.type';
 
 export const useMessageSocket = (): void => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectUser);
-  const pendingMessages = useAppSelector(selectPendingMessages);
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const socket = useContext(socketContext);
@@ -30,24 +32,33 @@ export const useMessageSocket = (): void => {
       const message = JSON.parse(data.message) as MessageModel;
 
       if (
-        message.reciever_id !== user.user_id &&
+        message.sender_id == user.user_id &&
         data.message_tracking_id !== undefined
       ) {
         // you have successfully sent a message
         dispatch(
-          removePendingMessage({
-            recieverId: message.reciever_id,
-            message_tracking_id: data.message_tracking_id,
+          changeMessageStatus({
+            friendId: message.reciever_id,
+            messageId: data.message_tracking_id,
+            newStatus: MessageStatus.SENT,
           })
         );
-      } else {
-        // you recieved a message
-        // TODO: emit toast popup
+      }
+
+      if (message.sender_id != user.user_id) {
+        dispatch(
+          addMessage({
+            friendId: message.sender_id,
+            messageId: message.message_id,
+            message: message,
+            messageStatus: MessageStatus.SENT,
+          })
+        );
       }
     });
 
     return () => {
       socket?.removeListener('message response');
     };
-  }, [dispatch, mutate, pendingMessages, router.pathname, socket, user]);
+  }, [dispatch, mutate, router.pathname, socket, user]);
 };
