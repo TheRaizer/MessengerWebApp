@@ -22,7 +22,7 @@ export const FriendItem = ({
   return (
     <FriendInfo friendUsername={friendUsername} friendId={friendId}>
       <Styled.IconContainer>
-        <MessageButton />
+        <MessageButton friendId={friendId} friendUsername={friendUsername} />
         <DetailsButton mutate={mutate} friendUsername={friendUsername} />
       </Styled.IconContainer>
     </FriendInfo>

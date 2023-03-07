@@ -44,11 +44,24 @@ const messageWindowStates: StatesDictionary<
 
 export const MessageWindow = ({
   id,
+  friendUsername,
+  friendId,
 }: WithRequired<WindowProps[WindowType.MESSAGE], 'id'>): ReactElement => {
+  const initialState =
+    friendUsername === undefined || friendId === undefined
+      ? MessageWindowStates.CONVERSATIONS_LIST
+      : MessageWindowStates.CONVERSATION;
+
+  const initialStateProps:
+    | Omit<FriendItemProps, 'mutate'>
+    | Record<string, never> =
+    friendUsername === undefined || friendId === undefined
+      ? {}
+      : { friendUsername, friendId };
   const { CurrentComponent } = useStateMachine(
     messageWindowStates,
-    MessageWindowStates.CONVERSATIONS_LIST,
-    {}
+    initialState,
+    initialStateProps
   );
 
   return (
