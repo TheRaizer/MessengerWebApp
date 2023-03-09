@@ -12,6 +12,7 @@ export const cursorPaginationHasMoreData =
   <T>() =>
   (data?: CursorPaginationResponse<T>[]): boolean => {
     return (
-      data !== undefined && data[data.length - 1]?.cursor.next_page !== null
+      data !== undefined &&
+      data[data.length - 1]?.cursor.next_page !== undefined
     );
   };
