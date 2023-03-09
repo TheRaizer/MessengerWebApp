@@ -35,12 +35,12 @@ export const isPasswordValid = (
   for (let i = 0; i < password.length; i++) {
     const char = password[i];
 
-    if (!isNumeric(char) && char === char.toLowerCase())
+    if (char === char.toLowerCase() && char !== char.toUpperCase()) {
       removeError(PasswordError.LOWER_CASE_NOT_FOUND_ERROR);
-
-    if (!isNumeric(char) && char === char.toUpperCase())
+    }
+    if (char === char.toUpperCase() && char !== char.toLowerCase()) {
       removeError(PasswordError.UPPER_CASE_NOT_FOUND_ERROR);
-
+    }
     if (isNumeric(char)) {
       removeError(PasswordError.NUMBER_NOT_FOUND_ERROR);
     }
