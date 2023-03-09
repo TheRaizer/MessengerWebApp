@@ -1,26 +1,23 @@
 import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 import { fetchAPI } from '../../../helpers/api/api';
-
-const server = setupServer(
-  rest.post('https://example.com/api', (req, res, ctx) => {
-    const responseData = { message: 'Hello World!' };
-    return res(ctx.json(responseData));
-  })
-);
+import { server } from '../../test-helpers/server';
 
 describe('fetchAPI', () => {
-  beforeAll(() => server.listen());
   afterEach(() => {
-    server.resetHandlers();
     jest.resetAllMocks();
   });
-  afterAll(() => server.close());
   it('should return data and response', async () => {
     const url = 'https://example.com/api';
     const method = 'POST';
     const body = { foo: 'bar' };
     const options = { headers: { 'X-Custom-Header': 'value' } };
+
+    server.use(
+      rest.post('https://example.com/api', (req, res, ctx) => {
+        const responseData = { message: 'Hello World!' };
+        return res(ctx.json(responseData));
+      })
+    );
 
     const result = await fetchAPI(url, method, body, options);
 
