@@ -14,7 +14,7 @@ describe('Button component', () => {
     render(<Button onClick={mockOnClick}>Click me!</Button>);
     const button = screen.getByText('Click me!');
     button.click();
-    expect(mockOnClick).toHaveBeenCalled();
+    expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
   it('applies the correct dimensions as inline styles', () => {
