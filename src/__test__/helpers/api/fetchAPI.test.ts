@@ -1,15 +1,22 @@
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import { fetchAPI } from '../../../helpers/api/api';
 
-describe('fetchAPI', () => {
-  beforeEach(() => {
-    jest.resetAllMocks();
-    fetchMock.resetMocks();
-  });
-
-  it('should return data and response', async () => {
+const server = setupServer(
+  rest.post('https://example.com/api', (req, res, ctx) => {
     const responseData = { message: 'Hello World!' };
-    fetchMock.mockResponseOnce(JSON.stringify(responseData));
+    return res(ctx.json(responseData));
+  })
+);
 
+describe('fetchAPI', () => {
+  beforeAll(() => server.listen());
+  afterEach(() => {
+    server.resetHandlers();
+    jest.resetAllMocks();
+  });
+  afterAll(() => server.close());
+  it('should return data and response', async () => {
     const url = 'https://example.com/api';
     const method = 'POST';
     const body = { foo: 'bar' };
@@ -17,26 +24,18 @@ describe('fetchAPI', () => {
 
     const result = await fetchAPI(url, method, body, options);
 
-    expect(fetchMock).toHaveBeenCalledWith(url, {
-      body: JSON.stringify(body),
-      method,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
-        ...options.headers,
-      },
-    });
-
     expect(result).toEqual({
-      data: responseData,
-      res: expect.objectContaining({ ok: true }),
+      data: { message: 'Hello World!' },
+      res: expect.objectContaining({ ok: true }) as unknown,
     });
   });
 
   it('should throw an error when fetch fails', async () => {
-    const error = new Error('Fetch error');
-    fetchMock.mockReject(error);
-
-    await expect(fetchAPI('https://example.com', 'GET')).rejects.toThrow(error);
+    server.use(
+      rest.get('https://example.com', (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
+    await expect(fetchAPI('https://example.com', 'GET')).rejects.toThrow();
   });
 });

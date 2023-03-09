@@ -1,4 +1,4 @@
 import '@testing-library/jest-dom';
 import 'jest-styled-components';
-import { enableMocks } from 'jest-fetch-mock';
-enableMocks();
+import fetch from 'isomorphic-fetch';
+global.fetch = fetch;
