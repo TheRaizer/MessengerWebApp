@@ -13,6 +13,9 @@ import {
   MessageWindowStateProps,
 } from '../../../../../../types/components/Windows/MessageWindow/MessageWindow.type';
 import { ChangeStateProp } from '../../../../../../types/hooks/useStateMachine.type';
+import { useAppSelector } from '../../../../../redux/hooks';
+import { selectMessages } from '../../../../../redux/slices/messagesSlice';
+import { MessageStatus } from '../../../../../../types/redux/states/messages.type';
 
 const Styled = {
   LatestMessage: styled.p`
@@ -40,15 +43,29 @@ export const ConversationItem = ({
     MessageWindowStates,
     MessageWindowStateProps
   >): ReactElement | null => {
+  const storedMessages = useAppSelector(selectMessages);
   const getKey = nextCursorSWRGetKey(
     'messages',
     MESSAGES_LIMIT,
     `friend_username=${friendUsername}`
   );
 
+  const activeMessages:
+    | undefined
+    | {
+        message: MessageModel;
+        messageStatus: MessageStatus;
+      }[] = storedMessages[friendId];
+
   const { data } = useSWRInfinite(
     getKey,
-    cursorPaginationFetcher<MessageModel>()
+    cursorPaginationFetcher<MessageModel>(),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      revalidateFirstPage: false,
+    }
   );
 
   const messages = useMemo(
@@ -64,7 +81,11 @@ export const ConversationItem = ({
       </Styled.SkeletonContainer>
     );
 
-  if (messages.length === 0) return null;
+  if (
+    messages.length === 0 &&
+    (activeMessages === undefined || activeMessages?.length === 0)
+  )
+    return null;
 
   return (
     <FriendInfo
@@ -74,11 +95,15 @@ export const ConversationItem = ({
         changeState(MessageWindowStates.CONVERSATION, {
           friendId,
           friendUsername,
-          changeState
+          changeState,
         })
       }
     >
-      <Styled.LatestMessage>{messages?.[0]?.content}</Styled.LatestMessage>
+      <Styled.LatestMessage>
+        {activeMessages?.length > 0
+          ? activeMessages[0].message.content
+          : messages?.[0]?.content}
+      </Styled.LatestMessage>
     </FriendInfo>
   );
 };
