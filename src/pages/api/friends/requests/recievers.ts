@@ -41,7 +41,7 @@ const friendRequestReceiversRoute = async (
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       {
-        cursor: {},
+        cursor: { next_page: null, prev_page: null },
         results: [],
         detail: 'internal server error',
       }

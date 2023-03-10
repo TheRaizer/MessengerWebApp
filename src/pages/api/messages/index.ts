@@ -24,7 +24,7 @@ const messagesRoute = async (
     res,
     req.method as Method,
     'GET',
-    { cursor: {}, results: [] }
+    { cursor: { next_page: null, prev_page: null }, results: [] }
   );
 
   if (!friend_username) {
@@ -32,7 +32,7 @@ const messagesRoute = async (
       res,
       StatusCodes.BAD_REQUEST,
       {
-        cursor: {},
+        cursor: { next_page: null, prev_page: null },
         results: [],
         detail: 'friend username was not provided',
       }
@@ -64,7 +64,7 @@ const messagesRoute = async (
       res,
       StatusCodes.INTERNAL_SERVER_ERROR,
       {
-        cursor: {},
+        cursor: { next_page: null, prev_page: null },
         results: [],
         detail: 'internal server error',
       }
