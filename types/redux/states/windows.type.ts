@@ -1,4 +1,3 @@
-import { FriendWindowProps } from '../../components/Windows/FriendWindow/FriendWindow.type';
 import { MessageWindowProps } from '../../components/Windows/MessageWindow/MessageWindow.type';
 
 export enum WindowType {
@@ -10,7 +9,7 @@ export type WindowIdentifier = string | number;
 
 export type WindowProps = {
   [WindowType.MESSAGE]: MessageWindowProps;
-  [WindowType.FRIEND]: FriendWindowProps;
+  [WindowType.FRIEND]: GeneralWindowProps;
 };
 
 export type GeneralWindowProps = {

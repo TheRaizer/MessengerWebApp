@@ -1,61 +1,15 @@
-import dynamic from 'next/dynamic';
 import { ReactElement } from 'react';
-import {
-  FriendsStateProps,
-  FriendWindowStates,
-} from '../../../../types/components/Windows/FriendWindow/FriendWindow.type';
-import {
-  ChangeStateProp,
-  StatesDictionary,
-} from '../../../../types/hooks/useStateMachine.type';
-import {
-  WindowProps,
-  WindowType,
-} from '../../../../types/redux/states/windows.type';
 import { WithRequired } from '../../../../types/Required.type';
-import { useStateMachine } from '../../../hooks/statemachine/useStateMachine';
 import { WindowContainer } from '../WindowContainer';
-
-const FriendListState = dynamic<
-  ChangeStateProp<FriendWindowStates, FriendsStateProps>
->(() =>
-  import('./States/FriendList/FriendsListState').then(
-    (mod) => mod.FriendsListState
-  )
-);
-const FriendState = dynamic<
-  FriendsStateProps[FriendWindowStates.FRIEND] &
-    ChangeStateProp<FriendWindowStates, FriendsStateProps>
->(() => import('./States/FriendState').then((mod) => mod.FriendState));
-
-const friendWindowStates: StatesDictionary<
-  FriendWindowStates,
-  FriendsStateProps
-> = {
-  [FriendWindowStates.FRIENDS_LIST]: (props) => <FriendListState {...props} />,
-  [FriendWindowStates.FRIEND]: (props) => <FriendState {...props} />,
-};
+import { GeneralWindowProps } from '../../../../types/redux/states/windows.type';
+import { FriendsList } from './FriendList/FriendsList';
 
 export const FriendWindow = ({
-  friendUsername,
   id,
-}: WithRequired<WindowProps[WindowType.FRIEND], 'id'>): ReactElement => {
-  const { state, props } = friendUsername
-    ? { state: FriendWindowStates.FRIEND, props: { friendUsername } }
-    : {
-        state: FriendWindowStates.FRIENDS_LIST,
-        props: {},
-      };
-  // if a username is given when a friend window is created, then we make the state the friend state
-  const { CurrentComponent } = useStateMachine(
-    friendWindowStates,
-    state,
-    props
-  );
-
+}: WithRequired<GeneralWindowProps, 'id'>): ReactElement => {
   return (
-    <WindowContainer title={friendUsername || 'Friends'} windowId={id}>
-      {CurrentComponent}
+    <WindowContainer title={'Friends'} windowId={id}>
+      <FriendsList />
     </WindowContainer>
   );
 };

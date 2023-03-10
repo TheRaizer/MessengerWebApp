@@ -15,7 +15,7 @@ import {
   MessageWindowStates,
 } from '../../../../types/components/Windows/MessageWindow/MessageWindow.type';
 import dynamic from 'next/dynamic';
-import { FriendItemProps } from '../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
+import { FriendItemProps } from '../../../../types/components/Windows/FriendWindow/FriendList/common/FriendItem/FriendItem.type';
 
 const Conversation = dynamic<
   Omit<FriendItemProps, 'mutate'> &

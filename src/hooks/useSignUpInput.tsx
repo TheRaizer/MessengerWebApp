@@ -18,7 +18,7 @@ export const useSignUpInput = <T extends AuthErrors>(
       {...inputProps}
       failed={failed}
       failedText={failedText}
-      onInputChange={(evt: ChangeEvent<HTMLInputElement>) =>
+      onChange={(evt: ChangeEvent<HTMLInputElement>) =>
         setText(evt.target.value)
       }
     />

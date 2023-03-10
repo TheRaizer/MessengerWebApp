@@ -6,14 +6,14 @@ import {
   cursorPaginationHasMoreData,
 } from '../../../../../helpers/swr/cursorPaginationFetcher';
 import { usePaginateInView } from '../../../../../hooks/data/usePaginateInView';
-import { FriendItemsList } from '../../../FriendWindow/States/FriendList/States/common/FriendItemsList';
 import { ConversationItem } from './ConversationItem';
 import {
   MessageWindowStateProps,
   MessageWindowStates,
 } from '../../../../../../types/components/Windows/MessageWindow/MessageWindow.type';
 import { ChangeStateProp } from '../../../../../../types/hooks/useStateMachine.type';
-import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
+import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/FriendList/common/FriendItem/FriendItem.type';
+import { FriendItemsList } from '../../../FriendWindow/FriendList/States/common/FriendItemsList';
 
 export const ConversationsList = ({
   changeState,

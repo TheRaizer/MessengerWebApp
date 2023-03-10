@@ -1,5 +1,4 @@
 import { ReactElement, useEffect, useMemo, useRef } from 'react';
-import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
 import { MessageModel } from '../../../../../../types/Models/MessageModel.type';
 import { MESSAGES_LIMIT } from '../../../../../constants/pagination';
 import {
@@ -15,7 +14,6 @@ import { ChangeStateProp } from '../../../../../../types/hooks/useStateMachine.t
 import styled from 'styled-components';
 import { Message } from './Message';
 import { Col } from '../../../../common/Col';
-import { FriendLoadingSpinner } from '../../../FriendWindow/States/FriendList/States/common/FriendLoadingSpinner';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectFriendStatuses } from '../../../../../redux/slices/friendStatusesSlice';
 import dynamic from 'next/dynamic';
@@ -23,6 +21,8 @@ import { IconBaseProps } from 'react-icons';
 import { WindowScrollBar } from '../../../../common/WindowScrollBar';
 import { MessageInput } from './MessageInput';
 import { selectMessages } from '../../../../../redux/slices/messagesSlice';
+import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/FriendList/common/FriendItem/FriendItem.type';
+import { FriendLoadingSpinner } from '../../../FriendWindow/FriendList/States/common/FriendLoadingSpinner';
 
 const BsArrowLeftCircle = dynamic<IconBaseProps>(() =>
   import('react-icons/bs').then((mod) => mod.BsArrowLeftCircle)

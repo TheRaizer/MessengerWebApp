@@ -19,9 +19,9 @@ import { isPasswordValid } from '../../helpers/auth/isPasswordValid';
 import { isUsernameValid } from '../../helpers/auth/isUsernameValid';
 import { useKeyListener } from '../../hooks/effects/useKeyListener';
 import { useSignUpInput } from '../../hooks/useSignUpInput';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ChangeAuthStateButton, ChangeAuthStateText } from './AuthStyled';
-import { setUserState } from '../../redux/slices/userSlice';
+import { selectUser, setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
 import { HourGlass } from '../Loading/HourGlass';
@@ -37,6 +37,7 @@ export const SignUpState = ({
   inputProps,
 }: AuthInputProps &
   ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
+  const { user } = useAppSelector(selectUser);
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const {
@@ -130,7 +131,7 @@ export const SignUpState = ({
 
   return (
     <CenteredCol gap={50}>
-      {loading ? (
+      {loading || user !== undefined ? (
         <HourGlass
           size={1}
           backgroundColor="var(--primary-color)"

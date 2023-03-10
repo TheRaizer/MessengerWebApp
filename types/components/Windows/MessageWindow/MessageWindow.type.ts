@@ -1,6 +1,6 @@
 import { ChangeStateProp } from '../../../hooks/useStateMachine.type';
 import { GeneralWindowProps } from '../../../redux/states/windows.type';
-import { FriendItemProps } from '../FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
+import { FriendItemProps } from '../FriendWindow/FriendList/common/FriendItem/FriendItem.type';
 
 export type MessageWindowProps = {
   friendId?: number;

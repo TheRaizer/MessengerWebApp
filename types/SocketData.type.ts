@@ -1,5 +1,5 @@
 import { MessageModel } from './Models/MessageModel.type';
-import { ActiveStatus } from './components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
+import { ActiveStatus } from './components/Windows/FriendWindow/FriendList/common/FriendItem/FriendItem.type';
 
 export type StatusChangeEventData = {
   user_id: number;

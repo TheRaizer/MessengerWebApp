@@ -1,6 +1,4 @@
 import { ReactElement, useMemo } from 'react';
-import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/States/FriendList/common/FriendItem/FriendItem.type';
-import { FriendInfo } from '../../../FriendWindow/States/FriendList/States/common/FriendInfo';
 import { MESSAGES_LIMIT } from '../../../../../constants/pagination';
 import { cursorPaginationFetcher } from '../../../../../helpers/swr/cursorPaginationFetcher';
 import { nextCursorSWRGetKey } from '../../../../../helpers/pagination';
@@ -16,6 +14,8 @@ import { ChangeStateProp } from '../../../../../../types/hooks/useStateMachine.t
 import { useAppSelector } from '../../../../../redux/hooks';
 import { selectMessages } from '../../../../../redux/slices/messagesSlice';
 import { MessageStatus } from '../../../../../../types/redux/states/messages.type';
+import { FriendItemProps } from '../../../../../../types/components/Windows/FriendWindow/FriendList/common/FriendItem/FriendItem.type';
+import { FriendInfo } from '../../../FriendWindow/FriendList/States/common/FriendInfo';
 
 const Styled = {
   LatestMessage: styled.p`

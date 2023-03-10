@@ -28,9 +28,7 @@ const MessagesIcon = dynamic<IconBaseProps>(() =>
 
 export const IconContainer = (): ReactElement => {
   const openMessageWindow = useOpenWindow(WindowType.MESSAGE, {});
-  const openFriendWindow = useOpenWindow(WindowType.FRIEND, {
-    friendUsername: '',
-  });
+  const openFriendWindow = useOpenWindow(WindowType.FRIEND, {});
 
   return (
     <Styled.IconContainer>
