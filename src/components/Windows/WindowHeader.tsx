@@ -87,7 +87,7 @@ export const WindowHeader = ({
   const closeWindow = useCloseWindow(windowId);
 
   return (
-    <Styled.HeaderContainer {...dragBind()}>
+    <Styled.HeaderContainer {...dragBind()} role="heading">
       <Styled.IdentifierContainer>
         <HeaderLines dimensions={{ width: '100%' }} />
         {title}

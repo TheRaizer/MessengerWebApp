@@ -1,7 +1,7 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react';
 import { FailableInput } from '../../../components/common/FailableInput';
 import { render } from '../../test-helpers/custom-renderer';
+import userEvent from '@testing-library/user-event';
 
 describe('FailableInput', () => {
   it('renders a failed input when `failed` prop is true', () => {
@@ -50,7 +50,9 @@ describe('FailableInput', () => {
     expect(failedText).toBeNull();
   });
 
-  it('calls the `onChange` function when input value changes', () => {
+  it('calls the `onChange` function when input value changes', async () => {
+    const user = userEvent.setup();
+
     const onChange = jest.fn();
     const { getByRole } = render(
       <FailableInput
@@ -63,7 +65,7 @@ describe('FailableInput', () => {
     );
     const input = getByRole('textbox');
 
-    fireEvent.change(input, { target: { value: 'test' } });
+    await user.type(input, 'test');
 
     expect(onChange).toHaveBeenCalledWith(expect.any(Object));
   });

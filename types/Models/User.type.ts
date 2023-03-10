@@ -2,9 +2,9 @@ export type UserModel = PrivateUserModel & PublicUserModel;
 
 export type PrivateUserModel = {
   email: string;
-  first_name?: string;
-  last_name?: string;
-  birthdate?: Date;
+  first_name: string | null;
+  last_name: string | null;
+  birthdate: Date | null;
 };
 
 export type PublicUserModel = {

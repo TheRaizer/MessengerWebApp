@@ -16,7 +16,6 @@ const userData: UserStateProps = {
 const setResMock = jest.fn();
 
 jest.spyOn(api, 'setRes').mockImplementation((res, statusCode, data) => {
-  console.log('SET RES');
   setResMock(res, statusCode, data);
 });
 jest.mock('jwt-decode', () => () => userData);

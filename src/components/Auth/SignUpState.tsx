@@ -2,6 +2,7 @@ import { ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { Key } from 'ts-key-enum';
 import {
+  AuthInputProps,
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
@@ -33,8 +34,8 @@ const Styled = {
 
 export const SignUpState = ({
   changeState,
-  getInputProps,
-}: AuthStateProps[AuthStates.SIGN_UP] &
+  inputProps,
+}: AuthInputProps &
   ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -42,21 +43,35 @@ export const SignUpState = ({
     Component: EmailInput,
     text: email,
     checkValidity: checkEmailValidity,
-  } = useSignUpInput(getInputProps('email'));
+  } = useSignUpInput({
+    ...inputProps,
+    labelText: 'email',
+  });
   const {
     Component: UsernameInput,
     text: username,
     checkValidity: checkUsernameValidity,
-  } = useSignUpInput(getInputProps('username'));
+  } = useSignUpInput({
+    ...inputProps,
+    labelText: 'username',
+  });
   const {
     Component: PasswordInput,
     text: password,
     checkValidity: checkPasswordValidity,
-  } = useSignUpInput(getInputProps('password', 'password'));
+  } = useSignUpInput({
+    ...inputProps,
+    labelText: 'password',
+    type: 'password',
+  });
   const {
     Component: ConfirmPasswordInput,
     checkValidity: checkConfirmPasswordValidity,
-  } = useSignUpInput(getInputProps('confirm password', 'password'));
+  } = useSignUpInput({
+    ...inputProps,
+    labelText: 'confirm password',
+    type: 'password',
+  });
 
   const signUp = () => {
     setLoading(true);
@@ -140,7 +155,7 @@ export const SignUpState = ({
               Have an account already?{' '}
               <ChangeAuthStateButton
                 onClick={() =>
-                  changeState(AuthStates.LOGIN, { changeState, getInputProps })
+                  changeState(AuthStates.LOGIN, { changeState, inputProps })
                 }
               >
                 Login

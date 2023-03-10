@@ -11,8 +11,8 @@ export const nextCursorSWRGetKey = (
     // reached the end
     if (previousPageData && !previousPageData.cursor.next_page) return null;
 
-    const next_page_cursor: string | undefined =
-      previousPageData?.cursor.next_page;
+    const next_page_cursor: string | null =
+      previousPageData?.cursor.next_page || null;
 
     const cursor = next_page_cursor ? `&cursor=${next_page_cursor}` : '';
 

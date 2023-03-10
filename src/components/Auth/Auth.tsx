@@ -6,7 +6,6 @@ import {
   AuthProps,
   AuthStateProps,
   AuthStates,
-  GetInputProps,
 } from '../../../types/components/Auth/Auth.type';
 import {
   ChangeStateProp,
@@ -47,21 +46,10 @@ const authStates: StatesDictionary<AuthStates, AuthStateProps> = {
 export const Auth = ({ initialState }: AuthProps): ReactElement => {
   const inputDimensions = { width: '250px', height: '35px' };
 
-  /**
-   * We do not need to use useCallback since this component will not rerender often.
-   * Thus this function's referential equality will not often change and cause rerenders of the
-   * auth state components.
-   */
-  const getInputProps: GetInputProps = (labelText: string, type?: string) => ({
-    dimensions: inputDimensions,
-    labelText: labelText,
-    type: type,
-  });
-
   const { CurrentComponent, currentState } = useStateMachine(
     authStates,
     initialState || AuthStates.LOGIN,
-    { getInputProps }
+    { inputProps: { dimensions: inputDimensions, labelText: '' } }
   );
 
   const header = currentState === AuthStates.LOGIN ? 'Login' : 'Sign Up';

@@ -1,5 +1,6 @@
-import React, { createRef } from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { render } from '../../test-helpers/custom-renderer';
 import { Input } from '../../../components/common/Input';
 
@@ -11,7 +12,6 @@ describe('Input', () => {
     const onEnter = jest.fn();
     const type = 'password';
     const testId = 'username-input';
-    const ref = createRef<HTMLInputElement>();
 
     render(
       <Input
@@ -21,7 +21,6 @@ describe('Input', () => {
         onEnter={onEnter}
         type={type}
         data-testid={testId}
-        ref={ref}
       />
     );
 
@@ -31,13 +30,50 @@ describe('Input', () => {
     expect(input).toHaveAttribute('placeholder', labelText);
     expect(input).toHaveStyle(`width: ${dimensions.width};`);
     expect(input).toHaveStyle(`height: ${dimensions.height};`);
+  });
 
-    fireEvent.change(input, { target: { value: 'testuser' } });
-    expect(onChange).toHaveBeenCalledTimes(1);
+  it('should run onChange callback when input changes', async () => {
+    const user = userEvent.setup();
+    const dimensions = { width: '100px', height: '50px' };
+    const labelText = 'Username';
+    const onChange = jest.fn();
+    const testId = 'username-input';
+
+    render(
+      <Input
+        dimensions={dimensions}
+        labelText={labelText}
+        onChange={onChange}
+        data-testid={testId}
+      />
+    );
+
+    const input = screen.getByTestId(testId);
+
+    await user.type(input, 'testuser');
     expect(onChange).toHaveBeenCalledWith(expect.anything());
+  });
 
-    fireEvent.focus(input);
-    fireEvent.keyUp(input, { key: 'Enter', code: 'Enter' });
+  it('should execute onEnter callback when enter key is pressed', async () => {
+    const user = userEvent.setup();
+    const dimensions = { width: '100px', height: '50px' };
+    const labelText = 'Username';
+    const onEnter = jest.fn();
+    const testId = 'username-input';
+
+    render(
+      <Input
+        dimensions={dimensions}
+        labelText={labelText}
+        onEnter={onEnter}
+        data-testid={testId}
+      />
+    );
+
+    const input = screen.getByTestId(testId);
+
+    await user.click(input);
+    await user.keyboard('{enter}');
     expect(onEnter).toHaveBeenCalledTimes(1);
   });
 });

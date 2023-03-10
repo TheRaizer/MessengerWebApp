@@ -11,7 +11,8 @@ describe('cursorPaginationHasMoreData', () => {
     const data: CursorPaginationResponse<string>[] = [
       {
         cursor: {
-          next_page: undefined,
+          next_page: null,
+          prev_page: 'test',
         },
         results: ['foo', 'bar'],
       },
@@ -24,7 +25,8 @@ describe('cursorPaginationHasMoreData', () => {
     const data: CursorPaginationResponse<string>[] = [
       {
         cursor: {
-          next_page: 'http://example.com/api?page=2',
+          next_page: 'test',
+          prev_page: null,
         },
         results: ['foo', 'bar'],
       },
@@ -37,13 +39,15 @@ describe('cursorPaginationHasMoreData', () => {
     const data: CursorPaginationResponse<string>[] = [
       {
         cursor: {
-          next_page: 'http://example.com/api?page=2',
+          next_page: 'test',
+          prev_page: null,
         },
         results: ['foo', 'bar'],
       },
       {
         cursor: {
-          next_page: 'http://example.com/api?page=3',
+          next_page: 'test',
+          prev_page: null,
         },
         results: ['baz', 'qux'],
       },
@@ -56,13 +60,15 @@ describe('cursorPaginationHasMoreData', () => {
     const data: CursorPaginationResponse<string>[] = [
       {
         cursor: {
-          next_page: 'http://example.com/api?page=2',
+          next_page: 'test',
+          prev_page: null,
         },
         results: ['foo', 'bar'],
       },
       {
         cursor: {
-          next_page: undefined,
+          next_page: null,
+          prev_page: 'w',
         },
         results: ['baz', 'qux'],
       },

@@ -2,6 +2,7 @@ import { ChangeEvent, ReactElement, useState } from 'react';
 import styled from 'styled-components';
 import { Key } from 'ts-key-enum';
 import {
+  AuthInputProps,
   AuthStateProps,
   AuthStates,
 } from '../../../types/components/Auth/Auth.type';
@@ -10,8 +11,8 @@ import { AuthRequirements } from '../../../types/pages/api/auth/auth.type';
 import { UserData } from '../../../types/redux/states/user.type';
 import { fetchNextAPI } from '../../helpers/api/api';
 import { useKeyListener } from '../../hooks/effects/useKeyListener';
-import { useAppDispatch } from '../../redux/hooks';
-import { setUserState } from '../../redux/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { selectUser, setUserState } from '../../redux/slices/userSlice';
 import { Button } from '../common/Button';
 import { CenteredCol } from '../common/Col';
 import { Input } from '../common/Input';
@@ -27,15 +28,21 @@ const Styled = {
 
 export const LoginState = ({
   changeState,
-  getInputProps,
-}: AuthStateProps[AuthStates.LOGIN] &
+  inputProps,
+}: AuthInputProps &
   ChangeStateProp<AuthStates, AuthStateProps>): ReactElement => {
+  const { user } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const login = () => {
+    if (!email || !password) {
+      emitErrorToast('you need to fill in all fields!');
+      return;
+    }
+
     setLoading(true);
     const body: AuthRequirements = {
       email,
@@ -51,7 +58,6 @@ export const LoginState = ({
         dispatch(setUserState(data.user));
       })
       .catch((err: Error) => {
-        console.error(err);
         emitErrorToast(err.message);
         setLoading(false);
       });
@@ -61,7 +67,7 @@ export const LoginState = ({
 
   return (
     <CenteredCol gap={50}>
-      {loading ? (
+      {loading || user !== undefined ? (
         <HourGlass
           size={1}
           backgroundColor="var(--primary-color)"
@@ -71,13 +77,16 @@ export const LoginState = ({
         <>
           <CenteredCol gap={20}>
             <Input
-              {...getInputProps('email')}
+              {...inputProps}
+              labelText={'email'}
               onChange={(evt: ChangeEvent<HTMLInputElement>) =>
                 setEmail(evt.target.value)
               }
             />
             <Input
-              {...getInputProps('password', 'password')}
+              {...inputProps}
+              labelText={'password'}
+              type={'password'}
               onChange={(evt: ChangeEvent<HTMLInputElement>) =>
                 setPassword(evt.target.value)
               }
@@ -96,7 +105,7 @@ export const LoginState = ({
                 onClick={() =>
                   changeState(AuthStates.SIGN_UP, {
                     changeState,
-                    getInputProps,
+                    inputProps,
                   })
                 }
               >
